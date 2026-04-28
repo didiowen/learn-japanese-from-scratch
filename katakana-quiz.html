@@ -625,7 +625,7 @@ function renderVocabJpToZh() {
   document.getElementById('quizContent').innerHTML = `
     <div class="question-type">這個片假名是什麼意思？</div>
     <div class="main-char" style="font-size:2.4rem">${card.word}</div>
-    <div class="sub-info">${card.reading}</div>
+    <div class="sub-info"></div>
     <div class="hint" id="hintText"></div>
     <div class="options">
       ${opts.map(o => `<button class="option-btn reading" onclick="checkVocab('${o}','meaning',this)">${o}</button>`).join('')}
