@@ -1,0 +1,1084 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>平假名記憶測驗</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;700&family=Noto+Sans+TC:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink: #1a1a2e;
+  --paper: #f5f0e8;
+  --accent: #c0392b;
+  --soft: #8b7355;
+  --card: #faf7f2;
+  --success: #27ae60;
+  --fail: #c0392b;
+  --neutral: #7f8c8d;
+  --border: rgba(139,115,85,0.2);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: 'Noto Sans TC', sans-serif;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px 16px 40px;
+  background-image: radial-gradient(ellipse at 20% 20%, rgba(192,57,43,0.05) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 80%, rgba(139,115,85,0.08) 0%, transparent 50%);
+}
+
+/* ── Section tabs ── */
+.section-tabs {
+  display: flex;
+  gap: 0;
+  max-width: 360px;
+  width: 100%;
+  margin-bottom: 20px;
+  border: 1.5px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+.section-tab {
+  flex: 1;
+  padding: 12px 8px;
+  border: none;
+  background: white;
+  color: var(--neutral);
+  font-family: 'Noto Sans TC', sans-serif;
+  font-size: 0.82rem;
+  cursor: pointer;
+  letter-spacing: 0.04em;
+  transition: all 0.2s;
+  border-right: 1px solid var(--border);
+}
+.section-tab:last-child { border-right: none; }
+.section-tab.active {
+  background: var(--ink);
+  color: var(--paper);
+  font-weight: 500;
+}
+
+/* ── Mode toggle ── */
+.mode-toggle {
+  display: flex;
+  gap: 8px;
+  max-width: 360px;
+  width: 100%;
+  margin-bottom: 18px;
+  background: rgba(0,0,0,0.06);
+  border-radius: 10px;
+  padding: 4px;
+}
+.mode-btn {
+  flex: 1;
+  padding: 8px;
+  border: none;
+  border-radius: 7px;
+  font-size: 0.78rem;
+  font-family: 'Noto Sans TC', sans-serif;
+  cursor: pointer;
+  background: transparent;
+  color: var(--soft);
+  transition: all 0.2s;
+}
+.mode-btn.active {
+  background: white;
+  color: var(--ink);
+  box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+  font-weight: 500;
+}
+
+/* ── Progress ── */
+.progress-bar {
+  width: 100%;
+  max-width: 360px;
+  height: 3px;
+  background: rgba(0,0,0,0.08);
+  border-radius: 2px;
+  margin-bottom: 18px;
+  overflow: hidden;
+}
+.progress-fill {
+  height: 100%;
+  background: var(--accent);
+  border-radius: 2px;
+  transition: width 0.4s ease;
+}
+
+/* ── Card ── */
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 28px 24px 24px;
+  max-width: 360px;
+  width: 100%;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.07);
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 16px;
+}
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--accent), var(--soft));
+}
+.sr-badge {
+  position: absolute;
+  top: 12px; right: 14px;
+  font-size: 0.6rem;
+  color: var(--soft);
+  opacity: 0.5;
+  letter-spacing: 0.08em;
+}
+.question-type {
+  font-size: 0.68rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--soft);
+  margin-bottom: 14px;
+  font-weight: 500;
+}
+.main-char {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 4.5rem;
+  text-align: center;
+  line-height: 1;
+  margin: 8px 0 6px;
+  color: var(--ink);
+}
+.main-meaning {
+  font-size: 1.5rem;
+  text-align: center;
+  line-height: 1.3;
+  margin: 8px 0 6px;
+  color: var(--ink);
+  font-weight: 400;
+}
+.hint { font-size: 0.73rem; color: var(--neutral); text-align: center; margin-bottom: 20px; min-height: 16px; font-style: italic; }
+
+/* ── Options ── */
+.options { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px; }
+.option-btn {
+  background: white;
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  padding: 13px 8px;
+  font-size: 0.88rem;
+  font-family: 'Noto Serif JP', serif;
+  cursor: pointer;
+  transition: all 0.15s;
+  color: var(--ink);
+  text-align: center;
+  line-height: 1.3;
+}
+.option-btn:hover:not(:disabled) { border-color: var(--accent); background: rgba(192,57,43,0.04); transform: translateY(-1px); }
+.option-btn.correct { background: rgba(39,174,96,0.1); border-color: var(--success); color: var(--success); font-weight: 500; }
+.option-btn.wrong { background: rgba(192,57,43,0.08); border-color: var(--fail); color: var(--fail); }
+.option-btn:disabled { cursor: default; }
+.option-btn.vocab { font-family: 'Noto Sans TC', sans-serif; font-size: 0.82rem; }
+
+/* ── Input ── */
+.input-wrap { margin-bottom: 12px; }
+.romaji-input {
+  width: 100%;
+  padding: 13px 16px;
+  font-size: 1rem;
+  font-family: 'Noto Sans TC', sans-serif;
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  background: white;
+  color: var(--ink);
+  outline: none;
+  transition: border-color 0.2s;
+  text-align: center;
+  letter-spacing: 0.08em;
+}
+.romaji-input:focus { border-color: var(--accent); }
+.romaji-input.correct { border-color: var(--success); background: rgba(39,174,96,0.06); color: var(--success); }
+.romaji-input.wrong { border-color: var(--fail); background: rgba(192,57,43,0.06); }
+.input-hint { font-size: 0.68rem; color: var(--neutral); text-align: center; margin-bottom: 10px; font-style: italic; }
+
+/* ── Buttons ── */
+.submit-btn {
+  width: 100%;
+  background: var(--soft);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  padding: 12px;
+  font-size: 0.85rem;
+  font-family: 'Noto Sans TC', sans-serif;
+  cursor: pointer;
+  letter-spacing: 0.06em;
+  transition: all 0.2s;
+  margin-bottom: 10px;
+}
+.submit-btn:hover { background: var(--accent); }
+.next-btn {
+  width: 100%;
+  background: var(--ink);
+  color: var(--paper);
+  border: none;
+  border-radius: 10px;
+  padding: 13px;
+  font-size: 0.85rem;
+  font-family: 'Noto Sans TC', sans-serif;
+  cursor: pointer;
+  letter-spacing: 0.06em;
+  transition: all 0.2s;
+  display: none;
+}
+.next-btn:hover { background: var(--accent); transform: translateY(-1px); }
+.next-btn.visible { display: block; }
+
+/* ── Feedback ── */
+.feedback {
+  min-height: 44px;
+  text-align: center;
+  padding: 10px;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  line-height: 1.5;
+  transition: all 0.2s;
+  margin-bottom: 10px;
+}
+.feedback.show-correct { background: rgba(39,174,96,0.08); color: var(--success); }
+.feedback.show-wrong { background: rgba(192,57,43,0.06); color: var(--fail); }
+
+/* ── Score ── */
+.score-display {
+  display: flex;
+  justify-content: space-between;
+  max-width: 360px;
+  width: 100%;
+  padding: 0 4px;
+}
+.score-item { text-align: center; font-size: 0.68rem; color: var(--neutral); letter-spacing: 0.05em; }
+.score-num { display: block; font-size: 1.3rem; font-weight: 500; color: var(--ink); font-family: 'Noto Serif JP', serif; }
+
+/* ── Result ── */
+.result-screen { text-align: center; padding: 16px 8px; }
+.result-screen .big-emoji { font-size: 3rem; margin: 8px 0; }
+.result-screen h2 { font-size: 1.05rem; font-weight: 500; margin-bottom: 8px; }
+.result-screen p { font-size: 0.8rem; color: var(--soft); margin-bottom: 18px; line-height: 1.6; }
+.restart-btn {
+  background: var(--accent);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  padding: 12px 28px;
+  font-size: 0.85rem;
+  font-family: 'Noto Sans TC', sans-serif;
+  cursor: pointer;
+  letter-spacing: 0.06em;
+  transition: all 0.2s;
+}
+.restart-btn:hover { opacity: 0.88; transform: translateY(-1px); }
+
+/* ── Topic filter ── */
+.topic-filter {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  max-width: 360px;
+  width: 100%;
+  margin-bottom: 14px;
+}
+.topic-btn {
+  padding: 5px 10px;
+  border: 1.5px solid var(--border);
+  border-radius: 20px;
+  font-size: 0.72rem;
+  font-family: 'Noto Sans TC', sans-serif;
+  cursor: pointer;
+  background: white;
+  color: var(--soft);
+  transition: all 0.15s;
+}
+.topic-btn.active {
+  background: var(--ink);
+  color: var(--paper);
+  border-color: var(--ink);
+  font-weight: 500;
+}
+</style>
+</head>
+<body>
+
+<!-- Section tabs -->
+<div class="section-tabs">
+  <button class="section-tab active" id="tabHiragana" onclick="switchSection('hiragana')">五十音</button>
+  <button class="section-tab" id="tabVocab" onclick="switchSection('vocab')">單字</button>
+</div>
+
+<!-- Mode toggle (五十音 only) -->
+<div class="mode-toggle" id="modeToggle">
+  <button class="mode-btn active" id="btnMultiple" onclick="setMode('multiple')">選擇題</button>
+  <button class="mode-btn" id="btnInput" onclick="setMode('input')">輸入題</button>
+</div>
+
+<!-- Vocab direction toggle -->
+<div class="mode-toggle" id="vocabToggle" style="display:none;">
+  <button class="mode-btn active" id="btnJpToZh" onclick="setVocabDir('jp-to-zh')">日文→中文</button>
+  <button class="mode-btn" id="btnZhToJp" onclick="setVocabDir('zh-to-jp')">中文→日文</button>
+</div>
+
+<!-- Topic filter (vocab only) -->
+<div class="topic-filter" id="topicFilter" style="display:none;">
+  <button class="topic-btn active" onclick="setTopic('all')">全部</button>
+  <button class="topic-btn" onclick="setTopic('greeting')">🗣 問候</button>
+  <button class="topic-btn" onclick="setTopic('food')">🍱 飲食</button>
+  <button class="topic-btn" onclick="setTopic('family')">👨‍👩‍👧‍👦 家族</button>
+  <button class="topic-btn" onclick="setTopic('time')">📅 時間</button>
+  <button class="topic-btn" onclick="setTopic('color')">🎨 顏色</button>
+  <button class="topic-btn" onclick="setTopic('number')">🔢 數字</button>
+  <button class="topic-btn" onclick="setTopic('nature')">🌸 自然</button>
+  <button class="topic-btn" onclick="setTopic('daily')">💬 日常</button>
+  <button class="topic-btn" onclick="setTopic('question')">❓ 疑問詞</button>
+</div>
+
+<div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+
+<div class="card" id="mainCard">
+  <span class="sr-badge">SRS</span>
+  <div id="quizContent"></div>
+</div>
+
+<div class="score-display">
+  <div class="score-item"><span class="score-num" id="scoreCorrect">0</span>正確</div>
+  <div class="score-item"><span class="score-num" id="scoreTotal">0</span>已答</div>
+  <div class="score-item"><span class="score-num" id="scoreStreak">0</span>連勝</div>
+</div>
+
+<script>
+// ═══════════════════════════════
+// DATA
+// ═══════════════════════════════
+const cards = [
+  { char: 'す', reading: 'su', hint: '台語「寸」念 tshùn，母音 u 對應 → su' },
+  { char: 'み', reading: 'mi', hint: '台語「美」念 bí，母音 i 完全對應 → mi' },
+  { char: 'ま', reading: 'ma', hint: '媽媽的 ma' },
+  { char: 'せ', reading: 'se', hint: '漢字「世」的草書 → se' },
+  { char: 'ん', reading: 'n', hint: '英文字母 n 躺下來變懶了，打字打 nn' },
+  { char: 'お', reading: 'o', hint: '台語「於」念 oo，母音 o 對應 → o' },
+  { char: 'い', reading: 'i', hint: '兩根豎線並排，像兩個人並肩站 → i' },
+  { char: 'し', reading: 'shi', hint: '台語「之」念 tsi，接近 shi／釣魚線垂下底部往右彎' },
+  { char: 'た', reading: 'ta', hint: '太陽的 ta' },
+  { char: 'だ', reading: 'da', hint: 'た加濁點゛→ da' },
+  { char: 'う', reading: 'u', hint: '像小碗開口朝上，裝 udon 烏冬麵 → u' },
+  { char: 'ぶ', reading: 'bu', hint: 'ふ加濁點゛，台語「武」接近 bu' },
+  { char: 'じ', reading: 'ji', hint: 'し加濁點゛→ ji' },
+  { char: 'ほ', reading: 'ho', hint: '古代念 po，演變成 ho → ho' },
+  { char: 'と', reading: 'to', hint: '漢字「止」，Tokyo 釘子釘地圖 → to' },
+  { char: 'あ', reading: 'a', hint: '台語「安」念 an，張嘴就來 → a' },
+  { char: 'り', reading: 'ri', hint: '台語「利」念 lī，流利的線 → ri' },
+  { char: 'が', reading: 'ga', hint: 'か加濁點゛，台語「我」念 guá → ga' },
+  { char: 'こ', reading: 'ko', hint: '台語「己」念 kí，k 音一樣 → ko' },
+  { char: 'れ', reading: 're', hint: '礼→れ，漢字右邊勾對應假名底部勾' },
+  { char: 'ち', reading: 'chi', hint: '粵語「知」念 zi，接近 chi／字形像問號' },
+  { char: 'て', reading: 'te', hint: '台語「天」念 thinn，th 接近 t → te／て是「手」的發音' },
+  { char: 'ぼ', reading: 'bo', hint: 'ほ加濁點゛，台語「無」念 bô → bo' },
+  { char: 'く', reading: 'ku', hint: '台語「久」念 kú，子音母音完全對應 → ku' },
+  { char: 'は', reading: 'ha／wa', hint: '古代念 pa，演變成 ha，當助詞時念 wa' },
+  { char: 'か', reading: 'ka', hint: '台語「加」念 ke/ka → ka' },
+  { char: 'さ', reading: 'sa', hint: '台語「左」tsó 的 ts 接近 s → sa' },
+  { char: 'に', reading: 'ni', hint: '「你」→ ni，兩個人才有仁' },
+  { char: 'ご', reading: 'go', hint: 'こ加濁點゛，台語「五」念 gō → go' },
+  { char: 'ろ', reading: 'ro', hint: '台語「呂」念 lū → ro' },
+  { char: 'な', reading: 'na', hint: '像「那」→ na' },
+  { char: 'き', reading: 'ki', hint: '台語「幾」念 kuí，k 音一樣 → ki' },
+  { char: 'ゅ', reading: 'yu', hint: 'ゆ的縮小版，跟前面合讀母音變 u' },
+  { char: 'じゅ', reading: 'ju', hint: 'じ＋ゅ合讀 → ju' },
+  { char: 'ば', reading: 'ba', hint: 'は加濁點゛，台語「馬」念 bé → ba' },
+  { char: 'わ', reading: 'wa', hint: '和→わ，漢字右邊口對應假名封閉彎' },
+  { char: 'の', reading: 'no', hint: '漩渦帶尾巴，台語「乃」念 ná，n 音 → no' },
+  { char: 'も', reading: 'mo', hint: '台語「毛」念 mo，幾乎一樣 → mo' },
+  { char: 'え', reading: 'e', hint: '草書像衣領形狀 → e' },
+  { char: 'で', reading: 'de', hint: 'て加濁點゛→ de' },
+  { char: 'そ', reading: 'so', hint: '草書像 S 往右彎 → so' },
+  { char: 'ざ', reading: 'za', hint: 'さ加濁點゛s→z → za' },
+  { char: 'ね', reading: 'ne', hint: '華語「祢」nǐ，n 音對應／礼→れ・和→わ・祢→ね部件遞增' },
+  { char: 'ぜ', reading: 'ze', hint: 'せ加濁點゛，Zero → ze' },
+  { char: 'ど', reading: 'do', hint: 'と加濁點゛t→d → do' },
+  { char: 'む', reading: 'mu', hint: '台語「武」母音 u 對應 → mu' },
+  { char: 'め', reading: 'me', hint: '台語「妹」念 bē，母音 e 對應 → me' },
+  { char: 'へ', reading: 'he', hint: '古代念 pe，演變成 he／注音ㄟ字形幾乎一樣 → he' },
+  { char: 'べ', reading: 'be', hint: 'へ加濁點゛，英文 Bento 便當 → be' },
+  { char: 'ひ', reading: 'hi', hint: '古代念 pi，演變成 hi → hi' },
+  { char: 'び', reading: 'bi', hint: 'ひ加濁點゛→ bi' },
+  { char: 'ふ', reading: 'fu', hint: '古代念 pu，台語「不」念 put，母音對應 → fu' },
+  { char: 'ら', reading: 'ra', hint: '台語「良」念 liông，r 音接近 → ra' },
+  { char: 'る', reading: 'ru', hint: '台語「留」念 liû，r 音接近 → ru' },
+  { char: 'け', reading: 'ke', hint: '台語「計」念 kè，幾乎一樣！→ ke' },
+  { char: 'げ', reading: 'ge', hint: 'け加濁點゛→ ge' },
+  { char: 'つ', reading: 'tsu', hint: '漢字就是「川」！三條水流合成つ → tsu' },
+  { char: 'づ', reading: 'zu', hint: 'つ加濁點゛→ zu，現代幾乎跟ず同音' },
+  { char: 'よ', reading: 'yo', hint: '字形像英文 yo！→ yo' },
+  { char: 'ょ', reading: 'yo', hint: 'よ的縮小版，跟前面合讀母音變 o' },
+  { char: 'や', reading: 'ya', hint: '台語「也」念 iā，母音 a 對應 → ya' },
+  { char: 'ゃ', reading: 'ya', hint: 'や的縮小版，跟前面合讀母音變 a' },
+  { char: 'ゆ', reading: 'yu', hint: '漢字「由」 → yu' },
+  { char: 'ぬ', reading: 'nu', hint: '華語「奴」nú，完全對應／比め多一個圈 → nu' },
+  { char: 'を', reading: 'o（wo）', hint: 'おに一橫在上面，像戴帽子——幾乎只當受詞助詞用' },
+  { char: 'ず', reading: 'zu', hint: 'す加濁點゛→ zu' },
+  {
+    char: 'ぎ',
+    reading: 'gi',
+    hint: 'き加濁點゛，台語「技」念 gī → gi',
+  },
+  {
+    char: 'ぐ',
+    reading: 'gu',
+    hint: 'く加濁點゛，台語「具」念 gū → gu',
+  },
+  {
+    char: 'ぞ',
+    reading: 'zo',
+    hint: 'そ加濁點゛s→z → zo',
+  },
+  {
+    char: 'ぢ',
+    reading: 'ji',
+    hint: 'ち加濁點゛，現代幾乎跟じ同音，很少用',
+  },
+  {
+    char: 'ぱ',
+    reading: 'pa',
+    hint: 'は加半濁點゜，回到古代 p 音！→ pa',
+  },
+  {
+    char: 'ぴ',
+    reading: 'pi',
+    hint: 'ひ加半濁點゜→ pi',
+  },
+  {
+    char: 'ぷ',
+    reading: 'pu',
+    hint: 'ふ加半濁點゜→ pu，天婦羅（てんぷら）！',
+  },
+  {
+    char: 'ぺ',
+    reading: 'pe',
+    hint: 'へ加半濁點゜→ pe，注音ㄟ加圓圈',
+  },
+  {
+    char: 'ぽ',
+    reading: 'po',
+    hint: 'ほ加半濁點゜→ po',
+  },
+];
+
+const vocabCards = [
+  { meaning: '不好意思／對不起', display: 'すみません', reading: 'sumimasen', topic: 'greeting' },
+  { meaning: '謝謝', display: 'ありがとう', reading: 'arigatou', topic: 'greeting' },
+  { meaning: '沒關係／不用了', display: 'だいじょうぶ', reading: 'daijoubu', topic: 'greeting' },
+  { meaning: '好吃', display: 'おいしい', reading: 'oishii', topic: 'food' },
+  { meaning: '我回來了', display: 'ただいま', reading: 'tadaima', topic: 'greeting' },
+  { meaning: '真的', display: 'ほんとう', reading: 'hontou', topic: 'daily' },
+  { meaning: '這個', display: 'これ', reading: 'kore', topic: 'daily' },
+  { meaning: '等一下', display: 'ちょっとまって', reading: 'chotto matte', topic: 'daily' },
+  { meaning: '加油！', display: 'がんばって', reading: 'ganbatte', topic: 'daily' },
+  { meaning: '太好了', display: 'よかった', reading: 'yokatta', topic: 'daily' },
+  { meaning: '我知道了', display: 'わかりました', reading: 'wakarimashita', topic: 'daily' },
+  { meaning: '我不知道', display: 'わかりません', reading: 'wakarimasen', topic: 'daily' },
+  { meaning: '喂？（電話）', display: 'もしもし', reading: 'moshi moshi', topic: 'greeting' },
+  { meaning: '確實呢', display: 'そうですね', reading: 'sou desu ne', topic: 'daily' },
+  { meaning: '是這樣嗎？', display: 'そうですか', reading: 'sou desu ka', topic: 'daily' },
+  { meaning: '真的！（加強）', display: 'ほんとうに', reading: 'hontou ni', topic: 'daily' },
+  { meaning: '為什麼？（口語）', display: 'どうして', reading: 'doushite', topic: 'question' },
+  { meaning: '為什麼？（正式）', display: 'なぜ', reading: 'naze', topic: 'question' },
+  { meaning: '花', display: 'はな', reading: 'hana', topic: 'nature' },
+  { meaning: '桃子', display: 'もも', reading: 'momo', topic: 'nature' },
+  { meaning: '名片', display: 'めいし', reading: 'meishi', topic: 'daily' },
+  { meaning: '便當', display: 'べんとう', reading: 'bentou', topic: 'food' },
+  { meaning: '大嬸', display: 'おばさん', reading: 'obasan', topic: 'family' },
+  { meaning: '大叔', display: 'おじさん', reading: 'ojisan', topic: 'family' },
+  { meaning: '司機', display: 'うんてんしゅ', reading: 'untenshu', topic: 'daily' },
+  { meaning: '廣島', display: 'ひろしま', reading: 'hiroshima', topic: 'nature' },
+  { meaning: '森林', display: 'もり', reading: 'mori', topic: 'nature' },
+  { meaning: '早安（正式）', display: 'おはようございます', reading: 'ohayou gozaimasu', topic: 'greeting' },
+  { meaning: '早安（朋友）', display: 'おはよう', reading: 'ohayou', topic: 'greeting' },
+  { meaning: '開動了', display: 'いただきます', reading: 'itadakimasu', topic: 'greeting' },
+  { meaning: '東京', display: 'とうきょう', reading: 'toukyou', topic: 'nature' },
+  { meaning: '大阪', display: 'おおさか', reading: 'oosaka', topic: 'nature' },
+  { meaning: '京都', display: 'きょうと', reading: 'kyouto', topic: 'nature' },
+  { meaning: '富士山', display: 'ふじさん', reading: 'fujisan', topic: 'nature' },
+  { meaning: '媽媽', display: 'おかあさん', reading: 'okaasan', topic: 'family' },
+  { meaning: '爸爸', display: 'おとうさん', reading: 'otousan', topic: 'family' },
+  { meaning: '老師', display: 'せんせい', reading: 'sensei', topic: 'family' },
+  { meaning: '姊姊', display: 'おねえさん', reading: 'oneesan', topic: 'family' },
+  { meaning: '哥哥', display: 'おにいさん', reading: 'oniisan', topic: 'family' },
+  { meaning: '弟弟', display: 'おとうと', reading: 'otouto', topic: 'family' },
+  { meaning: '妹妹', display: 'いもうと', reading: 'imouto', topic: 'family' },
+  { meaning: '可愛', display: 'かわいい', reading: 'kawaii', topic: 'daily' },
+  { meaning: '慢慢來', display: 'ゆっくり', reading: 'yukkuri', topic: 'daily' },
+  { meaning: '袋子', display: 'ふくろ', reading: 'fukuro', topic: 'daily' },
+  { meaning: '歡迎光臨', display: 'いらっしゃいませ', reading: 'irasshaimase', topic: 'greeting' },
+  { meaning: '一個人', display: 'ひとり', reading: 'hitori', topic: 'daily' },
+  { meaning: '請給我', display: 'ください', reading: 'kudasai', topic: 'daily' },
+  { meaning: '不行／不可以', display: 'だめ', reading: 'dame', topic: 'daily' },
+  { meaning: 'お願いします（麻煩你了）', display: 'おねがいします', reading: 'onegaishimasu', topic: 'greeting' },
+  { meaning: '早餐', display: 'あさごはん', reading: 'asagohan', topic: 'food' },
+  { meaning: '午餐', display: 'ひるごはん', reading: 'hirugohan', topic: 'food' },
+  { meaning: '晚餐', display: 'ばんごはん', reading: 'bangohan', topic: 'food' },
+  { meaning: '今天早上', display: 'けさ', reading: 'kesa', topic: 'time' },
+  { meaning: '今天', display: 'きょう', reading: 'kyou', topic: 'time' },
+  { meaning: '明天', display: 'あした', reading: 'ashita', topic: 'time' },
+  { meaning: '早上', display: 'あさ', reading: 'asa', topic: 'time' },
+  { meaning: '中午', display: 'ひる', reading: 'hiru', topic: 'time' },
+  { meaning: '晚上', display: 'ばん', reading: 'ban', topic: 'time' },
+  { meaning: '好厲害！', display: 'すごい', reading: 'sugoi', topic: 'daily' },
+  { meaning: '糟糕！／超讚！（やばい）', display: 'やばい', reading: 'yabai', topic: 'daily' },
+  { meaning: '你好', display: 'こんにちは', reading: 'konnichiwa', topic: 'greeting' },
+  { meaning: '是什麼？／怎麼了？', display: 'なんですか', reading: 'nan desu ka', topic: 'question' },
+  { meaning: '什麼？（正式）', display: 'なに', reading: 'nani', topic: 'question' },
+  { meaning: '絕對', display: 'ぜったい', reading: 'zettai', topic: 'daily' },
+  { meaning: '夫妻', display: 'ふうふ', reading: 'fuufu', topic: 'family' },
+  { meaning: '人生', display: 'じんせい', reading: 'jinsei', topic: 'daily' },
+  { meaning: '炸雞', display: 'からあげ', reading: 'karaage', topic: 'food' },
+  { meaning: '贏／勝利', display: 'かつ', reading: 'katsu', topic: 'daily' },
+  { meaning: '精神好／有活力', display: 'げんき', reading: 'genki', topic: 'daily' },
+  { meaning: '你好嗎？', display: 'おげんきですか', reading: 'ogenki desu ka', topic: 'greeting' },
+  { meaning: '結婚', display: 'けっこん', reading: 'kekkon', topic: 'daily' },
+  { meaning: '車站', display: 'えき', reading: 'eki', topic: 'nature' },
+  { meaning: '壽司', display: 'すし', reading: 'sushi', topic: 'food' },
+  { meaning: '酒／日本酒', display: 'さけ', reading: 'sake', topic: 'food' },
+  { meaning: '鮭魚', display: 'さけ', reading: 'sake', topic: 'food' },
+  { meaning: '藍色／綠色', display: 'あお', reading: 'ao', topic: 'color' },
+  { meaning: '紅色', display: 'あか', reading: 'aka', topic: 'color' },
+  { meaning: '白色', display: 'しろ', reading: 'shiro', topic: 'color' },
+  { meaning: '黑色', display: 'くろ', reading: 'kuro', topic: 'color' },
+  { meaning: '黃色', display: 'きいろ', reading: 'kiiro', topic: 'color' },
+  { meaning: '綠色（植物）', display: 'みどり', reading: 'midori', topic: 'color' },
+  { meaning: '棕色', display: 'ちゃいろ', reading: 'chairo', topic: 'color' },
+  { meaning: '紫色', display: 'むらさき', reading: 'murasaki', topic: 'color' },
+  { meaning: '粉紅色', display: 'ももいろ', reading: 'momoiro', topic: 'color' },
+  { meaning: '橘色', display: 'だいだいいろ', reading: 'daidaiiro', topic: 'color' },
+  { meaning: '顏色', display: 'いろ', reading: 'iro', topic: 'color' },
+  { meaning: '愛', display: 'あい', reading: 'ai', topic: 'nature' },
+  { meaning: '海鷗', display: 'かもめ', reading: 'kamome', topic: 'nature' },
+  { meaning: '櫻花', display: 'さくら', reading: 'sakura', topic: 'nature' },
+  { meaning: '壽喜燒', display: 'すきやき', reading: 'sukiyaki', topic: 'food' },
+  { meaning: '蕎麥麵', display: 'そば', reading: 'soba', topic: 'food' },
+  { meaning: '炒麵', display: 'やきそば', reading: 'yakisoba', topic: 'food' },
+  { meaning: '烤雞串', display: 'やきとり', reading: 'yakitori', topic: 'food' },
+  { meaning: '燒烤（料理字尾）', display: 'やき', reading: 'yaki', topic: 'food' },
+  { meaning: '可以嗎？', display: 'いいですか', reading: 'ii desu ka', topic: 'daily' },
+  { meaning: '好／可以／不用了', display: 'いいです', reading: 'ii desu', topic: 'daily' },
+  { meaning: '不用了（正式）', display: 'けっこうです', reading: 'kekkou desu', topic: 'daily' },
+  { meaning: '晚上好', display: 'こんばんは', reading: 'konbanwa', topic: 'greeting' },
+  { meaning: '晚安（睡前）', display: 'おやすみなさい', reading: 'oyasumi nasai', topic: 'greeting' },
+  { meaning: '晚安（朋友）', display: 'おやすみ', reading: 'oyasumi', topic: 'greeting' },
+  { meaning: '鑰匙', display: 'かぎ', reading: 'kagi', topic: 'nature' },
+  { meaning: '飯糰', display: 'おにぎり', reading: 'onigiri', topic: 'food' },
+  { meaning: '馬上', display: 'すぐ', reading: 'sugu', topic: 'daily' },
+  { meaning: '很多／滿滿的', display: 'いっぱい', reading: 'ippai', topic: 'daily' },
+  { meaning: '天婦羅', display: 'てんぷら', reading: 'tenpura', topic: 'food' },
+  { meaning: '剛剛好', display: 'ぴったり', reading: 'pittari', topic: 'daily' },
+  { meaning: '肚子餓（擬聲）', display: 'ぺこぺこ', reading: 'peko peko', topic: 'daily' },
+  { meaning: '所以／因此', display: 'だから', reading: 'dakara', topic: 'daily' },
+  { meaning: '但是', display: 'でも', reading: 'demo', topic: 'daily' },
+  { meaning: '你（粗魯）', display: 'おまえ', reading: 'omae', topic: 'family' },
+  { meaning: '伴手禮', display: 'おみやげ', reading: 'omiyage', topic: 'daily' },
+  { meaning: '爺爺', display: 'おじいさん', reading: 'ojiisan', topic: 'family' },
+  { meaning: '奶奶', display: 'おばあさん', reading: 'obaasan', topic: 'family' },
+
+  { meaning: '然後／而且', display: 'そして', reading: 'soshite', topic: 'daily' },
+  { meaning: '寶藏／財寶', display: 'たから', reading: 'takara', topic: 'nature' },
+  { meaning: '對不起（正式道歉）', display: 'ごめんなさい', reading: 'gomen nasai', topic: 'greeting' },
+  { meaning: '吃', display: 'たべる', reading: 'taberu', topic: 'food' },
+  { meaning: '學習', display: 'べんきょうする', reading: 'benkyou suru', topic: 'daily' },
+  { meaning: '一', display: 'いち', reading: 'ichi', topic: 'number' },
+  { meaning: '二', display: 'に', reading: 'ni', topic: 'number' },
+  { meaning: '三', display: 'さん', reading: 'san', topic: 'number' },
+  { meaning: '四', display: 'し／よん', reading: 'shi / yon', topic: 'number' },
+  { meaning: '五', display: 'ご', reading: 'go', topic: 'number' },
+  { meaning: '六', display: 'ろく', reading: 'roku', topic: 'number' },
+  { meaning: '七', display: 'しち／なな', reading: 'shichi / nana', topic: 'number' },
+  { meaning: '八', display: 'はち', reading: 'hachi', topic: 'number' },
+  { meaning: '九', display: 'く／きゅう', reading: 'ku / kyuu', topic: 'number' },
+  { meaning: '十', display: 'じゅう', reading: 'juu', topic: 'number' },
+  { meaning: '昨天', display: 'きのう', reading: 'kinou', topic: 'time' },
+  { meaning: '狗', display: 'いぬ', reading: 'inu', topic: 'nature' },
+  { meaning: '座位', display: 'せき', reading: 'seki', topic: 'daily' },
+  { meaning: '家／房子', display: 'いえ', reading: 'ie', topic: 'daily' },
+  { meaning: '家（口語）', display: 'うち', reading: 'uchi', topic: 'daily' },
+  { meaning: '你（正式）／親愛的', display: 'あなた', reading: 'anata', topic: 'family' },
+  { meaning: '前天', display: 'おととい', reading: 'ototoi', topic: 'time' },
+  { meaning: '後天', display: 'あさって', reading: 'asatte', topic: 'time' },
+  { meaning: '現在', display: 'いま', reading: 'ima', topic: 'time' },
+  { meaning: '幾點？', display: 'なんじ', reading: 'nanji', topic: 'question' },
+  { meaning: '熊', display: 'くま', reading: 'kuma', topic: 'nature' },
+  { meaning: '味噌', display: 'みそ', reading: 'miso', topic: 'food' },
+  { meaning: '味噌湯', display: 'みそしる', reading: 'misoshiru', topic: 'food' },
+  { meaning: 'どこ（哪裡）', display: 'どこ', reading: 'doko', topic: 'question' },
+  { meaning: 'いくら（多少錢）', display: 'いくら', reading: 'ikura', topic: 'question' },
+  { meaning: '烤肉', display: 'やきにく', reading: 'yakiniku', topic: 'food' },
+  { meaning: '肉', display: 'にく', reading: 'niku', topic: 'food' },
+  { meaning: '夜晚（文學性）', display: 'よる', reading: 'yoru', topic: 'time' },
+  { meaning: '什麼時候？', display: 'いつ', reading: 'itsu', topic: 'question' },
+  { meaning: '百', display: 'ひゃく', reading: 'hyaku', topic: 'number' },
+  { meaning: '千', display: 'せん', reading: 'sen', topic: 'number' },
+  { meaning: '万', display: 'まん', reading: 'man', topic: 'number' },
+  { meaning: '一個', display: 'ひとつ', reading: 'hitotsu', topic: 'number' },
+  { meaning: '兩個', display: 'ふたつ', reading: 'futatsu', topic: 'number' },
+  { meaning: '三個', display: 'みっつ', reading: 'mittsu', topic: 'number' },
+  { meaning: '四個', display: 'よっつ', reading: 'yottsu', topic: 'number' },
+  { meaning: '五個', display: 'いつつ', reading: 'itsutsu', topic: 'number' },
+  { meaning: '六個', display: 'むっつ', reading: 'muttsu', topic: 'number' },
+  { meaning: '七個', display: 'ななつ', reading: 'nanatsu', topic: 'number' },
+  { meaning: '八個', display: 'やっつ', reading: 'yattsu', topic: 'number' },
+  { meaning: '九個', display: 'ここのつ', reading: 'kokonotsu', topic: 'number' },
+  { meaning: '十個', display: 'とお', reading: 'too', topic: 'number' },
+  { meaning: '名字', display: 'なまえ', reading: 'namae', topic: 'daily' },
+  { meaning: '猴子', display: 'さる', reading: 'saru', topic: 'nature' },
+  { meaning: '那個（靠近對方）', display: 'それ', reading: 'sore', topic: 'daily' },
+  { meaning: '那個（兩人都遠）', display: 'あれ', reading: 'are', topic: 'daily' },
+  { meaning: '衣服', display: 'ふく', reading: 'fuku', topic: 'daily' },
+  { meaning: '雪', display: 'ゆき', reading: 'yuki', topic: 'nature' },
+  { meaning: '秋天', display: 'あき', reading: 'aki', topic: 'nature' },
+  { meaning: '春天', display: 'はる', reading: 'haru', topic: 'nature' },
+  { meaning: '耳朵', display: 'みみ', reading: 'mimi', topic: 'daily' },
+  { meaning: '人', display: 'ひと', reading: 'hito', topic: 'daily' },
+  { meaning: '冬天', display: 'ふゆ', reading: 'fuyu', topic: 'nature' },
+  { meaning: '夏天', display: 'なつ', reading: 'natsu', topic: 'nature' },
+  { meaning: '豬排', display: 'とんかつ', reading: 'tonkatsu', topic: 'food' },
+  { meaning: '明太子', display: 'めんたいこ', reading: 'mentaiko', topic: 'food' },
+  { meaning: '馬鈴薯', display: 'じゃがいも', reading: 'jagaimo', topic: 'food' },
+  { meaning: '請／請便', display: 'どうぞ', reading: 'douzo', topic: 'greeting' },
+  { meaning: '混蛋／笨蛋', display: 'ばかやろう', reading: 'baka yarou', topic: 'daily' },
+  { meaning: '白蘿蔔', display: 'だいこん', reading: 'daikon', topic: 'food' },
+  { meaning: '世界', display: 'せかい', reading: 'sekai', topic: 'nature' },
+  { meaning: '宇宙', display: 'うちゅう', reading: 'uchuu', topic: 'nature' },
+  { meaning: '是／對', display: 'はい', reading: 'hai', topic: 'daily' },
+  { meaning: '不／不是', display: 'いいえ', reading: 'iie', topic: 'daily' },
+  { meaning: '涮涮鍋', display: 'しゃぶしゃぶ', reading: 'shabu shabu', topic: 'food' },
+  { meaning: '照燒', display: 'てりやき', reading: 'teriyaki', topic: 'food' },
+  { meaning: '貓', display: 'ねこ', reading: 'neko', topic: 'nature' },
+];
+
+// ═══════════════════════════════
+// STATE
+// ═══════════════════════════════
+const intervals = [0, 3, 8, 20, 40];
+let section = 'hiragana'; // 'hiragana' | 'vocab'
+let hiraganaMode = 'multiple'; // 'multiple' | 'input'
+let vocabDir = 'jp-to-zh'; // 'jp-to-zh' | 'zh-to-jp'
+
+// SRS state per card
+let hiraganaQueue = [];
+let vocabQueue = [];
+let sessionCount = 0;
+let totalAnswered = 0;
+let totalCorrect = 0;
+let streak = 0;
+let answered = false;
+let currentCard = null;
+let currentVocab = null;
+
+const SESSION_LIMIT_HIRAGANA = 50;
+const SESSION_LIMIT_VOCAB_ALL = 50;
+const SESSION_LIMIT_VOCAB_TOPIC = 20;
+
+let currentTopic = 'all';
+
+function getVocabLimit() {
+  return currentTopic === 'all' ? SESSION_LIMIT_VOCAB_ALL : SESSION_LIMIT_VOCAB_TOPIC;
+}
+
+// 本來就會的單字——降低出現頻率（從第二輪才開始復習）
+const alreadyKnown = new Set([
+  'こんにちは','なんですか','なに','ごめんなさい','すみません',
+  'おいしい','ただいま','だいじょうぶ','ほんとう','ほんとうに',
+  'ありがとう','ありがとうございます','ありがとうございました',
+  'これ','ちょっとまって','ぼくは','よかった','がんばって',
+  'わかります','わかりました','もしもし','そうですね','そうですか',
+  'どうして','はな','もも','めいし','べんとう','おばさん','おじさん',
+  'おはようございます','おはよう','おかあさん','おとうさん',
+  'せんせい','おねえさん','おにいさん','すごい','やばい','かわいい',
+  'ゆっくり','だめ','とうきょう','おおさか','きょうと',
+  'いち','に','さん','し','ご',
+]);
+
+// 形近字群組——出現在干擾選項的優先池
+const similarGroups = [
+  ['さ', 'ち'],           // 鏡像
+  ['れ', 'わ', 'ね'],     // 漢字部件遞增
+  ['ま', 'き'],           // 形狀接近
+  ['め', 'ぬ'],           // 多一個圈
+  ['る', 'ろ'],           // 尾巴方向
+  ['ら', 'る', 'ろ'],     // ら行三兄弟
+  ['お', 'あ'],           // 形狀接近
+  ['た', 'な'],           // 筆畫接近
+  ['は', 'ほ'],           // 接近
+  ['り', 'い'],           // 豎線
+  ['そ', 'る'],           // 曲線
+  ['す', 'む'],           // 形狀接近
+  ['の', 'め'],           // 圓形
+  ['て', 'で'],           // 清濁
+  ['た', 'だ'],           // 清濁
+  ['か', 'が'],           // 清濁
+  ['は', 'ば'],           // 清濁
+  ['し', 'じ'],           // 清濁
+  ['け', 'げ'],           // 清濁
+  ['つ', 'づ'],           // 清濁
+];
+
+// ═══════════════════════════════
+// UTILS
+// ═══════════════════════════════
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function resetScore() {
+  totalAnswered = 0; totalCorrect = 0; streak = 0; sessionCount = 0;
+  document.getElementById('scoreCorrect').textContent = 0;
+  document.getElementById('scoreTotal').textContent = 0;
+  document.getElementById('scoreStreak').textContent = 0;
+  document.getElementById('progressFill').style.width = '0%';
+}
+
+function updateScore() {
+  document.getElementById('scoreCorrect').textContent = totalCorrect;
+  document.getElementById('scoreTotal').textContent = totalAnswered;
+  document.getElementById('scoreStreak').textContent = streak;
+}
+
+function getProgress() {
+  const limit = section === 'hiragana' ? SESSION_LIMIT_HIRAGANA : getVocabLimit();
+}
+
+function updateProgress() {
+  document.getElementById('progressFill').style.width = (getProgress() * 100) + '%';
+}
+
+function pickFromQueue(queue) {
+  const due = queue.filter(c => c.nextReview <= sessionCount);
+  if (!due.length) return null;
+  const sorted = [...due].sort((a, b) => a.level !== b.level ? a.level - b.level : a.nextReview - b.nextReview);
+  const pool = sorted.slice(0, Math.min(3, sorted.length));
+  return pool[Math.floor(Math.random() * pool.length)];
+}
+
+function advanceSRS(item, correct) {
+  if (correct) {
+    item.level = Math.min((item.level || 0) + 1, intervals.length - 1);
+    streak++;
+    totalCorrect++;
+  } else {
+    item.level = 0;
+    streak = 0;
+  }
+  item.nextReview = sessionCount + intervals[item.level];
+  totalAnswered++;
+  sessionCount++;
+  updateScore();
+}
+
+// ═══════════════════════════════
+// SECTION SWITCHING
+// ═══════════════════════════════
+function switchSection(s) {
+  section = s;
+  document.getElementById('tabHiragana').classList.toggle('active', s === 'hiragana');
+  document.getElementById('tabVocab').classList.toggle('active', s === 'vocab');
+  document.getElementById('modeToggle').style.display = s === 'hiragana' ? 'flex' : 'none';
+  document.getElementById('vocabToggle').style.display = s === 'vocab' ? 'flex' : 'none';
+  document.getElementById('topicFilter').style.display = s === 'vocab' ? 'flex' : 'none';
+
+  currentTopic = 'all';
+  document.querySelectorAll('.topic-btn').forEach(b => b.classList.remove('active'));
+  document.querySelector('.topic-btn').classList.add('active');
+
+  if (s === 'hiragana') {
+    hiraganaQueue = cards.map(c => ({ ...c, level: 0, nextReview: 0 }));
+  } else {
+    vocabQueue = getFilteredVocab();
+  }
+  resetScore();
+  nextCard();
+}
+
+function setTopic(topic) {
+  currentTopic = topic;
+  document.querySelectorAll('.topic-btn').forEach(b => b.classList.remove('active'));
+  event.target.classList.add('active');
+  vocabQueue = getFilteredVocab();
+  resetScore();
+  nextCard();
+}
+
+function getFilteredVocab() {
+  const filtered = currentTopic === 'all'
+    ? vocabCards
+    : vocabCards.filter(c => c.topic === currentTopic);
+  return filtered.map(c => ({
+    ...c,
+    level: alreadyKnown.has(c.display) ? 2 : 0,
+    nextReview: alreadyKnown.has(c.display) ? 8 : 0,
+  }));
+}
+
+function setMode(mode) {
+  hiraganaMode = mode;
+  document.getElementById('btnMultiple').classList.toggle('active', mode === 'multiple');
+  document.getElementById('btnInput').classList.toggle('active', mode === 'input');
+  hiraganaQueue = cards.map(c => ({ ...c, level: 0, nextReview: 0 }));
+  resetScore();
+  nextCard();
+}
+
+function setVocabDir(dir) {
+  vocabDir = dir;
+  document.getElementById('btnJpToZh').classList.toggle('active', dir === 'jp-to-zh');
+  document.getElementById('btnZhToJp').classList.toggle('active', dir === 'zh-to-jp');
+  vocabQueue = getFilteredVocab();
+  resetScore();
+  nextCard();
+}
+
+// ═══════════════════════════════
+// NEXT CARD
+// ═══════════════════════════════
+function nextCard() {
+  answered = false;
+  const limit = section === 'hiragana' ? SESSION_LIMIT_HIRAGANA : getVocabLimit();
+
+  if (section === 'hiragana') {
+    currentCard = pickFromQueue(hiraganaQueue);
+    if (!currentCard) { showResult(); return; }
+    hiraganaMode === 'multiple' ? renderHiraganaMultiple() : renderHiraganaInput();
+  } else {
+    currentVocab = pickFromQueue(vocabQueue);
+    if (!currentVocab) { showResult(); return; }
+    renderVocabMultiple();
+  }
+  updateProgress();
+}
+
+// ═══════════════════════════════
+// HIRAGANA: MULTIPLE CHOICE
+// ═══════════════════════════════
+function getHiraganaDistractors(card) {
+  const correct = card.reading;
+  const correctChar = card.char;
+
+  // 找出跟這個字形近的字
+  const similarChars = new Set();
+  for (const group of similarGroups) {
+    if (group.includes(correctChar)) {
+      group.forEach(c => { if (c !== correctChar) similarChars.add(c); });
+    }
+  }
+
+  // 從形近字裡找 reading 作為干擾選項
+  const similarReadings = cards
+    .filter(c => similarChars.has(c.char) && c.reading !== correct)
+    .map(c => c.reading);
+
+  // 其他隨機選項
+  const otherReadings = shuffle(
+    cards.map(c => c.reading).filter(r => r !== correct && !similarReadings.includes(r))
+  );
+
+  // 優先用形近字，不夠再補隨機
+  const distractors = shuffle([...similarReadings, ...otherReadings]).slice(0, 3);
+  return shuffle([correct, ...distractors]);
+}
+
+function renderHiraganaMultiple() {
+  const options = getHiraganaDistractors(currentCard);
+  document.getElementById('quizContent').innerHTML = `
+    <div class="question-type">這個字怎麼讀？</div>
+    <div class="main-char">${currentCard.char}</div>
+    <div class="hint" id="hintText"></div>
+    <div class="options">
+      ${options.map(opt => `<button class="option-btn" onclick="checkHiraganaMultiple('${opt.replace(/'/g, "\\'")}', this)">${opt}</button>`).join('')}
+    </div>
+    <div class="feedback" id="feedback"></div>
+    <button class="next-btn" id="nextBtn" onclick="nextCard()">下一題 →</button>
+  `;
+}
+
+function checkHiraganaMultiple(chosen, btn) {
+  if (answered) return;
+  answered = true;
+  const correct = currentCard.reading;
+  const isCorrect = chosen === correct;
+  document.querySelectorAll('.option-btn').forEach(b => {
+    b.disabled = true;
+    if (b.textContent.trim() === correct) b.classList.add('correct');
+  });
+  if (!isCorrect) btn.classList.add('wrong');
+  advanceSRS(currentCard, isCorrect);
+  const fb = document.getElementById('feedback');
+  fb.className = `feedback ${isCorrect ? 'show-correct' : 'show-wrong'}`;
+  fb.innerHTML = isCorrect ? `✓ 正確！` : `✗ 正確是「${correct}」`;
+  document.getElementById('hintText').textContent = '💡 ' + currentCard.hint;
+  document.getElementById('nextBtn').classList.add('visible');
+}
+
+// ═══════════════════════════════
+// HIRAGANA: INPUT
+// ═══════════════════════════════
+function renderHiraganaInput() {
+  const isN = currentCard.char === 'ん';
+  document.getElementById('quizContent').innerHTML = `
+    <div class="question-type">輸入羅馬字讀音</div>
+    <div class="main-char">${currentCard.char}</div>
+    ${isN ? '<div class="input-hint">ん → nn</div>' : ''}
+    <div class="hint" id="hintText"></div>
+    <div class="input-wrap">
+      <input class="romaji-input" id="romajiInput" type="text" placeholder="輸入羅馬字…"
+        autocomplete="off" autocorrect="off" autocapitalize="none" spellcheck="false"
+        onkeydown="if(event.key==='Enter')submitHiraganaInput()">
+    </div>
+    <button class="submit-btn" onclick="submitHiraganaInput()">確認</button>
+    <div class="feedback" id="feedback"></div>
+    <button class="next-btn" id="nextBtn" onclick="nextCard()">下一題 →</button>
+  `;
+  setTimeout(() => document.getElementById('romajiInput')?.focus(), 80);
+}
+
+function normalizeRomaji(s) {
+  return s.trim().toLowerCase().replace(/\s+/g, '').replace(/oo/g, 'o').replace(/uu/g, 'u').replace(/nn/g, 'n');
+}
+
+function submitHiraganaInput() {
+  if (answered) return;
+  const inp = document.getElementById('romajiInput');
+  if (!inp?.value.trim()) return;
+  answered = true;
+  const accepted = currentCard.reading.split('／').map(r => normalizeRomaji(r));
+  const isCorrect = accepted.includes(normalizeRomaji(inp.value));
+  inp.disabled = true;
+  inp.classList.add(isCorrect ? 'correct' : 'wrong');
+  advanceSRS(currentCard, isCorrect);
+  const fb = document.getElementById('feedback');
+  fb.className = `feedback ${isCorrect ? 'show-correct' : 'show-wrong'}`;
+  fb.innerHTML = isCorrect ? `✓ 正確！` : `✗ 正確是「${currentCard.reading}」`;
+  document.getElementById('hintText').textContent = '💡 ' + currentCard.hint;
+  document.getElementById('nextBtn').classList.add('visible');
+}
+
+// ═══════════════════════════════
+// VOCAB: MULTIPLE CHOICE (both directions)
+// ═══════════════════════════════
+function getVocabDistractors(vocab) {
+  const correct = vocabDir === 'jp-to-zh' ? vocab.meaning : vocab.display;
+  const getVal = v => vocabDir === 'jp-to-zh' ? v.meaning : v.display;
+
+  // 同主題的干擾選項（排除正確答案）
+  const sameTopicPool = shuffle(
+    vocabCards
+      .filter(v => v.topic === vocab.topic && getVal(v) !== correct)
+      .map(getVal)
+  );
+
+  // 其他主題補足
+  const otherPool = shuffle(
+    vocabCards
+      .filter(v => v.topic !== vocab.topic && getVal(v) !== correct)
+      .map(getVal)
+  );
+
+  // 優先取至少 2 個同主題，再補其他
+  const samePick = sameTopicPool.slice(0, 2);
+  const otherPick = otherPool.slice(0, 3 - samePick.length);
+  const distractors = shuffle([...samePick, ...otherPick]).slice(0, 3);
+
+  return shuffle([correct, ...distractors]);
+}
+
+function renderVocabMultiple() {
+  const options = getVocabDistractors(currentVocab);
+  const question = vocabDir === 'jp-to-zh' ? currentVocab.display : currentVocab.meaning;
+  const qtype = vocabDir === 'jp-to-zh' ? '這個日文是什麼意思？' : '這個日文怎麼說？';
+  const isJp = vocabDir === 'jp-to-zh';
+
+  document.getElementById('quizContent').innerHTML = `
+    <div class="question-type">${qtype}</div>
+    <div class="${isJp ? 'main-char' : 'main-meaning'}" style="${isJp ? 'font-size:2.8rem' : ''}">${question}</div>
+    <div class="hint" id="hintText"></div>
+    <div class="options">
+      ${options.map(opt => `<button class="option-btn vocab" onclick="checkVocabMultiple('${opt.replace(/'/g, "\\'")}', this)">${opt}</button>`).join('')}
+    </div>
+    <div class="feedback" id="feedback"></div>
+    <button class="next-btn" id="nextBtn" onclick="nextCard()">下一題 →</button>
+  `;
+}
+
+function checkVocabMultiple(chosen, btn) {
+  if (answered) return;
+  answered = true;
+  const correct = vocabDir === 'jp-to-zh' ? currentVocab.meaning : currentVocab.display;
+  const isCorrect = chosen === correct;
+  document.querySelectorAll('.option-btn').forEach(b => {
+    b.disabled = true;
+    if (b.textContent.trim() === correct) b.classList.add('correct');
+  });
+  if (!isCorrect) btn.classList.add('wrong');
+  advanceSRS(currentVocab, isCorrect);
+  const fb = document.getElementById('feedback');
+  fb.className = `feedback ${isCorrect ? 'show-correct' : 'show-wrong'}`;
+  const hint = vocabDir === 'jp-to-zh'
+    ? `${currentVocab.display}（${currentVocab.reading}）`
+    : `${currentVocab.meaning} → ${currentVocab.display}`;
+  fb.innerHTML = isCorrect ? `✓ 正確！${hint}` : `✗ 正確是「${correct}」`;
+  document.getElementById('hintText').textContent = `💡 ${currentVocab.display}（${currentVocab.reading}）`;
+  document.getElementById('nextBtn').classList.add('visible');
+}
+
+// ═══════════════════════════════
+// RESULT
+// ═══════════════════════════════
+function showResult() {
+  updateProgress();
+  const pct = totalAnswered ? Math.round((totalCorrect / totalAnswered) * 100) : 0;
+  let emoji, msg, sub;
+  if (pct >= 90) { emoji = '🎌'; msg = '完美！'; sub = `正確率 ${pct}%，繼續保持！`; }
+  else if (pct >= 70) { emoji = '👏'; msg = '很好！'; sub = `正確率 ${pct}%，再練幾次就能鞏固。`; }
+  else { emoji = '📖'; msg = '繼續練習！'; sub = `正確率 ${pct}%，間隔重複就是要反覆來。`; }
+
+  document.getElementById('quizContent').innerHTML = `
+    <div class="result-screen">
+      <div class="big-emoji">${emoji}</div>
+      <h2>${msg}</h2>
+      <p>${sub}<br><br>正確 ${totalCorrect} / ${totalAnswered} 題</p>
+      <button class="restart-btn" onclick="restartCurrent()">再練一次</button>
+    </div>
+  `;
+}
+
+function restartCurrent() {
+  if (section === 'hiragana') {
+    hiraganaQueue = cards.map(c => ({ ...c, level: 0, nextReview: 0 }));
+  } else {
+    vocabQueue = getFilteredVocab();
+  }
+  resetScore();
+  nextCard();
+}
+
+// ═══════════════════════════════
+// INIT
+// ═══════════════════════════════
+hiraganaQueue = cards.map(c => ({ ...c, level: 0, nextReview: 0 }));
+vocabQueue = getFilteredVocab();
+nextCard();
+</script>
+</body>
+</html>
