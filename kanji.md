@@ -3,7 +3,6 @@ title: 漢字
 date:
   created: 2026-04-28T15:00:00
   updated: 2026-04-28T15:00:00
-alias: kanji
 ---
 # 漢字
 
