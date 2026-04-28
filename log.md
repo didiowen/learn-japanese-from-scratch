@@ -7,6 +7,9 @@ alias: log
 ---
 # 學習日誌
 
+## 2026-04-28 21:55:00
+- 修正 `CLAUDE.md` 中 references 目錄路徑：`references/` → `.claude/skills/japanese-learning/references/`
+
 ## 2026-04-28 21:20:14
 - 新增單字 2 個：チャーハン（炒飯）、図書館
 - 更新 `片假名.md`：新增 ャ 片假名、チャーハン 加入飲食
