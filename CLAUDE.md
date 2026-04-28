@@ -47,7 +47,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 | `漢字.md` | 漢字筆記（字表、發音規則、單字分類） |
 | `文法.md` | N5 語法筆記（G1–G12，句型、活用、例句） |
 
-參考文件（`references/` 目錄）：
+參考文件（`.claude/skills/japanese-learning/references/` 目錄）：
 - `quiz-structure.md` — 測驗 HTML 結構與更新方法
 - `language-correspondences.md` — 台語／粵語音對應詳表
 - `vocab-categories.md` — 單字分類與 topic 標籤說明
