@@ -71,7 +71,7 @@ description: >
 2. 說明漢字來源和台語連結（如有）
 3. 同音異義詞提示
 4. 更新測驗 vocabCards（加 topic 標籤）
-5. 直接更新對應筆記檔（不給使用者手動加），並將 frontmatter 的 `date > updated` 改為當天日期
+5. 直接更新對應筆記檔（不給使用者手動加），並將 frontmatter 的 `date > updated` 改為當下時間，格式 `YYYY-MM-DDTHH:mm:ss`（例：`2026-04-28T14:30:00`）
 
 **單字表格式**：漢字 ｜ 假名 ｜ 羅馬拼音 ｜ 意思
 
