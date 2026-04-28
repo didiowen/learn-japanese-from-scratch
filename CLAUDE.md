@@ -17,7 +17,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 | `語言對照筆記.md` | 台語／粵語／注音記憶鉤對照表 |
 | `本來就會的單字片語.md` | 已知單字片語，在測驗中減少出現頻率 |
 | `會話.md` | 會話筆記（旅遊常用場景） |
-| `漢字.md` | 漢字筆記（字表、發音規則、單字分類） |
+| `漢字.md` | 漢字筆記（漢字字表、發音規則、單字分類） |
 
 參考文件（`.claude/skills/japanese-learning/references/`）：
 - `quiz-structure.md` — 測驗 HTML 結構與更新方法
