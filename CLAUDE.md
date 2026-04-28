@@ -67,7 +67,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 2. 說明漢字來源和台語連結（如有）
 3. 同音異義詞提示
 4. 更新測驗 vocabCards（加 topic 標籤）
-5. 筆記更新給使用者要加的那行 markdown，讓使用者手動加
+5. 更新筆記後在frontmatter的date > updated加上最新的修改時間
 
 **單字表格式**：漢字 ｜ 假名 ｜ 羅馬拼音 ｜ 意思
 
@@ -88,5 +88,5 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 - 日語音読み和台語文言音同樣保留中古漢語，高度對應
 - 台語日語借詞超過 1000 個（歐巴桑、便當、名刺、運將等）
-- 平假名是漢字草書演變，漢字右邊部件直接投影到假名字形
+- 平假名是漢字草書演變，片假名是漢字楷書演變
 - 台語有文言音和白話音兩套，文言音更接近日語音読み
