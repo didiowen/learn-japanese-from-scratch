@@ -2,14 +2,24 @@
 title: 學習日誌
 date:
   created: 2026-04-28T18:26:48
-  updated: 2026-04-28T22:15:00
+  updated: 2026-04-28T22:40:00
 alias: log
 ---
 # 學習日誌
 
+## 2026-04-28 22:40:00
+- `katakana.md` 第二輪拆成三批：A（14個，カ行・サ行・タ行）、B（13個，ナ行・ハ行・マ行）、C（12個，ヤ行・ラ行・ワ行・特殊）
+
+## 2026-04-28 22:30:00
+- 重整 `katakana.md`：第一輪改為已記熟的16個（補入 エ・オ・ピ），其餘移至第二輪，刪除舊的第二輪預告
+- 更新 `katakana-quiz.html`：新增 `knownKana` Set，第一輪12個基本字起始 level 2
+
 ## 2026-04-28 22:10:00
 - 將 8 個中文檔名全部改為英文：hiragana / katakana / vocabulary / grammar / conversation / kanji / language-notes / already-known
 - 同步更新 CLAUDE.md、_sidebar.md、notes/index.html、SKILL.md 中的檔名引用
+
+## 2026-04-28 22:05:00
+- 更新 `CLAUDE.md` 和 `SKILL.md`：學新假名改為每次 5–10 個，記熟再進下一批
 
 ## 2026-04-28 21:55:00
 - 修正 `CLAUDE.md` 中 references 目錄路徑：`references/` → `.claude/skills/japanese-learning/references/`
