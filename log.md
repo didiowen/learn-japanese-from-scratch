@@ -2,10 +2,14 @@
 title: 學習日誌
 date:
   created: 2026-04-28T18:26:48
-  updated: 2026-04-28T21:30:00
+  updated: 2026-04-28T21:45:00
 alias: log
 ---
 # 學習日誌
+
+## 2026-04-28 21:45:00
+- 將 8 個中文檔名全部改為英文：hiragana / katakana / vocabulary / grammar / conversation / kanji / language-notes / already-known
+- 同步更新 CLAUDE.md、_sidebar.md、notes/index.html、SKILL.md 中的檔名引用
 
 ## 2026-04-28 21:30:00
 - 新增 `漢字.md`「日本人姓名讀法」章節：五大規律、連濁詳解、常見姓氏成分、下名讀音、八個球員姓名解析

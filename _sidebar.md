@@ -1,3 +1,3 @@
-* [平假名](平假名.md)
-* [片假名](片假名.md)
-* [文法](文法.md)
+* [平假名](hiragana.md)
+* [片假名](katakana.md)
+* [文法](grammar.md)
