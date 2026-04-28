@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>片假名記憶測驗</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;700&family=Noto+Sans+TC:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink: #1a1a2e;
+  --paper: #f5f0e8;
+  --accent: #c0392b;
+  --soft: #8b7355;
+  --card: #faf7f2;
+  --success: #27ae60;
+  --fail: #c0392b;
+  --neutral: #7f8c8d;
+  --border: rgba(139,115,85,0.2);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: 'Noto Sans TC', sans-serif;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px 16px 40px;
+  background-image: radial-gradient(ellipse at 20% 20%, rgba(192,57,43,0.05) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 80%, rgba(139,115,85,0.08) 0%, transparent 50%);
+}
+
+h1.title {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 1.1rem;
+  font-weight: 400;
+  letter-spacing: 0.15em;
+  color: var(--soft);
+  margin-bottom: 18px;
+  text-align: center;
+}
+
+/* ── Mode tabs ── */
+.mode-tabs {
+  display: flex;
+  gap: 0;
+  max-width: 360px;
+  width: 100%;
+  margin-bottom: 14px;
+  border: 1.5px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+.mode-tab {
+  flex: 1;
+  padding: 11px 6px;
+  border: none;
+  background: white;
+  color: var(--neutral);
+  font-family: 'Noto Sans TC', sans-serif;
+  font-size: 0.78rem;
+  cursor: pointer;
+  letter-spacing: 0.04em;
+  transition: all 0.2s;
+  border-right: 1px solid var(--border);
+  line-height: 1.3;
+}
+.mode-tab:last-child { border-right: none; }
+.mode-tab.active {
+  background: var(--ink);
+  color: var(--paper);
+  font-weight: 500;
+}
+
+/* ── Progress ── */
+.progress-bar {
+  width: 100%;
+  max-width: 360px;
+  height: 3px;
+  background: rgba(0,0,0,0.08);
+  border-radius: 2px;
+  margin-bottom: 18px;
+  overflow: hidden;
+}
+.progress-fill {
+  height: 100%;
+  background: var(--accent);
+  border-radius: 2px;
+  transition: width 0.4s ease;
+}
+
+/* ── Card ── */
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 28px 24px 24px;
+  max-width: 360px;
+  width: 100%;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.07);
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 16px;
+}
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--accent), var(--soft));
+}
+.sr-badge {
+  position: absolute;
+  top: 12px; right: 14px;
+  font-size: 0.6rem;
+  color: var(--soft);
+  opacity: 0.5;
+  letter-spacing: 0.08em;
+}
+.question-type {
+  font-size: 0.68rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--soft);
+  margin-bottom: 14px;
+  font-weight: 500;
+}
+.main-char {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 4.5rem;
+  text-align: center;
+  line-height: 1;
+  margin: 8px 0 4px;
+  color: var(--ink);
+}
+.sub-info {
+  text-align: center;
+  font-size: 0.72rem;
+  color: var(--neutral);
+  margin-bottom: 16px;
+  letter-spacing: 0.05em;
+  min-height: 18px;
+}
+.hint {
+  font-size: 0.73rem;
+  color: var(--neutral);
+  text-align: center;
+  margin-bottom: 20px;
+  min-height: 16px;
+  font-style: italic;
+  line-height: 1.5;
+}
+
+/* ── Options ── */
+.options { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px; }
+.option-btn {
+  background: white;
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  padding: 13px 8px;
+  font-size: 1.4rem;
+  font-family: 'Noto Serif JP', serif;
+  cursor: pointer;
+  transition: all 0.15s;
+  color: var(--ink);
+  text-align: center;
+  line-height: 1.3;
+}
+.option-btn.reading {
+  font-family: 'Noto Sans TC', sans-serif;
+  font-size: 0.9rem;
+  padding: 14px 8px;
+}
+.option-btn:hover:not(:disabled) {
+  border-color: var(--accent);
+  background: rgba(192,57,43,0.04);
+  transform: translateY(-1px);
+}
+.option-btn.correct { background: rgba(39,174,96,0.1); border-color: var(--success); color: var(--success); font-weight: 500; }
+.option-btn.wrong { background: rgba(192,57,43,0.08); border-color: var(--fail); color: var(--fail); }
+.option-btn:disabled { cursor: default; }
+
+/* ── Input ── */
+.input-wrap { margin-bottom: 12px; }
+.romaji-input {
+  width: 100%;
+  padding: 13px 16px;
+  font-size: 1rem;
+  font-family: 'Noto Sans TC', sans-serif;
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  background: white;
+  color: var(--ink);
+  outline: none;
+  transition: border-color 0.2s;
+  text-align: center;
+  letter-spacing: 0.08em;
+}
+.romaji-input:focus { border-color: var(--accent); }
+.romaji-input.correct { border-color: var(--success); background: rgba(39,174,96,0.06); color: var(--success); }
+.romaji-input.wrong { border-color: var(--fail); background: rgba(192,57,43,0.06); }
+
+/* ── Buttons ── */
+.submit-btn {
+  width: 100%;
+  background: var(--soft);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  padding: 12px;
+  font-size: 0.85rem;
+  font-family: 'Noto Sans TC', sans-serif;
+  cursor: pointer;
+  letter-spacing: 0.06em;
+  transition: all 0.2s;
+  margin-bottom: 10px;
+}
+.submit-btn:hover { background: var(--accent); }
+.next-btn {
+  width: 100%;
+  background: var(--ink);
+  color: var(--paper);
+  border: none;
+  border-radius: 10px;
+  padding: 13px;
+  font-size: 0.85rem;
+  font-family: 'Noto Sans TC', sans-serif;
+  cursor: pointer;
+  letter-spacing: 0.06em;
+  transition: all 0.2s;
+  display: none;
+}
+.next-btn:hover { background: var(--accent); transform: translateY(-1px); }
+.next-btn.visible { display: block; }
+
+/* ── Feedback ── */
+.feedback {
+  min-height: 48px;
+  text-align: center;
+  padding: 10px;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  line-height: 1.6;
+  transition: all 0.2s;
+  margin-bottom: 10px;
+}
+.feedback.show-correct { background: rgba(39,174,96,0.08); color: var(--success); }
+.feedback.show-wrong { background: rgba(192,57,43,0.06); color: var(--fail); }
+
+/* ── Score ── */
+.score-display {
+  display: flex;
+  justify-content: space-between;
+  max-width: 360px;
+  width: 100%;
+  padding: 0 4px;
+}
+.score-item { text-align: center; font-size: 0.68rem; color: var(--neutral); letter-spacing: 0.05em; }
+.score-num { display: block; font-size: 1.3rem; font-weight: 500; color: var(--ink); font-family: 'Noto Serif JP', serif; }
+
+/* ── Result ── */
+.result-screen { text-align: center; padding: 16px 8px; }
+.result-screen .big-emoji { font-size: 3rem; margin: 8px 0; }
+.result-screen h2 { font-size: 1.05rem; font-weight: 500; margin-bottom: 8px; }
+.result-screen p { font-size: 0.8rem; color: var(--soft); margin-bottom: 18px; line-height: 1.6; }
+.restart-btn {
+  background: var(--accent);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  padding: 12px 28px;
+  font-size: 0.85rem;
+  font-family: 'Noto Sans TC', sans-serif;
+  cursor: pointer;
+  letter-spacing: 0.06em;
+  transition: all 0.2s;
+}
+.restart-btn:hover { opacity: 0.88; transform: translateY(-1px); }
+</style>
+</head>
+<body>
+
+<h1 class="title">片假名記憶測驗</h1>
+
+<!-- 四個模式 tab -->
+<div class="mode-tabs">
+  <button class="mode-tab active" id="tab1" onclick="switchMode('char-to-reading')">字→讀音<br>選擇</button>
+  <button class="mode-tab" id="tab2" onclick="switchMode('char-to-input')">字→讀音<br>輸入</button>
+  <button class="mode-tab" id="tab3" onclick="switchMode('reading-to-char')">讀音→字<br>選擇</button>
+  <button class="mode-tab" id="tab4" onclick="switchMode('reading-to-input')">讀音→字<br>輸入</button>
+</div>
+
+<div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+
+<div class="card" id="mainCard">
+  <span class="sr-badge">SRS</span>
+  <div id="quizContent"></div>
+</div>
+
+<div class="score-display">
+  <div class="score-item"><span class="score-num" id="scoreCorrect">0</span>正確</div>
+  <div class="score-item"><span class="score-num" id="scoreTotal">0</span>已答</div>
+  <div class="score-item"><span class="score-num" id="scoreStreak">0</span>連勝</div>
+</div>
+
+<script>
+// ═══════════════════════════════
+// DATA
+// ═══════════════════════════════
+const katakanaCards = [
+  { char: 'ア', reading: 'a',   hiragana: 'あ', kanji: '阿', hint: '「阿」左部「阝」→ ア，和あ同源' },
+  { char: 'イ', reading: 'i',   hiragana: 'い', kanji: '伊', hint: '「伊」左部「亻」→ イ，和い同源' },
+  { char: 'ウ', reading: 'u',   hiragana: 'う', kanji: '宇', hint: '「宇」簡化 → ウ，和う同源' },
+  { char: 'エ', reading: 'e',   hiragana: 'え', kanji: '江', hint: '「江」右部「工」→ エ' },
+  { char: 'オ', reading: 'o',   hiragana: 'お', kanji: '於', hint: '「於」右部 → オ' },
+  { char: 'カ', reading: 'ka',  hiragana: 'か', kanji: '加', hint: '「加」左部「力」→ カ' },
+  { char: 'キ', reading: 'ki',  hiragana: 'き', kanji: '幾', hint: '「幾」骨架簡化 → キ，和き同源' },
+  { char: 'ク', reading: 'ku',  hiragana: 'く', kanji: '久', hint: '「久」右上部 → ク，和く同源' },
+  { char: 'ケ', reading: 'ke',  hiragana: 'け', kanji: '介', hint: '「介」中部 → ケ（け是「計」，不同源）' },
+  { char: 'コ', reading: 'ko',  hiragana: 'こ', kanji: '己', hint: '「己」方形化 → コ，和こ同源' },
+  { char: 'サ', reading: 'sa',  hiragana: 'さ', kanji: '散', hint: '「散」左上兩橫一撇 → サ（さ是「左」，不同源）' },
+  { char: 'シ', reading: 'shi', hiragana: 'し', kanji: '之', hint: '「之」三點橫排 → シ，像笑臉 :)　注意和ツ的差別：點是橫的' },
+  { char: 'ス', reading: 'su',  hiragana: 'す', kanji: '須', hint: '「須」右部 → ス，比す少一個圈' },
+  { char: 'セ', reading: 'se',  hiragana: 'せ', kanji: '世', hint: '「世」幾乎未變 → セ，和せ同源' },
+  { char: 'ソ', reading: 'so',  hiragana: 'そ', kanji: '曽', hint: '「曽」上部一長撇 → ソ，注意和ン的差別：撇長向右' },
+  { char: 'タ', reading: 'ta',  hiragana: 'た', kanji: '多', hint: '「多」上部 → タ（た是「太」，不同源）' },
+  { char: 'チ', reading: 'chi', hiragana: 'ち', kanji: '千', hint: '「千」變形 → チ（ち是「知」，不同源）' },
+  { char: 'ツ', reading: 'tsu', hiragana: 'つ', kanji: '川', hint: '「川」三撇豎起 → ツ，注意和シ的差別：點是直的' },
+  { char: 'テ', reading: 'te',  hiragana: 'て', kanji: '天', hint: '「天」上兩橫 → テ，和て同源' },
+  { char: 'ト', reading: 'to',  hiragana: 'と', kanji: '止', hint: '「止」右半一豎一短橫 → ト，和と同源' },
+  { char: 'ナ', reading: 'na',  hiragana: 'な', kanji: '奈', hint: '「奈」上部 → ナ' },
+  { char: 'ニ', reading: 'ni',  hiragana: 'に', kanji: '仁', hint: '「仁」右部兩橫 → ニ，注意不是數字「二」，和に同源' },
+  { char: 'ヌ', reading: 'nu',  hiragana: 'ぬ', kanji: '奴', hint: '「奴」右部 → ヌ，比ぬ少封閉圈' },
+  { char: 'ネ', reading: 'ne',  hiragana: 'ね', kanji: '祢', hint: '「祢」衣字旁 → ネ，和ね同源' },
+  { char: 'ノ', reading: 'no',  hiragana: 'の', kanji: '乃', hint: '「乃」一撇 → ノ，和の同源' },
+  { char: 'ハ', reading: 'ha',  hiragana: 'は', kanji: '八', hint: '「八」就是這個字 → ハ（は是「波」，不同源）' },
+  { char: 'ヒ', reading: 'hi',  hiragana: 'ひ', kanji: '比', hint: '「比」右半 → ヒ，和ひ同源' },
+  { char: 'フ', reading: 'fu',  hiragana: 'ふ', kanji: '不', hint: '「不」頂部彎鉤 → フ，和ふ同源' },
+  { char: 'ヘ', reading: 'he',  hiragana: 'へ', kanji: '部', hint: '「部」右上 → ヘ，和へ幾乎一樣，最好認的一組' },
+  { char: 'ホ', reading: 'ho',  hiragana: 'ほ', kanji: '保', hint: '「保」右半木字旁 → ホ，和ほ同源' },
+  { char: 'マ', reading: 'ma',  hiragana: 'ま', kanji: '末', hint: '「末」上部兩筆 → マ，和ま同源' },
+  { char: 'ミ', reading: 'mi',  hiragana: 'み', kanji: '三', hint: '「三」三橫斜排 → ミ，和み同源' },
+  { char: 'ム', reading: 'mu',  hiragana: 'む', kanji: '牟', hint: '「牟」簡化像牛臉 🐄 → ム' },
+  { char: 'メ', reading: 'me',  hiragana: 'め', kanji: '女', hint: '「女」簡化交叉 → メ，和め同源' },
+  { char: 'モ', reading: 'mo',  hiragana: 'も', kanji: '毛', hint: '「毛」三橫一豎 → モ，和も同源' },
+  { char: 'ヤ', reading: 'ya',  hiragana: 'や', kanji: '也', hint: '「也」草書簡化 → ヤ，和や同源' },
+  { char: 'ユ', reading: 'yu',  hiragana: 'ゆ', kanji: '由', hint: '「由」下部 → ユ，和ゆ同源' },
+  { char: 'ヨ', reading: 'yo',  hiragana: 'よ', kanji: '與', hint: '「與」三橫簡化 → ヨ，和よ同源' },
+  { char: 'ラ', reading: 'ra',  hiragana: 'ら', kanji: '良', hint: '「良」上部 → ラ，和ら同源' },
+  { char: 'リ', reading: 'ri',  hiragana: 'り', kanji: '利', hint: '「利」右半刀旁 → リ，和り同源' },
+  { char: 'ル', reading: 'ru',  hiragana: 'る', kanji: '流', hint: '「流」右下彎鉤 → ル（る是「留」，不同源）' },
+  { char: 'レ', reading: 're',  hiragana: 'れ', kanji: '礼', hint: '「礼」幾乎未變 → レ，和れ同源' },
+  { char: 'ロ', reading: 'ro',  hiragana: 'ろ', kanji: '呂', hint: '「呂」上半方框 → ロ，和ろ同源' },
+  { char: 'ワ', reading: 'wa',  hiragana: 'わ', kanji: '和', hint: '「和」右部 → ワ，和わ同源' },
+  { char: 'ン', reading: 'n',   hiragana: 'ん', kanji: '尓', hint: '短撇向左收 → ン，注意和ソ的差別：撇短向左' },
+];
+
+// 形近字干擾組
+const similarGroups = [
+  ['シ', 'ツ'],
+  ['ソ', 'ン'],
+  ['ア', 'マ'],
+  ['ウ', 'ワ'],
+  ['ロ', 'ヨ'],
+  ['リ', 'ソ', 'ン'],
+  ['ノ', 'ソ'],
+  ['ニ', 'ニ'],
+  ['フ', 'ウ'],
+  ['ヘ', 'へ'],
+  ['カ', 'ガ'],
+  ['キ', 'ギ'],
+  ['ク', 'グ'],
+  ['コ', 'ゴ'],
+  ['サ', 'ザ'],
+  ['シ', 'ジ'],
+  ['ス', 'ズ'],
+  ['タ', 'ダ'],
+  ['テ', 'デ'],
+  ['ト', 'ド'],
+  ['ハ', 'バ', 'パ'],
+  ['ヒ', 'ビ', 'ピ'],
+  ['フ', 'ブ', 'プ'],
+  ['ヘ', 'ベ', 'ペ'],
+  ['ホ', 'ボ', 'ポ'],
+];
+
+// ═══════════════════════════════
+// STATE
+// ═══════════════════════════════
+const intervals = [0, 3, 8, 20, 40];
+const SESSION_LIMIT = 46;
+let currentMode = 'char-to-reading'; // 四種模式
+let queue = [];
+let sessionCount = 0;
+let totalAnswered = 0;
+let totalCorrect = 0;
+let streak = 0;
+let answered = false;
+let currentCard = null;
+
+// ═══════════════════════════════
+// UTILS
+// ═══════════════════════════════
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function resetScore() {
+  totalAnswered = 0; totalCorrect = 0; streak = 0; sessionCount = 0;
+  document.getElementById('scoreCorrect').textContent = 0;
+  document.getElementById('scoreTotal').textContent = 0;
+  document.getElementById('scoreStreak').textContent = 0;
+  document.getElementById('progressFill').style.width = '0%';
+}
+
+function updateScore() {
+  document.getElementById('scoreCorrect').textContent = totalCorrect;
+  document.getElementById('scoreTotal').textContent = totalAnswered;
+  document.getElementById('scoreStreak').textContent = streak;
+}
+
+function updateProgress() {
+  document.getElementById('progressFill').style.width = (Math.min(sessionCount / SESSION_LIMIT, 1) * 100) + '%';
+}
+
+function pickFromQueue() {
+  const due = queue.filter(c => c.nextReview <= sessionCount);
+  if (!due.length) return null;
+  const sorted = [...due].sort((a, b) => a.level !== b.level ? a.level - b.level : a.nextReview - b.nextReview);
+  const pool = sorted.slice(0, Math.min(3, sorted.length));
+  return pool[Math.floor(Math.random() * pool.length)];
+}
+
+function advanceSRS(item, correct) {
+  if (correct) {
+    item.level = Math.min((item.level || 0) + 1, intervals.length - 1);
+    streak++; totalCorrect++;
+  } else {
+    item.level = 0; streak = 0;
+  }
+  item.nextReview = sessionCount + intervals[item.level];
+  totalAnswered++; sessionCount++;
+  updateScore();
+}
+
+function normalizeRomaji(s) {
+  return s.trim().toLowerCase().replace(/\s+/g, '').replace(/oo/g, 'o').replace(/uu/g, 'u').replace(/nn/g, 'n');
+}
+
+// ═══════════════════════════════
+// MODE SWITCHING
+// ═══════════════════════════════
+function switchMode(mode) {
+  currentMode = mode;
+  ['tab1','tab2','tab3','tab4'].forEach(id => document.getElementById(id).classList.remove('active'));
+  const tabMap = { 'char-to-reading': 'tab1', 'char-to-input': 'tab2', 'reading-to-char': 'tab3', 'reading-to-input': 'tab4' };
+  document.getElementById(tabMap[mode]).classList.add('active');
+  queue = katakanaCards.map(c => ({ ...c, level: 0, nextReview: 0 }));
+  resetScore();
+  nextCard();
+}
+
+// ═══════════════════════════════
+// NEXT CARD
+// ═══════════════════════════════
+function nextCard() {
+  answered = false;
+  if (sessionCount >= SESSION_LIMIT) { showResult(); return; }
+  currentCard = pickFromQueue();
+  if (!currentCard) { showResult(); return; }
+
+  if (currentMode === 'char-to-reading') renderCharToReadingMultiple();
+  else if (currentMode === 'char-to-input') renderCharToInput();
+  else if (currentMode === 'reading-to-char') renderReadingToCharMultiple();
+  else renderReadingToInput();
+
+  updateProgress();
+}
+
+// ═══════════════════════════════
+// MODE 1: 字→讀音 選擇題
+// ═══════════════════════════════
+function getReadingDistractors(card) {
+  const correct = card.reading;
+  const correctChar = card.char;
+  const similarChars = new Set();
+  for (const group of similarGroups) {
+    if (group.includes(correctChar)) group.forEach(c => { if (c !== correctChar) similarChars.add(c); });
+  }
+  const similarReadings = katakanaCards
+    .filter(c => similarChars.has(c.char) && c.reading !== correct)
+    .map(c => c.reading);
+  const others = shuffle(katakanaCards.map(c => c.reading).filter(r => r !== correct && !similarReadings.includes(r)));
+  return shuffle([correct, ...shuffle([...similarReadings, ...others]).slice(0, 3)]);
+}
+
+function renderCharToReadingMultiple() {
+  const options = getReadingDistractors(currentCard);
+  document.getElementById('quizContent').innerHTML = `
+    <div class="question-type">這個片假名怎麼讀？</div>
+    <div class="main-char">${currentCard.char}</div>
+    <div class="sub-info">平假名：${currentCard.hiragana}　來源：${currentCard.kanji}</div>
+    <div class="hint" id="hintText"></div>
+    <div class="options">
+      ${options.map(opt => `<button class="option-btn reading" onclick="checkCharToReading('${opt}', this)">${opt}</button>`).join('')}
+    </div>
+    <div class="feedback" id="feedback"></div>
+    <button class="next-btn" id="nextBtn" onclick="nextCard()">下一題 →</button>
+  `;
+}
+
+function checkCharToReading(chosen, btn) {
+  if (answered) return;
+  answered = true;
+  const correct = currentCard.reading;
+  const isCorrect = chosen === correct;
+  document.querySelectorAll('.option-btn').forEach(b => {
+    b.disabled = true;
+    if (b.textContent.trim() === correct) b.classList.add('correct');
+  });
+  if (!isCorrect) btn.classList.add('wrong');
+  advanceSRS(currentCard, isCorrect);
+  const fb = document.getElementById('feedback');
+  fb.className = `feedback ${isCorrect ? 'show-correct' : 'show-wrong'}`;
+  fb.innerHTML = isCorrect ? `✓ 正確！` : `✗ 正確是「${correct}」`;
+  document.getElementById('hintText').textContent = '💡 ' + currentCard.hint;
+  document.getElementById('nextBtn').classList.add('visible');
+}
+
+// ═══════════════════════════════
+// MODE 2: 字→讀音 輸入題
+// ═══════════════════════════════
+function renderCharToInput() {
+  document.getElementById('quizContent').innerHTML = `
+    <div class="question-type">輸入羅馬字讀音</div>
+    <div class="main-char">${currentCard.char}</div>
+    <div class="sub-info">平假名：${currentCard.hiragana}　來源：${currentCard.kanji}</div>
+    <div class="hint" id="hintText"></div>
+    <div class="input-wrap">
+      <input class="romaji-input" id="romajiInput" type="text" placeholder="輸入羅馬字…"
+        autocomplete="off" autocorrect="off" autocapitalize="none" spellcheck="false"
+        onkeydown="if(event.key==='Enter')submitCharToInput()">
+    </div>
+    <button class="submit-btn" onclick="submitCharToInput()">確認</button>
+    <div class="feedback" id="feedback"></div>
+    <button class="next-btn" id="nextBtn" onclick="nextCard()">下一題 →</button>
+  `;
+  setTimeout(() => document.getElementById('romajiInput')?.focus(), 80);
+}
+
+function submitCharToInput() {
+  if (answered) return;
+  const inp = document.getElementById('romajiInput');
+  if (!inp?.value.trim()) return;
+  answered = true;
+  const isCorrect = normalizeRomaji(inp.value) === normalizeRomaji(currentCard.reading);
+  inp.disabled = true;
+  inp.classList.add(isCorrect ? 'correct' : 'wrong');
+  advanceSRS(currentCard, isCorrect);
+  const fb = document.getElementById('feedback');
+  fb.className = `feedback ${isCorrect ? 'show-correct' : 'show-wrong'}`;
+  fb.innerHTML = isCorrect ? `✓ 正確！` : `✗ 正確是「${currentCard.reading}」`;
+  document.getElementById('hintText').textContent = '💡 ' + currentCard.hint;
+  document.getElementById('nextBtn').classList.add('visible');
+}
+
+// ═══════════════════════════════
+// MODE 3: 讀音→字 選擇題
+// ═══════════════════════════════
+function getCharDistractors(card) {
+  const correct = card.char;
+  const similarChars = new Set();
+  for (const group of similarGroups) {
+    if (group.includes(correct)) group.forEach(c => { if (c !== correct) similarChars.add(c); });
+  }
+  const similarPool = katakanaCards.filter(c => similarChars.has(c.char) && c.char !== correct).map(c => c.char);
+  const others = shuffle(katakanaCards.map(c => c.char).filter(c => c !== correct && !similarPool.includes(c)));
+  return shuffle([correct, ...shuffle([...similarPool, ...others]).slice(0, 3)]);
+}
+
+function renderReadingToCharMultiple() {
+  const options = getCharDistractors(currentCard);
+  document.getElementById('quizContent').innerHTML = `
+    <div class="question-type">哪個片假名是這個讀音？</div>
+    <div class="main-char" style="font-size:2.8rem;margin-bottom:4px;">${currentCard.reading}</div>
+    <div class="sub-info">平假名：${currentCard.hiragana}　來源：${currentCard.kanji}</div>
+    <div class="hint" id="hintText"></div>
+    <div class="options">
+      ${options.map(opt => `<button class="option-btn" onclick="checkReadingToChar('${opt}', this)">${opt}</button>`).join('')}
+    </div>
+    <div class="feedback" id="feedback"></div>
+    <button class="next-btn" id="nextBtn" onclick="nextCard()">下一題 →</button>
+  `;
+}
+
+function checkReadingToChar(chosen, btn) {
+  if (answered) return;
+  answered = true;
+  const correct = currentCard.char;
+  const isCorrect = chosen === correct;
+  document.querySelectorAll('.option-btn').forEach(b => {
+    b.disabled = true;
+    if (b.textContent.trim() === correct) b.classList.add('correct');
+  });
+  if (!isCorrect) btn.classList.add('wrong');
+  advanceSRS(currentCard, isCorrect);
+  const fb = document.getElementById('feedback');
+  fb.className = `feedback ${isCorrect ? 'show-correct' : 'show-wrong'}`;
+  fb.innerHTML = isCorrect ? `✓ 正確！` : `✗ 正確是「${correct}」`;
+  document.getElementById('hintText').textContent = '💡 ' + currentCard.hint;
+  document.getElementById('nextBtn').classList.add('visible');
+}
+
+// ═══════════════════════════════
+// MODE 4: 讀音→字 輸入題
+// ═══════════════════════════════
+function renderReadingToInput() {
+  document.getElementById('quizContent').innerHTML = `
+    <div class="question-type">輸入對應的片假名</div>
+    <div class="main-char" style="font-size:2.8rem;margin-bottom:4px;">${currentCard.reading}</div>
+    <div class="sub-info">平假名：${currentCard.hiragana}　來源：${currentCard.kanji}</div>
+    <div class="hint" id="hintText"></div>
+    <div class="input-wrap">
+      <input class="romaji-input" id="katakanaInput" type="text" placeholder="輸入片假名…"
+        autocomplete="off" autocorrect="off" autocapitalize="none" spellcheck="false"
+        onkeydown="if(event.key==='Enter')submitReadingToInput()">
+    </div>
+    <button class="submit-btn" onclick="submitReadingToInput()">確認</button>
+    <div class="feedback" id="feedback"></div>
+    <button class="next-btn" id="nextBtn" onclick="nextCard()">下一題 →</button>
+  `;
+  setTimeout(() => document.getElementById('katakanaInput')?.focus(), 80);
+}
+
+function submitReadingToInput() {
+  if (answered) return;
+  const inp = document.getElementById('katakanaInput');
+  if (!inp?.value.trim()) return;
+  answered = true;
+  const isCorrect = inp.value.trim() === currentCard.char;
+  inp.disabled = true;
+  inp.classList.add(isCorrect ? 'correct' : 'wrong');
+  advanceSRS(currentCard, isCorrect);
+  const fb = document.getElementById('feedback');
+  fb.className = `feedback ${isCorrect ? 'show-correct' : 'show-wrong'}`;
+  fb.innerHTML = isCorrect ? `✓ 正確！` : `✗ 正確是「${currentCard.char}」`;
+  document.getElementById('hintText').textContent = '💡 ' + currentCard.hint;
+  document.getElementById('nextBtn').classList.add('visible');
+}
+
+// ═══════════════════════════════
+// RESULT
+// ═══════════════════════════════
+function showResult() {
+  updateProgress();
+  const pct = totalAnswered ? Math.round((totalCorrect / totalAnswered) * 100) : 0;
+  let emoji, msg, sub;
+  if (pct >= 90) { emoji = '🎌'; msg = '完美！'; sub = `正確率 ${pct}%，繼續保持！`; }
+  else if (pct >= 70) { emoji = '👏'; msg = '很好！'; sub = `正確率 ${pct}%，再練幾次就能鞏固。`; }
+  else { emoji = '📖'; msg = '繼續練習！'; sub = `正確率 ${pct}%，間隔重複就是要反覆來。`; }
+  document.getElementById('quizContent').innerHTML = `
+    <div class="result-screen">
+      <div class="big-emoji">${emoji}</div>
+      <h2>${msg}</h2>
+      <p>${sub}<br><br>正確 ${totalCorrect} / ${totalAnswered} 題</p>
+      <button class="restart-btn" onclick="restart()">再練一次</button>
+    </div>
+  `;
+}
+
+function restart() {
+  queue = katakanaCards.map(c => ({ ...c, level: 0, nextReview: 0 }));
+  resetScore();
+  nextCard();
+}
+
+// ═══════════════════════════════
+// INIT
+// ═══════════════════════════════
+queue = katakanaCards.map(c => ({ ...c, level: 0, nextReview: 0 }));
+nextCard();
+</script>
+</body>
+</html>
