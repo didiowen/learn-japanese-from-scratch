@@ -1,9 +1,9 @@
 ---
-title: 單字
+title: vocabulary
 date:
   created: 2026-04-28T15:00:00
   updated: 2026-04-28T21:20:14
-alias: vocabulary
+alias: vocab
 ---
 # 單字
 
