@@ -1,8 +1,8 @@
 ---
 title: 學習日誌
 date:
-  created: 2026-04-28T13:00:00
-  updated: 2026-04-28T13:00:00
+  created: 2026-04-28T10:24:26
+  updated: 2026-04-28T10:24:26
 alias: log
 ---
 # 學習日誌
