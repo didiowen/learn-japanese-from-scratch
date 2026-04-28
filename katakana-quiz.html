@@ -466,7 +466,13 @@ const vocabCards = [
   { word: 'コンビニ', reading: 'konbini',   meaning: '便利商店', hint: 'コンビニエンスストア（convenience store）縮略', topic: 'daily' },
   { word: 'デパート', reading: 'depāto',    meaning: '百貨公司', hint: 'デパートメント（department store）縮略',   topic: 'daily' },
   { word: 'スーパー', reading: 'sūpā',      meaning: '超市',     hint: 'スーパーマーケット（supermarket）縮略',    topic: 'daily' },
+  { word: 'ライター', reading: 'raitā',    meaning: '打火機',   hint: '台語「來打」← 日語 ライター ← 英語 lighter', topic: 'daily' },
 ];
+
+// 本來就會的單字——降低出現頻率（從第二輪才開始復習）
+const alreadyKnown = new Set([
+  'ライター',
+]);
 
 // 形近字干擾組
 const similarGroups = [
@@ -593,7 +599,7 @@ function switchSection(section) {
 
 function buildVocabQueue() {
   const filtered = currentTopic === 'all' ? vocabCards : vocabCards.filter(v => v.topic === currentTopic);
-  vocabQueue = filtered.map(c => ({ ...c, level: 0, nextReview: 0 }));
+  vocabQueue = filtered.map(c => ({ ...c, level: alreadyKnown.has(c.word) ? 2 : 0, nextReview: alreadyKnown.has(c.word) ? 8 : 0 }));
   queue = vocabQueue;
 }
 
