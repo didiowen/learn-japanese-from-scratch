@@ -78,6 +78,11 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 **topic 標籤**：`greeting` / `food` / `family` / `time` / `color` / `number` / `nature` / `daily` / `question`
 
+### 更新學習日誌
+每次修改任何 `.md` 筆記檔後，在 `log.md` 新增條目：
+- 標題格式：`## YYYY-MM-DD HH:MM:SS`（GMT+8，精確到秒）
+- 內容：更新了什麼（學了哪些假名／單字，或修正了什麼）
+
 ### 更新測驗 HTML
 詳見 `references/quiz-structure.md`。更新時用 Python 處理中文字串避免編碼問題，覆寫前先確認。
 
