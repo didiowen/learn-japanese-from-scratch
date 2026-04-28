@@ -8,7 +8,7 @@
         "type": "tabs",
         "children": [
           {
-            "id": "d60c79da6181201d",
+            "id": "257556326cd2a895",
             "type": "leaf",
             "state": {
               "type": "markdown",
@@ -184,14 +184,18 @@
       "markdown-importer:Open format converter": false
     }
   },
-  "active": "d60c79da6181201d",
+  "active": "257556326cd2a895",
   "lastOpenFiles": [
+    "片假名.md",
+    "CLAUDE.md",
+    "平假名.md",
+    "專案Instruction.md",
+    "katakana-quiz.html",
+    "新增資料夾",
+    "會話.md",
+    "本來就會的單字片語.md",
     "attachments/c6aefd8fbf7ef88833cdb6d7e0103683_MD5.jpg",
     "attachments/255780534db47af469d2e8f60ad2d637_MD5.jpg",
-    "平假名.md",
-    "attachments",
-    "會話.md",
-    "專案Instruction.md",
-    "本來就會的單字片語.md"
+    "attachments"
   ]
 }
