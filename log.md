@@ -2,20 +2,31 @@
 title: 學習日誌
 date:
   created: 2026-04-28T18:26:48
-  updated: 2026-04-28T21:55:00
+  updated: 2026-04-28T22:15:00
 alias: log
 ---
 # 學習日誌
 
-## 2026-04-28 21:55:00
-- 修正 `CLAUDE.md` 中 references 目錄路徑：`references/` → `.claude/skills/japanese-learning/references/`
-
-## 2026-04-28 21:45:00
+## 2026-04-28 22:10:00
 - 將 8 個中文檔名全部改為英文：hiragana / katakana / vocabulary / grammar / conversation / kanji / language-notes / already-known
 - 同步更新 CLAUDE.md、_sidebar.md、notes/index.html、SKILL.md 中的檔名引用
 
+## 2026-04-28 21:55:00
+- 修正 `CLAUDE.md` 中 references 目錄路徑：`references/` → `.claude/skills/japanese-learning/references/`
+
+## 2026-04-28 21:20:14
+- 新增單字 2 個：チャーハン（炒飯）、図書館
+- 更新 `片假名.md`：新增 ャ 片假名、チャーハン 加入飲食
+- 更新 `單字.md`：チャーハン → 飲食，図書館 → 自然與事物
+- 更新 `hiragana-quiz.html`（図書館）、`katakana-quiz.html`（チャーハン）
+
+## 2026-04-28 21:12:31
+- 新增單字 9 個：学生、風、塩、映画、零、電話、蛇、残念、雨
+- 更新 `單字.md` 對應區塊，標注同音異義（風/風邪、雨/飴）
+- 更新 `hiragana-quiz.html`：新增 9 張單字卡
+
 ## 2026-04-28 21:30:00
-- 新增 `漢字.md`「日本人姓名讀法」章節：五大規律、連濁詳解、常見姓氏成分、下名讀音、八個球員姓名解析
+- 新增 漢字.md「日本人姓名讀法」章節：五大規律、連濁詳解、常見姓氏成分、下名讀音、八個球員姓名解析
 
 ## 2026-04-28 20:26:46
 - 補更新 `片假名.md`：新增「台語借詞」區塊，加入 ライター

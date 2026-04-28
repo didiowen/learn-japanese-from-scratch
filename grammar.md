@@ -3,7 +3,6 @@ title: 文法
 date:
   created: 2026-04-28T18:26:48
   updated: 2026-04-28T18:46:23
-alias: grammar
 ---
 # 文法
 

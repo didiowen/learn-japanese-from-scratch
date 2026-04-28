@@ -2,8 +2,7 @@
 title: 漢字
 date:
   created: 2026-04-28T15:00:00
-  updated: 2026-04-28T21:30:00
-alias: kanji
+  updated: 2026-04-28T15:00:00
 ---
 # 漢字
 

@@ -3,7 +3,6 @@ title: 會話
 date:
   created: 2026-04-28T10:18:31
   updated: 2026-04-28T15:00:00
-alias: conversation
 ---
 # 會話
 

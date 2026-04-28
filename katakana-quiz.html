@@ -467,6 +467,7 @@ const vocabCards = [
   { word: 'デパート', reading: 'depāto',    meaning: '百貨公司', hint: 'デパートメント（department store）縮略',   topic: 'daily' },
   { word: 'スーパー', reading: 'sūpā',      meaning: '超市',     hint: 'スーパーマーケット（supermarket）縮略',    topic: 'daily' },
   { word: 'ライター', reading: 'raitā',    meaning: '打火機',   hint: '台語「來打」← 日語 ライター ← 英語 lighter', topic: 'daily' },
+  { word: 'チャーハン', reading: 'chāhan',  meaning: '炒飯',     hint: '中文「炒飯」借入，チャ是拗音（チ＋ャ＝cha）', topic: 'food' },
 ];
 
 // 本來就會的單字——降低出現頻率（從第二輪才開始復習）
@@ -768,7 +769,7 @@ function renderCharToInput() {
   document.getElementById('quizContent').innerHTML = `
     <div class="question-type">輸入羅馬字讀音</div>
     <div class="main-char">${currentCard.char}</div>
-    <div class="sub-info">平假名：${currentCard.hiragana}　來源：${currentCard.kanji}</div>
+    <div class="sub-info" id="subInfo"></div>
     <div class="hint" id="hintText"></div>
     <div class="input-wrap">
       <input class="romaji-input" id="romajiInput" type="text" placeholder="輸入羅馬字…"
@@ -794,6 +795,7 @@ function submitCharToInput() {
   const fb = document.getElementById('feedback');
   fb.className = `feedback ${isCorrect ? 'show-correct' : 'show-wrong'}`;
   fb.innerHTML = isCorrect ? `✓ 正確！` : `✗ 正確是「${currentCard.reading}」`;
+  document.getElementById('subInfo').textContent = `平假名：${currentCard.hiragana}　來源：${currentCard.kanji}`;
   document.getElementById('hintText').textContent = '💡 ' + currentCard.hint;
   document.getElementById('nextBtn').classList.add('visible');
 }
