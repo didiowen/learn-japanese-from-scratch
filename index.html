@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>日文學習測驗</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;700&family=Noto+Sans+TC:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink: #1a1a2e;
+  --paper: #f5f0e8;
+  --accent: #c0392b;
+  --soft: #8b7355;
+  --card: #faf7f2;
+  --border: rgba(139,115,85,0.2);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: 'Noto Sans TC', sans-serif;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 16px;
+  background-image:
+    radial-gradient(ellipse at 20% 20%, rgba(192,57,43,0.05) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 80%, rgba(139,115,85,0.08) 0%, transparent 50%);
+}
+h1 {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 2rem;
+  color: var(--accent);
+  margin-bottom: 8px;
+  letter-spacing: 0.05em;
+}
+.subtitle {
+  color: var(--soft);
+  font-size: 0.9rem;
+  margin-bottom: 48px;
+  letter-spacing: 0.08em;
+}
+.cards {
+  display: flex;
+  gap: 24px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 36px 32px;
+  width: 220px;
+  text-decoration: none;
+  color: var(--ink);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  transition: box-shadow 0.2s, transform 0.2s;
+  box-shadow: 0 2px 8px rgba(139,115,85,0.1);
+}
+.card:hover {
+  box-shadow: 0 6px 20px rgba(139,115,85,0.2);
+  transform: translateY(-3px);
+}
+.card .kana {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 2.8rem;
+  color: var(--accent);
+  line-height: 1;
+}
+.card .label {
+  font-size: 1rem;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+}
+.card .desc {
+  font-size: 0.78rem;
+  color: var(--soft);
+  text-align: center;
+  line-height: 1.5;
+}
+</style>
+</head>
+<body>
+  <h1>日文假名測驗</h1>
+  <p class="subtitle">從台語記憶日文・五十音學習系統</p>
+  <div class="cards">
+    <a class="card" href="hiragana-quiz.html">
+      <span class="kana">あ</span>
+      <span class="label">平假名測驗</span>
+      <span class="desc">五十音・濁音・單字<br>SRS 記憶系統</span>
+    </a>
+    <a class="card" href="katakana-quiz.html">
+      <span class="kana">ア</span>
+      <span class="label">片假名測驗</span>
+      <span class="desc">五十音・濁音・單字<br>SRS 記憶系統</span>
+    </a>
+  </div>
+</body>
+</html>

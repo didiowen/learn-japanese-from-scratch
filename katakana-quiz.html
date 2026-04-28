@@ -277,18 +277,107 @@ h1.title {
   transition: all 0.2s;
 }
 .restart-btn:hover { opacity: 0.88; transform: translateY(-1px); }
+
+/* ── Section tabs ── */
+.section-tabs {
+  display: flex;
+  max-width: 360px;
+  width: 100%;
+  margin-bottom: 14px;
+  border: 1.5px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+.section-tab {
+  flex: 1;
+  padding: 12px 6px;
+  border: none;
+  background: white;
+  color: var(--neutral);
+  font-family: 'Noto Sans TC', sans-serif;
+  font-size: 0.85rem;
+  cursor: pointer;
+  letter-spacing: 0.06em;
+  transition: all 0.2s;
+  border-right: 1px solid var(--border);
+}
+.section-tab:last-child { border-right: none; }
+.section-tab.active { background: var(--ink); color: var(--paper); font-weight: 500; }
+
+/* ── Vocab toggle ── */
+.vocab-toggle {
+  display: flex;
+  max-width: 360px;
+  width: 100%;
+  margin-bottom: 10px;
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+}
+.vocab-btn {
+  flex: 1;
+  padding: 10px 6px;
+  border: none;
+  background: white;
+  color: var(--neutral);
+  font-family: 'Noto Sans TC', sans-serif;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  border-right: 1px solid var(--border);
+}
+.vocab-btn:last-child { border-right: none; }
+.vocab-btn.active { background: var(--soft); color: white; font-weight: 500; }
+
+/* ── Topic filter ── */
+.topic-filter {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  max-width: 360px;
+  width: 100%;
+  margin-bottom: 12px;
+}
+.topic-btn {
+  padding: 5px 12px;
+  border: 1.5px solid var(--border);
+  border-radius: 20px;
+  font-size: 0.72rem;
+  font-family: 'Noto Sans TC', sans-serif;
+  cursor: pointer;
+  background: white;
+  color: var(--soft);
+  transition: all 0.15s;
+}
+.topic-btn.active { background: var(--ink); color: var(--paper); border-color: var(--ink); font-weight: 500; }
 </style>
 </head>
 <body>
 
 <h1 class="title">片假名記憶測驗</h1>
 
-<!-- 四個模式 tab -->
-<div class="mode-tabs">
+<div class="section-tabs">
+  <button class="section-tab active" id="tabKana" onclick="switchSection('kana')">五十音</button>
+  <button class="section-tab" id="tabVocab" onclick="switchSection('vocab')">單字</button>
+</div>
+
+<!-- 四個模式 tab（五十音） -->
+<div class="mode-tabs" id="kanaModes">
   <button class="mode-tab active" id="tab1" onclick="switchMode('char-to-reading')">字→讀音<br>選擇</button>
   <button class="mode-tab" id="tab2" onclick="switchMode('char-to-input')">字→讀音<br>輸入</button>
   <button class="mode-tab" id="tab3" onclick="switchMode('reading-to-char')">讀音→字<br>選擇</button>
   <button class="mode-tab" id="tab4" onclick="switchMode('reading-to-input')">讀音→字<br>輸入</button>
+</div>
+
+<!-- 單字 controls（隱藏直到切換） -->
+<div class="vocab-toggle" id="vocabToggle" style="display:none">
+  <button class="vocab-btn active" id="btnJpZh" onclick="setVocabDir('jp-to-zh')">日文→中文</button>
+  <button class="vocab-btn" id="btnZhJp" onclick="setVocabDir('zh-to-jp')">中文→日文</button>
+</div>
+<div class="topic-filter" id="topicFilter" style="display:none">
+  <button class="topic-btn active" onclick="setTopic('all')">全部</button>
+  <button class="topic-btn" onclick="setTopic('food')">🍱 飲食</button>
+  <button class="topic-btn" onclick="setTopic('daily')">💬 日常</button>
 </div>
 
 <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
@@ -309,8 +398,8 @@ h1.title {
 // DATA
 // ═══════════════════════════════
 const katakanaCards = [
-  { char: 'ア', reading: 'a',   hiragana: 'あ', kanji: '阿', hint: '「阿」左部「阝」→ ア，和あ同源' },
-  { char: 'イ', reading: 'i',   hiragana: 'い', kanji: '伊', hint: '「伊」左部「亻」→ イ，和い同源' },
+  { char: 'ア', reading: 'a',   hiragana: 'あ', kanji: '阿', hint: '「阿」左部「阝」→ ア（あ是「安」，不同源）' },
+  { char: 'イ', reading: 'i',   hiragana: 'い', kanji: '伊', hint: '「伊」左部「亻」→ イ（い是「以」，不同源）' },
   { char: 'ウ', reading: 'u',   hiragana: 'う', kanji: '宇', hint: '「宇」簡化 → ウ，和う同源' },
   { char: 'エ', reading: 'e',   hiragana: 'え', kanji: '江', hint: '「江」右部「工」→ エ' },
   { char: 'オ', reading: 'o',   hiragana: 'お', kanji: '於', hint: '「於」右部 → オ' },
@@ -356,6 +445,29 @@ const katakanaCards = [
   { char: 'ン', reading: 'n',   hiragana: 'ん', kanji: '尓', hint: '短撇向左收 → ン，注意和ソ的差別：撇短向左' },
 ];
 
+const vocabCards = [
+  { word: 'コーヒー', reading: 'kōhī',     meaning: '咖啡',     hint: '唸出來就是 coffee',                        topic: 'food' },
+  { word: 'ビール',   reading: 'bīru',      meaning: '啤酒',     hint: '唸出來就是 beer，台語借詞 bih-luh',         topic: 'food' },
+  { word: 'ワイン',   reading: 'wain',      meaning: '葡萄酒',   hint: '唸出來就是 wine',                          topic: 'food' },
+  { word: 'ケーキ',   reading: 'kēki',      meaning: '蛋糕',     hint: '唸出來就是 cake',                          topic: 'food' },
+  { word: 'アイス',   reading: 'aisu',      meaning: '冰淇淋',   hint: '唸出來就是 ice',                           topic: 'food' },
+  { word: 'スープ',   reading: 'sūpu',      meaning: '湯',       hint: '唸出來就是 soup',                          topic: 'food' },
+  { word: 'パン',     reading: 'pan',       meaning: '麵包',     hint: '葡萄牙語 pão 進入日語，不是英文 pan',       topic: 'food' },
+  { word: 'チーズ',   reading: 'chīzu',     meaning: '起司',     hint: '唸出來就是 cheese',                        topic: 'food' },
+  { word: 'タクシー', reading: 'takushī',   meaning: '計程車',   hint: '唸出來就是 taxi，台語也借了這個詞',         topic: 'daily' },
+  { word: 'バス',     reading: 'basu',      meaning: '公車',     hint: '唸出來就是 bus',                           topic: 'daily' },
+  { word: 'ホテル',   reading: 'hoteru',    meaning: '飯店',     hint: '唸出來就是 hotel',                         topic: 'daily' },
+  { word: 'トイレ',   reading: 'toire',     meaning: '廁所',     hint: '唸出來就是 toilet（縮略）',                topic: 'daily' },
+  { word: 'チケット', reading: 'chiketto',  meaning: '票',       hint: 'ッ 促音——停頓一拍再爆發，唸出來是 ticket', topic: 'daily' },
+  { word: 'セール',   reading: 'sēru',      meaning: '特賣',     hint: '唸出來就是 sale',                          topic: 'daily' },
+  { word: 'サイズ',   reading: 'saizu',     meaning: '尺寸',     hint: '唸出來就是 size',                          topic: 'daily' },
+  { word: 'レシート', reading: 'reshīto',   meaning: '收據',     hint: '唸出來就是 receipt',                       topic: 'daily' },
+  { word: 'レストラン', reading: 'resutoran', meaning: '餐廳',   hint: '唸出來就是 restaurant',                    topic: 'daily' },
+  { word: 'コンビニ', reading: 'konbini',   meaning: '便利商店', hint: 'コンビニエンスストア（convenience store）縮略', topic: 'daily' },
+  { word: 'デパート', reading: 'depāto',    meaning: '百貨公司', hint: 'デパートメント（department store）縮略',   topic: 'daily' },
+  { word: 'スーパー', reading: 'sūpā',      meaning: '超市',     hint: 'スーパーマーケット（supermarket）縮略',    topic: 'daily' },
+];
+
 // 形近字干擾組
 const similarGroups = [
   ['シ', 'ツ'],
@@ -389,9 +501,14 @@ const similarGroups = [
 // STATE
 // ═══════════════════════════════
 const intervals = [0, 3, 8, 20, 40];
-const SESSION_LIMIT = 46;
-let currentMode = 'char-to-reading'; // 四種模式
+const KANA_LIMIT = 46;
+const VOCAB_LIMIT = 20;
+let currentSection = 'kana';
+let currentMode = 'char-to-reading';
+let vocabDir = 'jp-to-zh';
+let currentTopic = 'all';
 let queue = [];
+let vocabQueue = [];
 let sessionCount = 0;
 let totalAnswered = 0;
 let totalCorrect = 0;
@@ -426,7 +543,8 @@ function updateScore() {
 }
 
 function updateProgress() {
-  document.getElementById('progressFill').style.width = (Math.min(sessionCount / SESSION_LIMIT, 1) * 100) + '%';
+  const lim = currentSection === 'kana' ? KANA_LIMIT : VOCAB_LIMIT;
+  document.getElementById('progressFill').style.width = (Math.min(sessionCount / lim, 1) * 100) + '%';
 }
 
 function pickFromQueue() {
@@ -454,6 +572,105 @@ function normalizeRomaji(s) {
 }
 
 // ═══════════════════════════════
+// SECTION SWITCHING
+// ═══════════════════════════════
+function switchSection(section) {
+  currentSection = section;
+  document.getElementById('tabKana').classList.toggle('active', section === 'kana');
+  document.getElementById('tabVocab').classList.toggle('active', section === 'vocab');
+  document.getElementById('kanaModes').style.display = section === 'kana' ? 'flex' : 'none';
+  document.getElementById('vocabToggle').style.display = section === 'vocab' ? 'flex' : 'none';
+  document.getElementById('topicFilter').style.display = section === 'vocab' ? 'flex' : 'none';
+  resetScore();
+  if (section === 'kana') {
+    queue = katakanaCards.map(c => ({ ...c, level: 0, nextReview: 0 }));
+    nextCard();
+  } else {
+    buildVocabQueue();
+    nextCard();
+  }
+}
+
+function buildVocabQueue() {
+  const filtered = currentTopic === 'all' ? vocabCards : vocabCards.filter(v => v.topic === currentTopic);
+  vocabQueue = filtered.map(c => ({ ...c, level: 0, nextReview: 0 }));
+  queue = vocabQueue;
+}
+
+function setVocabDir(dir) {
+  vocabDir = dir;
+  document.getElementById('btnJpZh').classList.toggle('active', dir === 'jp-to-zh');
+  document.getElementById('btnZhJp').classList.toggle('active', dir === 'zh-to-jp');
+  resetScore();
+  buildVocabQueue();
+  nextCard();
+}
+
+function setTopic(topic) {
+  currentTopic = topic;
+  document.querySelectorAll('.topic-btn').forEach(b => b.classList.remove('active'));
+  event.target.classList.add('active');
+  resetScore();
+  buildVocabQueue();
+  nextCard();
+}
+
+// ═══════════════════════════════
+// VOCAB QUIZ
+// ═══════════════════════════════
+function renderVocabJpToZh() {
+  const card = currentCard;
+  const distractors = vocabCards.filter(v => v.meaning !== card.meaning).map(v => v.meaning);
+  const opts = shuffle([card.meaning, ...shuffle(distractors).slice(0, 3)]);
+  document.getElementById('quizContent').innerHTML = `
+    <div class="question-type">這個片假名是什麼意思？</div>
+    <div class="main-char" style="font-size:2.4rem">${card.word}</div>
+    <div class="sub-info"></div>
+    <div class="hint" id="hintText"></div>
+    <div class="options">
+      ${opts.map(o => `<button class="option-btn reading" onclick="checkVocab('${o}','meaning',this)">${o}</button>`).join('')}
+    </div>
+    <div class="feedback" id="feedback"></div>
+    <button class="next-btn" id="nextBtn" onclick="nextCard()">下一題 →</button>
+  `;
+}
+
+function renderVocabZhToJp() {
+  const card = currentCard;
+  const distractors = vocabCards.filter(v => v.word !== card.word).map(v => v.word);
+  const opts = shuffle([card.word, ...shuffle(distractors).slice(0, 3)]);
+  document.getElementById('quizContent').innerHTML = `
+    <div class="question-type">這個意思的片假名是？</div>
+    <div class="main-char" style="font-size:2.4rem">${card.meaning}</div>
+    <div class="sub-info">${card.reading}</div>
+    <div class="hint" id="hintText"></div>
+    <div class="options">
+      ${opts.map(o => `<button class="option-btn" onclick="checkVocab('${o}','word',this)">${o}</button>`).join('')}
+    </div>
+    <div class="feedback" id="feedback"></div>
+    <button class="next-btn" id="nextBtn" onclick="nextCard()">下一題 →</button>
+  `;
+}
+
+function checkVocab(chosen, field, btn) {
+  if (answered) return;
+  answered = true;
+  const correct = currentCard[field];
+  const isCorrect = chosen === correct;
+  document.querySelectorAll('.option-btn').forEach(b => {
+    b.disabled = true;
+    if (b.textContent.trim() === correct) b.classList.add('correct');
+  });
+  if (!isCorrect) btn.classList.add('wrong');
+  advanceSRS(currentCard, isCorrect);
+  const fb = document.getElementById('feedback');
+  fb.className = `feedback ${isCorrect ? 'show-correct' : 'show-wrong'}`;
+  fb.innerHTML = isCorrect ? `✓ 正確！` : `✗ 正確是「${correct}」`;
+  document.getElementById('hintText').textContent = '💡 ' + currentCard.hint;
+  document.getElementById('nextBtn').classList.add('visible');
+}
+
+// ═══════════════════════════════
 // MODE SWITCHING
 // ═══════════════════════════════
 function switchMode(mode) {
@@ -462,8 +679,7 @@ function switchMode(mode) {
   const tabMap = { 'char-to-reading': 'tab1', 'char-to-input': 'tab2', 'reading-to-char': 'tab3', 'reading-to-input': 'tab4' };
   document.getElementById(tabMap[mode]).classList.add('active');
   queue = katakanaCards.map(c => ({ ...c, level: 0, nextReview: 0 }));
-  resetScore();
-  nextCard();
+  resetScore(); nextCard();
 }
 
 // ═══════════════════════════════
@@ -471,10 +687,16 @@ function switchMode(mode) {
 // ═══════════════════════════════
 function nextCard() {
   answered = false;
-  if (sessionCount >= SESSION_LIMIT) { showResult(); return; }
+  const lim = currentSection === 'kana' ? KANA_LIMIT : VOCAB_LIMIT;
+  if (sessionCount >= lim) { showResult(); return; }
   currentCard = pickFromQueue();
   if (!currentCard) { showResult(); return; }
 
+  if (currentSection === 'vocab') {
+    if (vocabDir === 'jp-to-zh') renderVocabJpToZh();
+    else renderVocabZhToJp();
+    updateProgress(); return;
+  }
   if (currentMode === 'char-to-reading') renderCharToReadingMultiple();
   else if (currentMode === 'char-to-input') renderCharToInput();
   else if (currentMode === 'reading-to-char') renderReadingToCharMultiple();
@@ -675,9 +897,12 @@ function showResult() {
 }
 
 function restart() {
-  queue = katakanaCards.map(c => ({ ...c, level: 0, nextReview: 0 }));
-  resetScore();
-  nextCard();
+  if (currentSection === 'kana') {
+    queue = katakanaCards.map(c => ({ ...c, level: 0, nextReview: 0 }));
+  } else {
+    buildVocabQueue();
+  }
+  resetScore(); nextCard();
 }
 
 // ═══════════════════════════════
@@ -685,6 +910,7 @@ function restart() {
 // ═══════════════════════════════
 queue = katakanaCards.map(c => ({ ...c, level: 0, nextReview: 0 }));
 nextCard();
+
 </script>
 </body>
 </html>
