@@ -475,6 +475,9 @@ const alreadyKnown = new Set([
   'ライター',
 ]);
 
+// 第一輪已記熟的假名——降低出現頻率
+const knownKana = new Set(['ア', 'イ', 'ウ', 'エ', 'オ', 'キ', 'セ', 'ト', 'ニ', 'ハ', 'ヒ', 'ロ']);
+
 // 形近字干擾組
 const similarGroups = [
   ['シ', 'ツ'],
@@ -590,7 +593,7 @@ function switchSection(section) {
   document.getElementById('topicFilter').style.display = section === 'vocab' ? 'flex' : 'none';
   resetScore();
   if (section === 'kana') {
-    queue = katakanaCards.map(c => ({ ...c, level: 0, nextReview: 0 }));
+    queue = katakanaCards.map(c => ({ ...c, level: knownKana.has(c.char) ? 2 : 0, nextReview: knownKana.has(c.char) ? 8 : 0 }));
     nextCard();
   } else {
     buildVocabQueue();
@@ -685,7 +688,7 @@ function switchMode(mode) {
   ['tab1','tab2','tab3','tab4'].forEach(id => document.getElementById(id).classList.remove('active'));
   const tabMap = { 'char-to-reading': 'tab1', 'char-to-input': 'tab2', 'reading-to-char': 'tab3', 'reading-to-input': 'tab4' };
   document.getElementById(tabMap[mode]).classList.add('active');
-  queue = katakanaCards.map(c => ({ ...c, level: 0, nextReview: 0 }));
+  queue = katakanaCards.map(c => ({ ...c, level: knownKana.has(c.char) ? 2 : 0, nextReview: knownKana.has(c.char) ? 8 : 0 }));
   resetScore(); nextCard();
 }
 
@@ -906,7 +909,7 @@ function showResult() {
 
 function restart() {
   if (currentSection === 'kana') {
-    queue = katakanaCards.map(c => ({ ...c, level: 0, nextReview: 0 }));
+    queue = katakanaCards.map(c => ({ ...c, level: knownKana.has(c.char) ? 2 : 0, nextReview: knownKana.has(c.char) ? 8 : 0 }));
   } else {
     buildVocabQueue();
   }
@@ -916,7 +919,7 @@ function restart() {
 // ═══════════════════════════════
 // INIT
 // ═══════════════════════════════
-queue = katakanaCards.map(c => ({ ...c, level: 0, nextReview: 0 }));
+queue = katakanaCards.map(c => ({ ...c, level: knownKana.has(c.char) ? 2 : 0, nextReview: knownKana.has(c.char) ? 8 : 0 }));
 nextCard();
 
 </script>

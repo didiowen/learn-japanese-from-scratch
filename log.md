@@ -2,10 +2,14 @@
 title: 學習日誌
 date:
   created: 2026-04-28T18:26:48
-  updated: 2026-04-28T22:15:00
+  updated: 2026-04-28T22:30:00
 alias: log
 ---
 # 學習日誌
+
+## 2026-04-28 22:30:00
+- 重整 `katakana.md`：第一輪改為已記熟的16個（補入 エ・オ・ピ），其餘移至第二輪，刪除舊的第二輪預告
+- 更新 `katakana-quiz.html`：新增 `knownKana` Set，第一輪12個基本字起始 level 2
 
 ## 2026-04-28 22:10:00
 - 將 8 個中文檔名全部改為英文：hiragana / katakana / vocabulary / grammar / conversation / kanji / language-notes / already-known
