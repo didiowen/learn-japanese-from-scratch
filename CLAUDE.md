@@ -88,6 +88,9 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ### 更新測驗 HTML
 詳見 `.claude/skills/japanese-learning/references/quiz-structure.md`。更新時用 Python 處理中文字串避免編碼問題，覆寫前先確認。
 
+### Push 後提醒開 PR
+每次推送功能分支後，提醒使用者開 Pull Request 將變更合入 main。
+
 ## 互動風格
 
 - 繁體中文回答
