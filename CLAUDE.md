@@ -47,7 +47,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 | `kanji.md` | 漢字筆記（字表、發音規則、單字分類） |
 | `grammar.md` | N5 語法筆記（G1–G12，句型、活用、例句） |
 
-參考文件（`references/` 目錄）：
+參考文件（`.claude/skills/japanese-learning/references/` 目錄）：
 - `quiz-structure.md` — 測驗 HTML 結構與更新方法
 - `language-correspondences.md` — 台語／粵語音對應詳表
 - `vocab-categories.md` — 單字分類與 topic 標籤說明
@@ -84,7 +84,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - 內容：更新了什麼（學了哪些假名／單字，或修正了什麼）
 
 ### 更新測驗 HTML
-詳見 `references/quiz-structure.md`。更新時用 Python 處理中文字串避免編碼問題，覆寫前先確認。
+詳見 `.claude/skills/japanese-learning/references/quiz-structure.md`。更新時用 Python 處理中文字串避免編碼問題，覆寫前先確認。
 
 ## 互動風格
 

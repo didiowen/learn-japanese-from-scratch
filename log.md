@@ -2,10 +2,13 @@
 title: 學習日誌
 date:
   created: 2026-04-28T18:26:48
-  updated: 2026-04-28T21:45:00
+  updated: 2026-04-28T21:55:00
 alias: log
 ---
 # 學習日誌
+
+## 2026-04-28 21:55:00
+- 修正 `CLAUDE.md` 中 references 目錄路徑：`references/` → `.claude/skills/japanese-learning/references/`
 
 ## 2026-04-28 21:45:00
 - 將 8 個中文檔名全部改為英文：hiragana / katakana / vocabulary / grammar / conversation / kanji / language-notes / already-known
