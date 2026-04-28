@@ -38,11 +38,12 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 |------|------|
 | `hiragana-quiz.html` | 平假名互動測驗（五十音＋單字，SRS） |
 | `katakana-quiz.html` | 片假名互動測驗（五十音＋單字，SRS） |
-| `平假名.md` | 主筆記（字表、發音規則、單字分類、語法） |
-| `片假名.md` | 片假名筆記（字表、單字分類） |
+| `平假名.md` | 平假名字表、發音規則、語法筆記 |
+| `片假名.md` | 片假名字表、單字分類 |
+| `單字.md` | 所有單字，依主題分類（疑問詞、飲食、時間、顏色等） |
+| `會話.md` | 會話筆記（基本用語、購物、點餐等情境） |
 | `語言對照筆記.md` | 台語／粵語／注音記憶鉤對照表 |
 | `本來就會的單字片語.md` | 已知單字片語，在測驗中減少出現頻率 |
-| `會話.md` | 會話筆記（以旅遊常用場景分類） |
 | `漢字.md` | 漢字筆記（字表、發音規則、單字分類） |
 
 參考文件（`references/` 目錄）：
@@ -67,7 +68,10 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 2. 說明漢字來源和台語連結（如有）
 3. 同音異義詞提示
 4. 更新測驗 vocabCards（加 topic 標籤）
-5. 更新筆記後在frontmatter的date > updated加上最新的修改時間
+5. 將單字加入對應筆記檔，並更新 frontmatter 的 `date > updated`：
+   - 一般單字 → `單字.md` 對應主題區塊
+   - 會話句型／口語表達 → `會話.md` 對應情境區塊
+   - 片假名外來語 → `片假名.md` 對應單字區塊
 
 **單字表格式**：漢字 ｜ 假名 ｜ 羅馬拼音 ｜ 意思
 
