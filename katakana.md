@@ -3,7 +3,7 @@ title: 片假名
 date:
   created: 2026-04-27T02:51:04
   updated: 2026-04-28T21:20:14
-alias: katakana
+alias: kata
 ---
 # 片假名
 
