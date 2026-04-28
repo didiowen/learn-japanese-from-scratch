@@ -1,5 +1,5 @@
 ---
-title: hiragana
+title: 平假名
 date:
   created: 2026-04-27T02:51:04
   updated: 2026-04-28T18:46:23

@@ -84,7 +84,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - 內容：更新了什麼（學了哪些假名／單字，或修正了什麼）
 
 ### 更新測驗 HTML
-詳見 `references/quiz-structure.md`。更新時用 Python 處理中文字串避免編碼問題，覆寫前先確認。
+詳見 `.claude/skills/japanese-learning/references/quiz-structure.md`。更新時用 Python 處理中文字串避免編碼問題，覆寫前先確認。
 
 ## 互動風格
 
