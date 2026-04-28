@@ -2,7 +2,7 @@
 title: 片假名
 date:
   created: 2026-04-27T02:51:04
-  updated: 2026-04-28T22:40:00
+  updated: 2026-04-28T23:00:00
 ---
 # 片假名
 
@@ -29,16 +29,6 @@ date:
 | ピ   | ぴ   | 比＋゜    | pi     | —     | ヒ加半濁點，回到古代 p 音              |
 | ロ   | ろ   | 呂      | ro     | ✅ 同源  | 「呂」上半方框 → ロ，台語白話「呂」lū      |
 | モ   | も   | 毛      | mo     | ✅ 同源  | 「毛」三橫一豎 → モ，和も同源           |
-
-### 單字
-
-| 片假名 | 讀音 | 意思 | 英文來源 | 記憶鉤 |
-|---|---|---|---|---|
-| コーヒー | kōhī | 咖啡 | coffee | 唸出來就是 coffee |
-| ビール | bīru | 啤酒 | beer | 唸出來就是 beer，台語借詞 bih-luh |
-| ワイン | wain | 葡萄酒 | wine | 唸出來就是 wine |
-| ケーキ | kēki | 蛋糕 | cake | 唸出來就是 cake |
-| パン | pan | 麵包 | 葡文 pão | 葡萄牙語進入日語，不是英文 pan |
 
 ---
 
@@ -74,18 +64,14 @@ date:
 
 | 片假名 | 讀音 | 意思 | 英文來源 | 記憶鉤 |
 |---|---|---|---|---|
-| チャーハン | chāhan | 炒飯 | 中文「炒飯」| 台語 tsá-pn̄g → 日語借中文發音，チャ是拗音 |
-| チーズ | chīzu | 起司 | cheese | 唸出來就是 cheese |
+| コーヒー | kōhī | 咖啡 | coffee | 唸出來就是 coffee |
+| ケーキ | kēki | 蛋糕 | cake | 唸出來就是 cake |
 | アイス | aisu | 冰／冰淇淋 | ice | 唸出來就是 ice |
-| スープ | sūpu | 湯 | soup | 唸出來就是 soup |
 | バス | basu | 公車 | bus | 唸出來就是 bus |
+| チーズ | chīzu | 起司 | cheese | 唸出來就是 cheese |
 | サイズ | saizu | 尺寸 | size | 唸出來就是 size |
-| レシート | reshīto | 收據 | receipt | 唸出來就是 receipt |
 | タクシー | takushī | 計程車 | taxi | 唸出來就是 taxi，台語也借了這個詞 |
-| トイレ | toire | 廁所 | toilet | 唸出來就是 toilet |
 | チケット | chiketto | 票 | ticket | ッ是促音——停頓一拍再爆發，t→tt |
-| セール | sēru | 特賣 | sale | 唸出來就是 sale |
-| コンビニ | konbini | 便利商店 | convenience store | コンビニエンスストア 縮略 |
 | デパート | depāto | 百貨公司 | department store | デパートメント 縮略 |
 | スーパー | sūpā | 超市 | supermarket | スーパーマーケット 縮略 |
 
@@ -112,8 +98,7 @@ date:
 
 | 片假名 | 讀音 | 意思 | 英文來源 | 記憶鉤 |
 |---|---|---|---|---|
-| ホテル | hoteru | 飯店 | hotel | 唸出來就是 hotel |
-| レストラン | resutoran | 餐廳 | restaurant | 唸出來就是 restaurant |
+| スープ | sūpu | 湯 | soup | 唸出來就是 soup |
 
 
 ## 第二輪C（12個）：ヤ行・ラ行・ワ行・ン・特殊符號
@@ -137,6 +122,14 @@ date:
 
 | 片假名 | 讀音 | 意思 | 英文來源 | 記憶鉤 |
 |---|---|---|---|---|
+| ビール | bīru | 啤酒 | beer | 唸出來就是 beer，台語借詞 bih-luh |
+| ワイン | wain | 葡萄酒 | wine | 唸出來就是 wine |
+| パン | pan | 麵包 | 葡文 pão | 葡萄牙語進入日語，不是英文 pan |
+| チャーハン | chāhan | 炒飯 | 中文「炒飯」| 台語 tsá-pn̄g → 日語借中文發音，チャ是拗音 |
+| レシート | reshīto | 收據 | receipt | 唸出來就是 receipt |
+| トイレ | toire | 廁所 | toilet | 唸出來就是 toilet |
+| セール | sēru | 特賣 | sale | 唸出來就是 sale |
+| コンビニ | konbini | 便利商店 | convenience store | コンビニエンスストア 縮略 |
 | ライター | raitā | 打火機 | lighter | 台語「來打」lâi-tah，English → 日語 → 台語三層借用 |
 | ホテル | hoteru | 飯店 | hotel | 唸出來就是 hotel |
 | レストラン | resutoran | 餐廳 | restaurant | 唸出來就是 restaurant |
