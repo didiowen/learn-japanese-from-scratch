@@ -11,6 +11,9 @@ alias: log
 - 將 8 個中文檔名全部改為英文：hiragana / katakana / vocabulary / grammar / conversation / kanji / language-notes / already-known
 - 同步更新 CLAUDE.md、_sidebar.md、notes/index.html、SKILL.md 中的檔名引用
 
+## 2026-04-28 22:05:00
+- 更新 `CLAUDE.md` 和 `SKILL.md`：學新假名改為每次 5–10 個，記熟再進下一批
+
 ## 2026-04-28 21:55:00
 - 修正 `CLAUDE.md` 中 references 目錄路徑：`references/` → `.claude/skills/japanese-learning/references/`
 
