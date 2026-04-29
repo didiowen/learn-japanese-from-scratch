@@ -618,8 +618,7 @@ const similarGroups = [
 // STATE
 // ═══════════════════════════════
 const intervals = [0, 3, 8, 20, 40];
-const KANA_LIMIT = 68;
-const VOCAB_LIMIT = 50;
+function getSessionLimit() { return currentRound === 0 ? 50 : 30; }
 let currentSection = 'kana';
 let currentRound = 1;
 let currentMode = 'char-to-reading';
@@ -661,7 +660,7 @@ function updateScore() {
 }
 
 function updateProgress() {
-  const lim = currentSection === 'kana' ? KANA_LIMIT : VOCAB_LIMIT;
+  const lim = getSessionLimit();
   document.getElementById('progressFill').style.width = (Math.min(sessionCount / lim, 1) * 100) + '%';
 }
 
@@ -825,7 +824,7 @@ function switchMode(mode) {
 // ═══════════════════════════════
 function nextCard() {
   answered = false;
-  const lim = currentSection === 'kana' ? KANA_LIMIT : VOCAB_LIMIT;
+  const lim = getSessionLimit();
   if (sessionCount >= lim) { showResult(); return; }
   currentCard = pickFromQueue();
   if (!currentCard) { showResult(); return; }
