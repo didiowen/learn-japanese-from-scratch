@@ -683,6 +683,23 @@ const vocabCards = [
 // STATE
 // ═══════════════════════════════
 const intervals = [0, 3, 8, 20, 40];
+const STORAGE_KANA = 'hiragana_kana_progress';
+const STORAGE_VOCAB = 'hiragana_vocab_progress';
+let kanaProgress = {};
+let vocabProgress = {};
+function loadProgress() {
+  try {
+    kanaProgress = JSON.parse(localStorage.getItem(STORAGE_KANA) || '{}');
+    vocabProgress = JSON.parse(localStorage.getItem(STORAGE_VOCAB) || '{}');
+  } catch(e) { kanaProgress = {}; vocabProgress = {}; }
+}
+function saveProgress() {
+  localStorage.setItem(STORAGE_KANA, JSON.stringify(kanaProgress));
+  localStorage.setItem(STORAGE_VOCAB, JSON.stringify(vocabProgress));
+}
+function buildHiraganaQueue() {
+  return cards.map(c => ({ ...c, level: kanaProgress[c.char] ?? 0, nextReview: 0 }));
+}
 let section = 'hiragana'; // 'hiragana' | 'vocab'
 let hiraganaMode = 'multiple'; // 'multiple' | 'input'
 let vocabDir = 'jp-to-zh'; // 'jp-to-zh' | 'zh-to-jp'
@@ -799,6 +816,9 @@ function advanceSRS(item, correct) {
     streak = 0;
   }
   item.nextReview = sessionCount + intervals[item.level];
+  if (item.char) kanaProgress[item.char] = item.level;
+  if (item.display) vocabProgress[item.display] = item.level;
+  saveProgress();
   totalAnswered++;
   sessionCount++;
   updateScore();
@@ -820,7 +840,7 @@ function switchSection(s) {
   document.querySelector('.topic-btn').classList.add('active');
 
   if (s === 'hiragana') {
-    hiraganaQueue = cards.map(c => ({ ...c, level: 0, nextReview: 0 }));
+    hiraganaQueue = buildHiraganaQueue();
   } else {
     vocabQueue = getFilteredVocab();
   }
@@ -843,8 +863,8 @@ function getFilteredVocab() {
     : vocabCards.filter(c => c.topic === currentTopic);
   return filtered.map(c => ({
     ...c,
-    level: alreadyKnown.has(c.display) ? 2 : 0,
-    nextReview: alreadyKnown.has(c.display) ? 8 : 0,
+    level: vocabProgress[c.display] ?? (alreadyKnown.has(c.display) ? 2 : 0),
+    nextReview: 0,
   }));
 }
 
@@ -852,7 +872,7 @@ function setMode(mode) {
   hiraganaMode = mode;
   document.getElementById('btnMultiple').classList.toggle('active', mode === 'multiple');
   document.getElementById('btnInput').classList.toggle('active', mode === 'input');
-  hiraganaQueue = cards.map(c => ({ ...c, level: 0, nextReview: 0 }));
+  hiraganaQueue = buildHiraganaQueue();
   resetScore();
   nextCard();
 }
@@ -1081,7 +1101,7 @@ function showResult() {
 
 function restartCurrent() {
   if (section === 'hiragana') {
-    hiraganaQueue = cards.map(c => ({ ...c, level: 0, nextReview: 0 }));
+    hiraganaQueue = buildHiraganaQueue();
   } else {
     vocabQueue = getFilteredVocab();
   }
@@ -1092,7 +1112,8 @@ function restartCurrent() {
 // ═══════════════════════════════
 // INIT
 // ═══════════════════════════════
-hiraganaQueue = cards.map(c => ({ ...c, level: 0, nextReview: 0 }));
+loadProgress();
+hiraganaQueue = buildHiraganaQueue();
 vocabQueue = getFilteredVocab();
 nextCard();
 </script>

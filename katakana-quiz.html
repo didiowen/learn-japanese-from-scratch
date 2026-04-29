@@ -619,6 +619,20 @@ const similarGroups = [
 // ═══════════════════════════════
 const intervals = [0, 3, 8, 20, 40];
 function getSessionLimit() { return currentRound === 0 ? 50 : 30; }
+const STORAGE_KANA = 'katakana_kana_progress';
+const STORAGE_VOCAB = 'katakana_vocab_progress';
+let kanaProgress = {};
+let vocabProgress = {};
+function loadProgress() {
+  try {
+    kanaProgress = JSON.parse(localStorage.getItem(STORAGE_KANA) || '{}');
+    vocabProgress = JSON.parse(localStorage.getItem(STORAGE_VOCAB) || '{}');
+  } catch(e) { kanaProgress = {}; vocabProgress = {}; }
+}
+function saveProgress() {
+  localStorage.setItem(STORAGE_KANA, JSON.stringify(kanaProgress));
+  localStorage.setItem(STORAGE_VOCAB, JSON.stringify(vocabProgress));
+}
 let currentSection = 'kana';
 let currentRound = 1;
 let currentMode = 'char-to-reading';
@@ -668,7 +682,7 @@ function buildKanaQueue(round) {
   const cards = round === 0 ? katakanaCards : katakanaCards.filter(c => c.round <= round);
   return cards.map(c => {
     const dist = round === 0 ? 0 : round - c.round;
-    return { ...c, level: Math.min(dist, intervals.length - 1), nextReview: 0 };
+    return { ...c, level: kanaProgress[c.char] ?? Math.min(dist, intervals.length - 1), nextReview: 0 };
   });
 }
 
@@ -702,6 +716,9 @@ function advanceSRS(item, correct) {
     item.level = 0; streak = 0;
   }
   item.nextReview = sessionCount + intervals[item.level];
+  if (item.char) kanaProgress[item.char] = item.level;
+  if (item.word) vocabProgress[item.word] = item.level;
+  saveProgress();
   totalAnswered++; sessionCount++;
   updateScore();
 }
@@ -734,7 +751,7 @@ function switchSection(section) {
 function buildVocabQueue() {
   let filtered = currentTopic === 'all' ? vocabCards : vocabCards.filter(v => v.topic === currentTopic);
   if (currentRound > 0) filtered = filtered.filter(v => v.round <= currentRound);
-  vocabQueue = filtered.map(c => ({ ...c, level: alreadyKnown.has(c.word) ? 2 : 0, nextReview: alreadyKnown.has(c.word) ? 8 : 0 }));
+  vocabQueue = filtered.map(c => ({ ...c, level: vocabProgress[c.word] ?? (alreadyKnown.has(c.word) ? 2 : 0), nextReview: 0 }));
   queue = vocabQueue;
 }
 
@@ -1051,6 +1068,7 @@ function restart() {
 // ═══════════════════════════════
 // INIT
 // ═══════════════════════════════
+loadProgress();
 queue = buildKanaQueue(currentRound);
 nextCard();
 
