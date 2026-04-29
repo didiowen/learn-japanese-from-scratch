@@ -387,7 +387,7 @@ h1.title {
   <button class="section-tab" id="tabVocab" onclick="switchSection('vocab')">單字</button>
 </div>
 
-<!-- 輪次選擇（五十音） -->
+<!-- 輪次選擇 -->
 <div class="round-filter" id="roundFilter">
   <button class="round-btn active" data-round="1" onclick="setRound(1)">第1輪</button>
   <button class="round-btn" data-round="2" onclick="setRound(2)">第2輪</button>
@@ -677,7 +677,11 @@ function setRound(n) {
   document.querySelectorAll('.round-btn').forEach(b => {
     b.classList.toggle('active', parseInt(b.dataset.round) === n);
   });
-  queue = buildKanaQueue(n);
+  if (currentSection === 'kana') {
+    queue = buildKanaQueue(n);
+  } else {
+    buildVocabQueue();
+  }
   resetScore();
   nextCard();
 }
@@ -714,7 +718,7 @@ function switchSection(section) {
   document.getElementById('tabKana').classList.toggle('active', section === 'kana');
   document.getElementById('tabVocab').classList.toggle('active', section === 'vocab');
   document.getElementById('kanaModes').style.display = section === 'kana' ? 'flex' : 'none';
-  document.getElementById('roundFilter').style.display = section === 'kana' ? 'flex' : 'none';
+  document.getElementById('roundFilter').style.display = 'flex';
   document.getElementById('vocabToggle').style.display = section === 'vocab' ? 'flex' : 'none';
   document.getElementById('topicFilter').style.display = section === 'vocab' ? 'flex' : 'none';
   resetScore();
