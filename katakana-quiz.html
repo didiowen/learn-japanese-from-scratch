@@ -350,6 +350,32 @@ h1.title {
   transition: all 0.15s;
 }
 .topic-btn.active { background: var(--ink); color: var(--paper); border-color: var(--ink); font-weight: 500; }
+
+/* ── Round filter ── */
+.round-filter {
+  display: flex;
+  max-width: 360px;
+  width: 100%;
+  margin-bottom: 10px;
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+}
+.round-btn {
+  flex: 1;
+  padding: 9px 2px;
+  border: none;
+  background: white;
+  color: var(--neutral);
+  font-family: 'Noto Sans TC', sans-serif;
+  font-size: 0.72rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  border-right: 1px solid var(--border);
+  letter-spacing: 0.02em;
+}
+.round-btn:last-child { border-right: none; }
+.round-btn.active { background: var(--accent); color: white; font-weight: 500; }
 </style>
 </head>
 <body>
@@ -359,6 +385,16 @@ h1.title {
 <div class="section-tabs">
   <button class="section-tab active" id="tabKana" onclick="switchSection('kana')">五十音</button>
   <button class="section-tab" id="tabVocab" onclick="switchSection('vocab')">單字</button>
+</div>
+
+<!-- 輪次選擇（五十音） -->
+<div class="round-filter" id="roundFilter">
+  <button class="round-btn active" data-round="1" onclick="setRound(1)">第1輪</button>
+  <button class="round-btn" data-round="2" onclick="setRound(2)">第2輪</button>
+  <button class="round-btn" data-round="3" onclick="setRound(3)">第3輪</button>
+  <button class="round-btn" data-round="4" onclick="setRound(4)">第4輪</button>
+  <button class="round-btn" data-round="5" onclick="setRound(5)">第5輪</button>
+  <button class="round-btn" data-round="0" onclick="setRound(0)">全部</button>
 </div>
 
 <!-- 四個模式 tab（五十音） -->
@@ -398,85 +434,156 @@ h1.title {
 // DATA
 // ═══════════════════════════════
 const katakanaCards = [
-  { char: 'ア', reading: 'a',   hiragana: 'あ', kanji: '阿', hint: '「阿」左部「阝」→ ア（あ是「安」，不同源）' },
-  { char: 'イ', reading: 'i',   hiragana: 'い', kanji: '伊', hint: '「伊」左部「亻」→ イ（い是「以」，不同源）' },
-  { char: 'ウ', reading: 'u',   hiragana: 'う', kanji: '宇', hint: '「宇」簡化 → ウ，和う同源' },
-  { char: 'エ', reading: 'e',   hiragana: 'え', kanji: '江', hint: '「江」右部「工」→ エ' },
-  { char: 'オ', reading: 'o',   hiragana: 'お', kanji: '於', hint: '「於」右部 → オ' },
-  { char: 'カ', reading: 'ka',  hiragana: 'か', kanji: '加', hint: '「加」左部「力」→ カ' },
-  { char: 'キ', reading: 'ki',  hiragana: 'き', kanji: '幾', hint: '「幾」骨架簡化 → キ，和き同源' },
-  { char: 'ク', reading: 'ku',  hiragana: 'く', kanji: '久', hint: '「久」右上部 → ク，和く同源' },
-  { char: 'ケ', reading: 'ke',  hiragana: 'け', kanji: '介', hint: '「介」中部 → ケ（け是「計」，不同源）' },
-  { char: 'コ', reading: 'ko',  hiragana: 'こ', kanji: '己', hint: '「己」方形化 → コ，和こ同源' },
-  { char: 'サ', reading: 'sa',  hiragana: 'さ', kanji: '散', hint: '「散」左上兩橫一撇 → サ（さ是「左」，不同源）' },
-  { char: 'シ', reading: 'shi', hiragana: 'し', kanji: '之', hint: '「之」三點橫排 → シ，像笑臉 :)　注意和ツ的差別：點是橫的' },
-  { char: 'ス', reading: 'su',  hiragana: 'す', kanji: '須', hint: '「須」右部 → ス，比す少一個圈' },
-  { char: 'セ', reading: 'se',  hiragana: 'せ', kanji: '世', hint: '「世」幾乎未變 → セ，和せ同源' },
-  { char: 'ソ', reading: 'so',  hiragana: 'そ', kanji: '曽', hint: '「曽」上部一長撇 → ソ，注意和ン的差別：撇長向右' },
-  { char: 'タ', reading: 'ta',  hiragana: 'た', kanji: '多', hint: '「多」上部 → タ（た是「太」，不同源）' },
-  { char: 'チ', reading: 'chi', hiragana: 'ち', kanji: '千', hint: '「千」變形 → チ（ち是「知」，不同源）' },
-  { char: 'ツ', reading: 'tsu', hiragana: 'つ', kanji: '川', hint: '「川」三撇豎起 → ツ，注意和シ的差別：點是直的' },
-  { char: 'テ', reading: 'te',  hiragana: 'て', kanji: '天', hint: '「天」上兩橫 → テ，和て同源' },
-  { char: 'ト', reading: 'to',  hiragana: 'と', kanji: '止', hint: '「止」右半一豎一短橫 → ト，和と同源' },
-  { char: 'ナ', reading: 'na',  hiragana: 'な', kanji: '奈', hint: '「奈」上部 → ナ' },
-  { char: 'ニ', reading: 'ni',  hiragana: 'に', kanji: '仁', hint: '「仁」右部兩橫 → ニ，注意不是數字「二」，和に同源' },
-  { char: 'ヌ', reading: 'nu',  hiragana: 'ぬ', kanji: '奴', hint: '「奴」右部 → ヌ，比ぬ少封閉圈' },
-  { char: 'ネ', reading: 'ne',  hiragana: 'ね', kanji: '祢', hint: '「祢」衣字旁 → ネ，和ね同源' },
-  { char: 'ノ', reading: 'no',  hiragana: 'の', kanji: '乃', hint: '「乃」一撇 → ノ，和の同源' },
-  { char: 'ハ', reading: 'ha',  hiragana: 'は', kanji: '八', hint: '「八」就是這個字 → ハ（は是「波」，不同源）' },
-  { char: 'ヒ', reading: 'hi',  hiragana: 'ひ', kanji: '比', hint: '「比」右半 → ヒ，和ひ同源' },
-  { char: 'フ', reading: 'fu',  hiragana: 'ふ', kanji: '不', hint: '「不」頂部彎鉤 → フ，和ふ同源' },
-  { char: 'ヘ', reading: 'he',  hiragana: 'へ', kanji: '部', hint: '「部」右上 → ヘ，和へ幾乎一樣，最好認的一組' },
-  { char: 'ホ', reading: 'ho',  hiragana: 'ほ', kanji: '保', hint: '「保」右半木字旁 → ホ，和ほ同源' },
-  { char: 'マ', reading: 'ma',  hiragana: 'ま', kanji: '末', hint: '「末」上部兩筆 → マ，和ま同源' },
-  { char: 'ミ', reading: 'mi',  hiragana: 'み', kanji: '三', hint: '「三」三橫斜排 → ミ，和み同源' },
-  { char: 'ム', reading: 'mu',  hiragana: 'む', kanji: '牟', hint: '「牟」簡化像牛臉 🐄 → ム' },
-  { char: 'メ', reading: 'me',  hiragana: 'め', kanji: '女', hint: '「女」簡化交叉 → メ，和め同源' },
-  { char: 'モ', reading: 'mo',  hiragana: 'も', kanji: '毛', hint: '「毛」三橫一豎 → モ，和も同源' },
-  { char: 'ヤ', reading: 'ya',  hiragana: 'や', kanji: '也', hint: '「也」草書簡化 → ヤ，和や同源' },
-  { char: 'ユ', reading: 'yu',  hiragana: 'ゆ', kanji: '由', hint: '「由」下部 → ユ，和ゆ同源' },
-  { char: 'ヨ', reading: 'yo',  hiragana: 'よ', kanji: '與', hint: '「與」三橫簡化 → ヨ，和よ同源' },
-  { char: 'ラ', reading: 'ra',  hiragana: 'ら', kanji: '良', hint: '「良」上部 → ラ，和ら同源' },
-  { char: 'リ', reading: 'ri',  hiragana: 'り', kanji: '利', hint: '「利」右半刀旁 → リ，和り同源' },
-  { char: 'ル', reading: 'ru',  hiragana: 'る', kanji: '流', hint: '「流」右下彎鉤 → ル（る是「留」，不同源）' },
-  { char: 'レ', reading: 're',  hiragana: 'れ', kanji: '礼', hint: '「礼」幾乎未變 → レ，和れ同源' },
-  { char: 'ロ', reading: 'ro',  hiragana: 'ろ', kanji: '呂', hint: '「呂」上半方框 → ロ，和ろ同源' },
-  { char: 'ワ', reading: 'wa',  hiragana: 'わ', kanji: '和', hint: '「和」右部 → ワ，和わ同源' },
-  { char: 'ン', reading: 'n',   hiragana: 'ん', kanji: '尓', hint: '短撇向左收 → ン，注意和ソ的差別：撇短向左' },
+  // ── 第1輪：ア行・ラ行・ン ──
+  { char: 'ア', round: 1, reading: 'a',   hiragana: 'あ', kanji: '阿', hint: '「阿」左部「阝」→ ア（台語「阿」a）' },
+  { char: 'イ', round: 1, reading: 'i',   hiragana: 'い', kanji: '伊', hint: '「伊」左部「亻」→ イ（台語「伊」i）' },
+  { char: 'ウ', round: 1, reading: 'u',   hiragana: 'う', kanji: '宇', hint: '「宇」簡化 → ウ，台語「宇」û' },
+  { char: 'エ', round: 1, reading: 'e',   hiragana: 'え', kanji: '江', hint: '「江」右部「工」→ エ' },
+  { char: 'オ', round: 1, reading: 'o',   hiragana: 'お', kanji: '於', hint: '「於」右部 → オ' },
+  { char: 'ラ', round: 1, reading: 'ra',  hiragana: 'ら', kanji: '良', hint: '「良」上部 → ラ，台語「良」liông，r/l 接近' },
+  { char: 'リ', round: 1, reading: 'ri',  hiragana: 'り', kanji: '利', hint: '「利」右半刀旁 → リ，和り同源' },
+  { char: 'ル', round: 1, reading: 'ru',  hiragana: 'る', kanji: '流', hint: '「流」右下彎鉤 → ル（る是「留」，不同源）' },
+  { char: 'レ', round: 1, reading: 're',  hiragana: 'れ', kanji: '礼', hint: '「礼」幾乎未變 → レ，和れ同源' },
+  { char: 'ロ', round: 1, reading: 'ro',  hiragana: 'ろ', kanji: '呂', hint: '「呂」上半方框 → ロ，台語白話「呂」lū' },
+  { char: 'ン', round: 1, reading: 'n',   hiragana: 'ん', kanji: '尓', hint: '短撇向左收 → ン，注意和ソ的差別：撇短向左' },
+  // ── 第2輪：カ行・ガ行・ナ行 ──
+  { char: 'カ', round: 2, reading: 'ka',  hiragana: 'か', kanji: '加', hint: '「加」左部「力」→ カ' },
+  { char: 'キ', round: 2, reading: 'ki',  hiragana: 'き', kanji: '幾', hint: '「幾」骨架簡化 → キ，和き同源' },
+  { char: 'ク', round: 2, reading: 'ku',  hiragana: 'く', kanji: '久', hint: '「久」右上部 → ク，く圓ク有稜角' },
+  { char: 'ケ', round: 2, reading: 'ke',  hiragana: 'け', kanji: '介', hint: '「介」中部 → ケ（け是「計」，不同源）' },
+  { char: 'コ', round: 2, reading: 'ko',  hiragana: 'こ', kanji: '己', hint: '「己」方形化 → コ，和こ同源' },
+  { char: 'ガ', round: 2, reading: 'ga',  hiragana: 'が', kanji: '加＋゛', hint: '「加」＋濁點 → ガ，カ加濁點，k→g' },
+  { char: 'ギ', round: 2, reading: 'gi',  hiragana: 'ぎ', kanji: '幾＋゛', hint: '「幾」＋濁點 → ギ，キ加濁點' },
+  { char: 'グ', round: 2, reading: 'gu',  hiragana: 'ぐ', kanji: '久＋゛', hint: '「久」＋濁點 → グ，ク加濁點' },
+  { char: 'ゲ', round: 2, reading: 'ge',  hiragana: 'げ', kanji: '介＋゛', hint: '「介」＋濁點 → ゲ，ケ加濁點' },
+  { char: 'ゴ', round: 2, reading: 'go',  hiragana: 'ご', kanji: '己＋゛', hint: '「己」＋濁點 → ゴ，コ加濁點' },
+  { char: 'ナ', round: 2, reading: 'na',  hiragana: 'な', kanji: '奈', hint: '「奈」上部 → ナ' },
+  { char: 'ニ', round: 2, reading: 'ni',  hiragana: 'に', kanji: '仁', hint: '「仁」右部兩橫 → ニ，注意不是數字「二」' },
+  { char: 'ヌ', round: 2, reading: 'nu',  hiragana: 'ぬ', kanji: '奴', hint: '「奴」右部 → ヌ，比ぬ少封閉圈' },
+  { char: 'ネ', round: 2, reading: 'ne',  hiragana: 'ね', kanji: '祢', hint: '「祢」衣字旁 → ネ，和ね同源' },
+  { char: 'ノ', round: 2, reading: 'no',  hiragana: 'の', kanji: '乃', hint: '「乃」一撇 → ノ，和の同源' },
+  // ── 第3輪：サ行・ザ行・ヤ行・ワ ──
+  { char: 'サ', round: 3, reading: 'sa',  hiragana: 'さ', kanji: '散', hint: '「散」左上兩橫一撇 → サ（さ是「左」，不同源）' },
+  { char: 'シ', round: 3, reading: 'shi', hiragana: 'し', kanji: '之', hint: '「之」三點橫排 → シ，像笑臉 :)　注意和ツ的差別：點是橫的' },
+  { char: 'ス', round: 3, reading: 'su',  hiragana: 'す', kanji: '須', hint: '「須」右部 → ス，比す少一個圈' },
+  { char: 'セ', round: 3, reading: 'se',  hiragana: 'せ', kanji: '世', hint: '「世」幾乎未變 → セ，和せ同源' },
+  { char: 'ソ', round: 3, reading: 'so',  hiragana: 'そ', kanji: '曽', hint: '「曽」上部一長撇 → ソ，注意和ン的差別：撇長向右' },
+  { char: 'ザ', round: 3, reading: 'za',  hiragana: 'ざ', kanji: '散＋゛', hint: '「散」＋濁點 → ザ，サ加濁點，s→z' },
+  { char: 'ジ', round: 3, reading: 'ji',  hiragana: 'じ', kanji: '之＋゛', hint: '「之」＋濁點 → ジ，シ加濁點' },
+  { char: 'ズ', round: 3, reading: 'zu',  hiragana: 'ず', kanji: '須＋゛', hint: '「須」＋濁點 → ズ，ス加濁點' },
+  { char: 'ゼ', round: 3, reading: 'ze',  hiragana: 'ぜ', kanji: '世＋゛', hint: '「世」＋濁點 → ゼ，セ加濁點' },
+  { char: 'ゾ', round: 3, reading: 'zo',  hiragana: 'ぞ', kanji: '曽＋゛', hint: '「曽」＋濁點 → ゾ，ソ加濁點' },
+  { char: 'ヤ', round: 3, reading: 'ya',  hiragana: 'や', kanji: '也', hint: '「也」草書簡化 → ヤ，和や同源' },
+  { char: 'ユ', round: 3, reading: 'yu',  hiragana: 'ゆ', kanji: '由', hint: '「由」下部 → ユ，和ゆ同源' },
+  { char: 'ヨ', round: 3, reading: 'yo',  hiragana: 'よ', kanji: '與', hint: '「與」三橫簡化 → ヨ，和よ同源' },
+  { char: 'ワ', round: 3, reading: 'wa',  hiragana: 'わ', kanji: '和', hint: '「和」右部 → ワ，和わ同源' },
+  // ── 第4輪：タ行・ダ行・マ行 ──
+  { char: 'タ', round: 4, reading: 'ta',  hiragana: 'た', kanji: '多', hint: '「多」上部 → タ（た是「太」，不同源）' },
+  { char: 'チ', round: 4, reading: 'chi', hiragana: 'ち', kanji: '千', hint: '「千」變形 → チ（ち是「知」，不同源）' },
+  { char: 'ツ', round: 4, reading: 'tsu', hiragana: 'つ', kanji: '川', hint: '「川」三撇豎起 → ツ，注意和シ的差別：點是直的' },
+  { char: 'テ', round: 4, reading: 'te',  hiragana: 'て', kanji: '天', hint: '「天」上兩橫 → テ，和て同源' },
+  { char: 'ト', round: 4, reading: 'to',  hiragana: 'と', kanji: '止', hint: '「止」右半一豎一短橫 → ト，和と同源' },
+  { char: 'ダ', round: 4, reading: 'da',  hiragana: 'だ', kanji: '多＋゛', hint: '「多」＋濁點 → ダ，タ加濁點，t→d' },
+  { char: 'デ', round: 4, reading: 'de',  hiragana: 'で', kanji: '天＋゛', hint: '「天」＋濁點 → デ，テ加濁點' },
+  { char: 'ド', round: 4, reading: 'do',  hiragana: 'ど', kanji: '止＋゛', hint: '「止」＋濁點 → ド，ト加濁點' },
+  { char: 'マ', round: 4, reading: 'ma',  hiragana: 'ま', kanji: '末', hint: '「末」上部兩筆 → マ，和ま同源' },
+  { char: 'ミ', round: 4, reading: 'mi',  hiragana: 'み', kanji: '三', hint: '「三」三橫斜排 → ミ，和み同源' },
+  { char: 'ム', round: 4, reading: 'mu',  hiragana: 'む', kanji: '牟', hint: '「牟」簡化像牛臉 🐄 → ム' },
+  { char: 'メ', round: 4, reading: 'me',  hiragana: 'め', kanji: '女', hint: '「女」簡化交叉 → メ，和め同源' },
+  { char: 'モ', round: 4, reading: 'mo',  hiragana: 'も', kanji: '毛', hint: '「毛」三橫一豎 → モ，和も同源' },
+  // ── 第5輪：ハ行・バ行・パ行 ──
+  { char: 'ハ', round: 5, reading: 'ha',  hiragana: 'は', kanji: '八', hint: '「八」就是這個字 → ハ（は是「波」，不同源）' },
+  { char: 'ヒ', round: 5, reading: 'hi',  hiragana: 'ひ', kanji: '比', hint: '「比」右半 → ヒ，和ひ同源' },
+  { char: 'フ', round: 5, reading: 'fu',  hiragana: 'ふ', kanji: '不', hint: '「不」頂部彎鉤 → フ，和ふ同源' },
+  { char: 'ヘ', round: 5, reading: 'he',  hiragana: 'へ', kanji: '部', hint: '「部」右上 → ヘ，和へ幾乎一樣，最好認的一組' },
+  { char: 'ホ', round: 5, reading: 'ho',  hiragana: 'ほ', kanji: '保', hint: '「保」右半木字旁 → ホ，和ほ同源' },
+  { char: 'バ', round: 5, reading: 'ba',  hiragana: 'ば', kanji: '八＋゛', hint: '「八」＋濁點 → バ，ハ加濁點，h→b' },
+  { char: 'ビ', round: 5, reading: 'bi',  hiragana: 'び', kanji: '比＋゛', hint: '「比」＋濁點 → ビ，ヒ加濁點' },
+  { char: 'ブ', round: 5, reading: 'bu',  hiragana: 'ぶ', kanji: '不＋゛', hint: '「不」＋濁點 → ブ，フ加濁點' },
+  { char: 'ベ', round: 5, reading: 'be',  hiragana: 'べ', kanji: '部＋゛', hint: '「部」＋濁點 → ベ，ヘ加濁點' },
+  { char: 'ボ', round: 5, reading: 'bo',  hiragana: 'ぼ', kanji: '保＋゛', hint: '「保」＋濁點 → ボ，ホ加濁點' },
+  { char: 'パ', round: 5, reading: 'pa',  hiragana: 'ぱ', kanji: '八＋゜', hint: '「八」＋半濁點 → パ，回到古代 p 音' },
+  { char: 'ピ', round: 5, reading: 'pi',  hiragana: 'ぴ', kanji: '比＋゜', hint: '「比」＋半濁點 → ピ，ヒ加半濁點' },
+  { char: 'プ', round: 5, reading: 'pu',  hiragana: 'ぷ', kanji: '不＋゜', hint: '「不」＋半濁點 → プ，フ加半濁點' },
+  { char: 'ペ', round: 5, reading: 'pe',  hiragana: 'ぺ', kanji: '部＋゜', hint: '「部」＋半濁點 → ペ，ヘ加半濁點' },
+  { char: 'ポ', round: 5, reading: 'po',  hiragana: 'ぽ', kanji: '保＋゜', hint: '「保」＋半濁點 → ポ，ホ加半濁點' },
 ];
 
 const vocabCards = [
-  { word: 'コーヒー', reading: 'kōhī',     meaning: '咖啡',     hint: '唸出來就是 coffee',                        topic: 'food' },
-  { word: 'ビール',   reading: 'bīru',      meaning: '啤酒',     hint: '唸出來就是 beer，台語借詞 bih-luh',         topic: 'food' },
-  { word: 'ワイン',   reading: 'wain',      meaning: '葡萄酒',   hint: '唸出來就是 wine',                          topic: 'food' },
-  { word: 'ケーキ',   reading: 'kēki',      meaning: '蛋糕',     hint: '唸出來就是 cake',                          topic: 'food' },
-  { word: 'アイス',   reading: 'aisu',      meaning: '冰淇淋',   hint: '唸出來就是 ice',                           topic: 'food' },
-  { word: 'スープ',   reading: 'sūpu',      meaning: '湯',       hint: '唸出來就是 soup',                          topic: 'food' },
-  { word: 'パン',     reading: 'pan',       meaning: '麵包',     hint: '葡萄牙語 pão 進入日語，不是英文 pan',       topic: 'food' },
-  { word: 'チーズ',   reading: 'chīzu',     meaning: '起司',     hint: '唸出來就是 cheese',                        topic: 'food' },
-  { word: 'タクシー', reading: 'takushī',   meaning: '計程車',   hint: '唸出來就是 taxi，台語也借了這個詞',         topic: 'daily' },
-  { word: 'バス',     reading: 'basu',      meaning: '公車',     hint: '唸出來就是 bus',                           topic: 'daily' },
-  { word: 'ホテル',   reading: 'hoteru',    meaning: '飯店',     hint: '唸出來就是 hotel',                         topic: 'daily' },
-  { word: 'トイレ',   reading: 'toire',     meaning: '廁所',     hint: '唸出來就是 toilet（縮略）',                topic: 'daily' },
-  { word: 'チケット', reading: 'chiketto',  meaning: '票',       hint: 'ッ 促音——停頓一拍再爆發，唸出來是 ticket', topic: 'daily' },
-  { word: 'セール',   reading: 'sēru',      meaning: '特賣',     hint: '唸出來就是 sale',                          topic: 'daily' },
-  { word: 'サイズ',   reading: 'saizu',     meaning: '尺寸',     hint: '唸出來就是 size',                          topic: 'daily' },
-  { word: 'レシート', reading: 'reshīto',   meaning: '收據',     hint: '唸出來就是 receipt',                       topic: 'daily' },
-  { word: 'レストラン', reading: 'resutoran', meaning: '餐廳',   hint: '唸出來就是 restaurant',                    topic: 'daily' },
-  { word: 'コンビニ', reading: 'konbini',   meaning: '便利商店', hint: 'コンビニエンスストア（convenience store）縮略', topic: 'daily' },
-  { word: 'デパート', reading: 'depāto',    meaning: '百貨公司', hint: 'デパートメント（department store）縮略',   topic: 'daily' },
-  { word: 'スーパー', reading: 'sūpā',      meaning: '超市',     hint: 'スーパーマーケット（supermarket）縮略',    topic: 'daily' },
-  { word: 'ライター', reading: 'raitā',    meaning: '打火機',   hint: '台語「來打」← 日語 ライター ← 英語 lighter', topic: 'daily' },
-  { word: 'チャーハン', reading: 'chāhan',  meaning: '炒飯',     hint: '中文「炒飯」借入，チャ是拗音（チ＋ャ＝cha）', topic: 'food' },
+  // ── 第1輪 ──
+  { word: 'ルール',     reading: 'rūru',      meaning: '規則',     hint: 'rule → ルール，ル+ー+ル',                    topic: 'daily', round: 1 },
+  { word: 'ロール',     reading: 'rōru',      meaning: '捲／角色', hint: 'roll / role → ロール，ロ+ー+ル',            topic: 'daily', round: 1 },
+  { word: 'エール',     reading: 'ēru',       meaning: '加油聲',   hint: 'yell → エール，エ+ー+ル',                   topic: 'daily', round: 1 },
+  { word: 'アイロン',   reading: 'airon',     meaning: '熨斗',     hint: 'iron → アイロン，ア+イ+ロ+ン',              topic: 'daily', round: 1 },
+  { word: 'ラリー',     reading: 'rarī',      meaning: '拉力賽',   hint: 'rally → ラリー，ラ+リ+ー',                  topic: 'daily', round: 1 },
+  { word: 'リール',     reading: 'rīru',      meaning: '捲盤',     hint: 'reel → リール，リ+ー+ル',                   topic: 'daily', round: 1 },
+  // ── 第2輪 ──
+  { word: 'ケーキ',     reading: 'kēki',      meaning: '蛋糕',     hint: '唸出來就是 cake',                           topic: 'food',  round: 2 },
+  { word: 'コーラ',     reading: 'kōra',      meaning: '可樂',     hint: 'cola → コーラ，コ+ー+ラ',                   topic: 'food',  round: 2 },
+  { word: 'ガール',     reading: 'gāru',      meaning: '女孩',     hint: 'girl → ガール，ガ+ー+ル',                   topic: 'daily', round: 2 },
+  { word: 'クール',     reading: 'kūru',      meaning: '酷',       hint: 'cool → クール，ク+ー+ル',                   topic: 'daily', round: 2 },
+  { word: 'ゴール',     reading: 'gōru',      meaning: '球門／終點', hint: 'goal → ゴール，ゴ+ー+ル',               topic: 'daily', round: 2 },
+  { word: 'グリル',     reading: 'guriru',    meaning: '烤架',     hint: 'grill → グリル，グ+リ+ル',                  topic: 'food',  round: 2 },
+  { word: 'アイコン',   reading: 'aikon',     meaning: '圖示',     hint: 'icon → アイコン，ア+イ+コ+ン',              topic: 'daily', round: 2 },
+  { word: 'カラー',     reading: 'karā',      meaning: '顏色',     hint: 'color → カラー，カ+ラ+ー',                  topic: 'daily', round: 2 },
+  { word: 'ランナー',   reading: 'rannā',     meaning: '跑者',     hint: 'runner → ランナー，ラ+ン+ナ+ー',            topic: 'daily', round: 2 },
+  { word: 'ガーリック', reading: 'gārikku',   meaning: '大蒜',     hint: 'garlic → ガーリック，ガ+ー+リ+ッ+ク',       topic: 'food',  round: 2 },
+  { word: 'ルーキー',   reading: 'rūkī',      meaning: '新人',     hint: 'rookie → ルーキー，ル+ー+キ+ー',            topic: 'daily', round: 2 },
+  // ── 第3輪 ──
+  { word: 'アイス',     reading: 'aisu',      meaning: '冰淇淋',   hint: '唸出來就是 ice',                            topic: 'food',  round: 3 },
+  { word: 'サイズ',     reading: 'saizu',     meaning: '尺寸',     hint: '唸出來就是 size',                           topic: 'daily', round: 3 },
+  { word: 'セール',     reading: 'sēru',      meaning: '特賣',     hint: '唸出來就是 sale',                           topic: 'daily', round: 3 },
+  { word: 'ゼロ',       reading: 'zero',      meaning: '零',       hint: 'zero → ゼロ，ゼ+ロ',                        topic: 'daily', round: 3 },
+  { word: 'ゾーン',     reading: 'zōn',       meaning: '區域',     hint: 'zone → ゾーン，ゾ+ー+ン',                   topic: 'daily', round: 3 },
+  { word: 'ジュース',   reading: 'jūsu',      meaning: '果汁',     hint: '唸出來就是 juice，ジュ是拗音',              topic: 'food',  round: 3 },
+  { word: 'ニュース',   reading: 'nyūsu',     meaning: '新聞',     hint: 'news → ニュース，ニュ拗音＋ー+ス',          topic: 'daily', round: 3 },
+  { word: 'ワイン',     reading: 'wain',      meaning: '葡萄酒',   hint: '唸出來就是 wine',                           topic: 'food',  round: 3 },
+  { word: 'ガス',       reading: 'gasu',      meaning: '瓦斯',     hint: '台語「瓦斯」gā-su 直接借自這個詞',          topic: 'daily', round: 3 },
+  { word: 'スキー',     reading: 'sukī',      meaning: '滑雪',     hint: 'ski → スキー，ス+キ+ー',                    topic: 'daily', round: 3 },
+  { word: 'ヨガ',       reading: 'yoga',      meaning: '瑜伽',     hint: 'yoga → ヨガ，ヨ+ガ',                        topic: 'daily', round: 3 },
+  // ── 第4輪 ──
+  { word: 'タクシー',   reading: 'takushī',   meaning: '計程車',   hint: '唸出來就是 taxi，台語也借了這個詞',          topic: 'daily', round: 4 },
+  { word: 'チーズ',     reading: 'chīzu',     meaning: '起司',     hint: '唸出來就是 cheese',                         topic: 'food',  round: 4 },
+  { word: 'ダンス',     reading: 'dansu',     meaning: '舞蹈',     hint: 'dance → ダンス，ダ+ン+ス',                  topic: 'daily', round: 4 },
+  { word: 'ドア',       reading: 'doa',       meaning: '門',       hint: 'door → ドア，ド+ア',                        topic: 'daily', round: 4 },
+  { word: 'トイレ',     reading: 'toire',     meaning: '廁所',     hint: '唸出來就是 toilet（縮略）',                 topic: 'daily', round: 4 },
+  { word: 'テスト',     reading: 'tesuto',    meaning: '考試',     hint: 'test → テスト，テ+ス+ト',                   topic: 'daily', round: 4 },
+  { word: 'ゲーム',     reading: 'gēmu',      meaning: '遊戲',     hint: '唸出來就是 game，ゲ+ー+ム',                 topic: 'daily', round: 4 },
+  { word: 'ラーメン',   reading: 'rāmen',     meaning: '拉麵',     hint: '中文「拉麵」借入，ラ+ー+メ+ン',             topic: 'food',  round: 4 },
+  { word: 'チャンス',   reading: 'chansu',    meaning: '機會',     hint: 'chance → チャンス，チャ拗音＋ン+ス',        topic: 'daily', round: 4 },
+  { word: 'マスク',     reading: 'masuku',    meaning: '口罩',     hint: 'mask → マスク，マ+ス+ク',                   topic: 'daily', round: 4 },
+  { word: 'レシート',   reading: 'reshīto',   meaning: '收據',     hint: '唸出來就是 receipt',                        topic: 'daily', round: 4 },
+  { word: 'ライター',   reading: 'raitā',     meaning: '打火機',   hint: '台語「來打」← 日語 ライター ← 英語 lighter', topic: 'daily', round: 4 },
+  { word: 'チケット',   reading: 'chiketto',  meaning: '票',       hint: 'ッ 促音——停頓一拍再爆發，唸出來是 ticket',  topic: 'daily', round: 4 },
+  { word: 'レストラン', reading: 'resutoran', meaning: '餐廳',     hint: '唸出來就是 restaurant',                     topic: 'daily', round: 4 },
+  { word: 'ギター',     reading: 'gitā',      meaning: '吉他',     hint: 'guitar → ギター，台語「吉他」同一來源',     topic: 'daily', round: 4 },
+  // ── 第5輪 ──
+  { word: 'コーヒー',   reading: 'kōhī',      meaning: '咖啡',     hint: '唸出來就是 coffee',                         topic: 'food',  round: 5 },
+  { word: 'バス',       reading: 'basu',      meaning: '公車',     hint: '唸出來就是 bus',                            topic: 'daily', round: 5 },
+  { word: 'ビール',     reading: 'bīru',      meaning: '啤酒',     hint: '唸出來就是 beer，台語借詞 bih-luh',          topic: 'food',  round: 5 },
+  { word: 'ブーツ',     reading: 'būtsu',     meaning: '靴子',     hint: 'boots → ブーツ，ブ+ー+ツ',                  topic: 'daily', round: 5 },
+  { word: 'ベッド',     reading: 'beddo',     meaning: '床',       hint: 'bed → ベッド，ベ+ッ+ド，ッ促音',            topic: 'daily', round: 5 },
+  { word: 'ボール',     reading: 'bōru',      meaning: '球',       hint: 'ball → ボール，ボ+ー+ル',                   topic: 'daily', round: 5 },
+  { word: 'パン',       reading: 'pan',       meaning: '麵包',     hint: '葡萄牙語 pão 進入日語，不是英文 pan',        topic: 'food',  round: 5 },
+  { word: 'ペン',       reading: 'pen',       meaning: '筆',       hint: 'pen → ペン，ペ+ン',                         topic: 'daily', round: 5 },
+  { word: 'ポケット',   reading: 'poketto',   meaning: '口袋',     hint: 'pocket → ポケット，ポ+ケ+ッ+ト',            topic: 'daily', round: 5 },
+  { word: 'ホテル',     reading: 'hoteru',    meaning: '飯店',     hint: '唸出來就是 hotel',                          topic: 'daily', round: 5 },
+  { word: 'スーパー',   reading: 'sūpā',      meaning: '超市',     hint: 'スーパーマーケット（supermarket）縮略',     topic: 'daily', round: 5 },
+  { word: 'デパート',   reading: 'depāto',    meaning: '百貨公司', hint: 'デパートメント（department store）縮略',    topic: 'daily', round: 5 },
+  { word: 'コンビニ',   reading: 'konbini',   meaning: '便利商店', hint: 'コンビニエンスストア（convenience store）縮略', topic: 'daily', round: 5 },
+  { word: 'ハンバーガー', reading: 'hanbāgā', meaning: '漢堡',     hint: '唸出來就是 hamburger，ハ+ン+バ+ー+ガ+ー',   topic: 'food',  round: 5 },
+  { word: 'スープ',     reading: 'sūpu',      meaning: '湯',       hint: '唸出來就是 soup',                           topic: 'food',  round: 5 },
+  { word: 'フルーツ',   reading: 'furūtsu',   meaning: '水果',     hint: 'fruits → フルーツ，フ+ル+ー+ツ',            topic: 'food',  round: 5 },
+  { word: 'ピザ',       reading: 'piza',      meaning: '披薩',     hint: '唸出來就是 pizza，ピ+ザ',                   topic: 'food',  round: 5 },
+  { word: 'パスポート', reading: 'pasupōto',  meaning: '護照',     hint: 'passport → パスポート，パ+ス+ポ+ー+ト',     topic: 'daily', round: 5 },
+  { word: 'チャーハン', reading: 'chāhan',    meaning: '炒飯',     hint: '中文「炒飯」借入，チャ是拗音（チ＋ャ＝cha）', topic: 'food', round: 5 },
+  { word: 'ヘルメット', reading: 'herumetto', meaning: '安全帽',   hint: 'helmet → ヘルメット，ヘ+ル+メ+ッ+ト',       topic: 'daily', round: 5 },
 ];
 
-// 本來就會的單字——降低出現頻率（從第二輪才開始復習）
+// 本來就會的單字（降低頻率）
 const alreadyKnown = new Set([
   'ライター',
 ]);
-
-// 第一輪已記熟的假名——降低出現頻率
-const knownKana = new Set(['ア', 'イ', 'ウ', 'エ', 'オ', 'キ', 'セ', 'ト', 'ニ', 'ハ', 'ヒ', 'ロ']);
 
 // 形近字干擾組
 const similarGroups = [
@@ -511,9 +618,10 @@ const similarGroups = [
 // STATE
 // ═══════════════════════════════
 const intervals = [0, 3, 8, 20, 40];
-const KANA_LIMIT = 46;
-const VOCAB_LIMIT = 20;
+const KANA_LIMIT = 68;
+const VOCAB_LIMIT = 50;
 let currentSection = 'kana';
+let currentRound = 1;
 let currentMode = 'char-to-reading';
 let vocabDir = 'jp-to-zh';
 let currentTopic = 'all';
@@ -557,6 +665,24 @@ function updateProgress() {
   document.getElementById('progressFill').style.width = (Math.min(sessionCount / lim, 1) * 100) + '%';
 }
 
+function buildKanaQueue(round) {
+  const cards = round === 0 ? katakanaCards : katakanaCards.filter(c => c.round <= round);
+  return cards.map(c => {
+    const dist = round === 0 ? 0 : round - c.round;
+    return { ...c, level: Math.min(dist, intervals.length - 1), nextReview: 0 };
+  });
+}
+
+function setRound(n) {
+  currentRound = n;
+  document.querySelectorAll('.round-btn').forEach(b => {
+    b.classList.toggle('active', parseInt(b.dataset.round) === n);
+  });
+  queue = buildKanaQueue(n);
+  resetScore();
+  nextCard();
+}
+
 function pickFromQueue() {
   const due = queue.filter(c => c.nextReview <= sessionCount);
   if (!due.length) return null;
@@ -589,11 +715,12 @@ function switchSection(section) {
   document.getElementById('tabKana').classList.toggle('active', section === 'kana');
   document.getElementById('tabVocab').classList.toggle('active', section === 'vocab');
   document.getElementById('kanaModes').style.display = section === 'kana' ? 'flex' : 'none';
+  document.getElementById('roundFilter').style.display = section === 'kana' ? 'flex' : 'none';
   document.getElementById('vocabToggle').style.display = section === 'vocab' ? 'flex' : 'none';
   document.getElementById('topicFilter').style.display = section === 'vocab' ? 'flex' : 'none';
   resetScore();
   if (section === 'kana') {
-    queue = katakanaCards.map(c => ({ ...c, level: knownKana.has(c.char) ? 2 : 0, nextReview: knownKana.has(c.char) ? 8 : 0 }));
+    queue = buildKanaQueue(currentRound);
     nextCard();
   } else {
     buildVocabQueue();
@@ -602,7 +729,8 @@ function switchSection(section) {
 }
 
 function buildVocabQueue() {
-  const filtered = currentTopic === 'all' ? vocabCards : vocabCards.filter(v => v.topic === currentTopic);
+  let filtered = currentTopic === 'all' ? vocabCards : vocabCards.filter(v => v.topic === currentTopic);
+  if (currentRound > 0) filtered = filtered.filter(v => v.round <= currentRound);
   vocabQueue = filtered.map(c => ({ ...c, level: alreadyKnown.has(c.word) ? 2 : 0, nextReview: alreadyKnown.has(c.word) ? 8 : 0 }));
   queue = vocabQueue;
 }
@@ -688,7 +816,7 @@ function switchMode(mode) {
   ['tab1','tab2','tab3','tab4'].forEach(id => document.getElementById(id).classList.remove('active'));
   const tabMap = { 'char-to-reading': 'tab1', 'char-to-input': 'tab2', 'reading-to-char': 'tab3', 'reading-to-input': 'tab4' };
   document.getElementById(tabMap[mode]).classList.add('active');
-  queue = katakanaCards.map(c => ({ ...c, level: knownKana.has(c.char) ? 2 : 0, nextReview: knownKana.has(c.char) ? 8 : 0 }));
+  queue = buildKanaQueue(currentRound);
   resetScore(); nextCard();
 }
 
@@ -909,7 +1037,7 @@ function showResult() {
 
 function restart() {
   if (currentSection === 'kana') {
-    queue = katakanaCards.map(c => ({ ...c, level: knownKana.has(c.char) ? 2 : 0, nextReview: knownKana.has(c.char) ? 8 : 0 }));
+    queue = buildKanaQueue(currentRound);
   } else {
     buildVocabQueue();
   }
@@ -919,7 +1047,7 @@ function restart() {
 // ═══════════════════════════════
 // INIT
 // ═══════════════════════════════
-queue = katakanaCards.map(c => ({ ...c, level: knownKana.has(c.char) ? 2 : 0, nextReview: knownKana.has(c.char) ? 8 : 0 }));
+queue = buildKanaQueue(currentRound);
 nextCard();
 
 </script>
