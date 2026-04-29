@@ -91,3 +91,7 @@ Claude 從這些詞的假名開始教（每次 10–15 個）
 ---
 
 > 這個 repo 用 [Claude Code](https://claude.ai/code) 維護。學習筆記和測驗都是在對話中即時生成並更新的。
+
+## 授權
+
+本專案採 [MIT License](LICENSE) 授權。
