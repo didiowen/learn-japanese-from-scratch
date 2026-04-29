@@ -16,6 +16,19 @@
       basePath: '../',
       homepage: 'hiragana.md',
       subMaxLevel: 2,
+      plugins: [
+        function(hook) {
+          hook.beforeEach(function(content) {
+            const fm = content.match(/^---[\s\S]*?---\n/);
+            let footer = '';
+            if (fm) {
+              const m = fm[0].match(/updated:\s*(\d{4}-\d{2}-\d{2})/);
+              if (m) footer = `\n\n---\n<small>最後更新：${m[1]}</small>`;
+            }
+            return content.replace(/^---[\s\S]*?---\n/, '') + footer;
+          });
+        }
+      ]
     }
   </script>
   <script src="https://cdn.jsdelivr.net/npm/docsify@4/lib/docsify.min.js"></script>
