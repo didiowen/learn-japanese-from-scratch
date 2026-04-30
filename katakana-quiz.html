@@ -1006,7 +1006,7 @@ function renderReadingToInput() {
   document.getElementById('quizContent').innerHTML = `
     <div class="question-type">輸入對應的片假名</div>
     <div class="main-char" style="font-size:2.8rem;margin-bottom:4px;">${currentCard.reading}</div>
-    <div class="sub-info">平假名：${currentCard.hiragana}　來源：${currentCard.kanji}</div>
+    <div class="sub-info" id="subInfo"></div>
     <div class="hint" id="hintText"></div>
     <div class="input-wrap">
       <input class="romaji-input" id="katakanaInput" type="text" placeholder="輸入片假名…"
@@ -1032,6 +1032,7 @@ function submitReadingToInput() {
   const fb = document.getElementById('feedback');
   fb.className = `feedback ${isCorrect ? 'show-correct' : 'show-wrong'}`;
   fb.innerHTML = isCorrect ? `✓ 正確！` : `✗ 正確是「${currentCard.char}」`;
+  document.getElementById('subInfo').textContent = `平假名：${currentCard.hiragana}　來源：${currentCard.kanji}`;
   document.getElementById('hintText').textContent = '💡 ' + currentCard.hint;
   document.getElementById('nextBtn').classList.add('visible');
 }
