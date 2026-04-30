@@ -2,10 +2,16 @@
 title: 學習日誌
 date:
   created: 2026-04-28T18:26:48
-  updated: 2026-04-29T11:00:00
+  updated: 2026-04-30T12:00:00
 alias: log
 ---
 # 學習日誌
+
+## 2026-04-30 12:00:00
+- `grammar.md` 新增 G6（て形）：變化規則表（う動詞各語尾＋る動詞＋する）、從 conversation.md 識別的例句（まって、がんばって）
+- `grammar.md` 新增 G9（〜てください）：句型說明、禮貌程度對照表、会話例句（まってください、いってください）
+- `grammar.md` 語法地圖 G6／G9 加 ✅ 標記
+- `conversation.md` 相關句子加語法交叉標注（→ G6、→ G9）
 
 ## 2026-04-29 11:00:00
 - `vocabulary.md` 顏色表加入「片假名拼音」欄（burū、reddo、howaito 等）
