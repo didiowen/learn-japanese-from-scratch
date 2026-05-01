@@ -309,6 +309,32 @@ body {
   font-weight: 500;
 }
 
+/* ── Hint toggle ── */
+.hint-toggle-wrap {
+  max-width: 360px;
+  width: 100%;
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: flex-end;
+}
+.hint-toggle-btn {
+  padding: 5px 12px;
+  border: 1.5px solid var(--border);
+  border-radius: 20px;
+  font-size: 0.72rem;
+  font-family: 'Noto Sans TC', sans-serif;
+  cursor: pointer;
+  background: white;
+  color: var(--soft);
+  transition: all 0.15s;
+}
+.hint-toggle-btn.active {
+  background: var(--ink);
+  color: var(--paper);
+  border-color: var(--ink);
+  font-weight: 500;
+}
+
 /* ── Round filter ── */
 .round-filter {
   display: flex;
@@ -358,6 +384,11 @@ body {
 <div class="mode-toggle" id="modeToggle">
   <button class="mode-btn active" id="btnMultiple" onclick="setMode('multiple')">選擇題</button>
   <button class="mode-btn" id="btnInput" onclick="setMode('input')">輸入題</button>
+</div>
+
+<!-- Hint toggle (五十音 only) -->
+<div class="hint-toggle-wrap" id="hintToggleWrap">
+  <button class="hint-toggle-btn" id="hintToggleBtn" onclick="toggleHint()">提示：關</button>
 </div>
 
 <!-- Vocab direction toggle -->
@@ -781,8 +812,16 @@ let currentVocab = null;
 
 let currentRound = 1;
 let currentTopic = 'all';
+let showHint = false;
 
 function getSessionLimit() { return currentRound === 0 ? 50 : 30; }
+
+function toggleHint() {
+  showHint = !showHint;
+  const btn = document.getElementById('hintToggleBtn');
+  btn.textContent = showHint ? '提示：開' : '提示：關';
+  btn.classList.toggle('active', showHint);
+}
 
 // 本來就會的單字——降低出現頻率（從第二輪才開始復習）
 const alreadyKnown = new Set([
@@ -888,6 +927,7 @@ function switchSection(s) {
   document.getElementById('tabHiragana').classList.toggle('active', s === 'hiragana');
   document.getElementById('tabVocab').classList.toggle('active', s === 'vocab');
   document.getElementById('modeToggle').style.display = s === 'hiragana' ? 'flex' : 'none';
+  document.getElementById('hintToggleWrap').style.display = s === 'hiragana' ? 'flex' : 'none';
   document.getElementById('vocabToggle').style.display = s === 'vocab' ? 'flex' : 'none';
   document.getElementById('topicFilter').style.display = s === 'vocab' ? 'flex' : 'none';
   document.getElementById('roundFilter').style.display = 'flex';
@@ -1019,7 +1059,7 @@ function checkHiraganaMultiple(chosen, btn) {
   const fb = document.getElementById('feedback');
   fb.className = `feedback ${isCorrect ? 'show-correct' : 'show-wrong'}`;
   fb.innerHTML = isCorrect ? `✓ 正確！` : `✗ 正確是「${correct}」`;
-  document.getElementById('hintText').textContent = '💡 ' + currentCard.hint;
+  if (showHint) document.getElementById('hintText').textContent = '💡 ' + currentCard.hint;
   document.getElementById('nextBtn').classList.add('visible');
 }
 
@@ -1062,7 +1102,7 @@ function submitHiraganaInput() {
   const fb = document.getElementById('feedback');
   fb.className = `feedback ${isCorrect ? 'show-correct' : 'show-wrong'}`;
   fb.innerHTML = isCorrect ? `✓ 正確！` : `✗ 正確是「${currentCard.reading}」`;
-  document.getElementById('hintText').textContent = '💡 ' + currentCard.hint;
+  if (showHint) document.getElementById('hintText').textContent = '💡 ' + currentCard.hint;
   document.getElementById('nextBtn').classList.add('visible');
 }
 
