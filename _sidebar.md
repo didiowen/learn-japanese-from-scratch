@@ -6,4 +6,4 @@
 * [會話](conversation.md)
 
 ---
-<small>❤️ [支持這個專案](https://github.com/sponsors/didiowen)</small>
+<small>☕ [請我喝杯咖啡](https://ko-fi.com/ines8964)</small>
