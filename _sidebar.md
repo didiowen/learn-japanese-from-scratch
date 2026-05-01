@@ -4,3 +4,6 @@
 * [單字](vocabulary.md)
 * [文法](grammar.md)
 * [會話](conversation.md)
+
+---
+<small>❤️ [支持這個專案](https://github.com/sponsors/didiowen)</small>
