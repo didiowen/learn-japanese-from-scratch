@@ -7,6 +7,16 @@ alias: log
 ---
 # 學習日誌
 
+## 2026-05-01 18:00:00
+- 看劇補充 11 個單字 + 2 個標記為本來就會：
+  - `hiragana-quiz.html` vocabCards：いっしょに R3、しんじる R3、ゆうれい R3、ぜんぶ R5、れんしゅう R3、かいさん R3、えんそう R3、おちゃ R4、ゆうめい R4、いちばん R5
+  - `hiragana-quiz.html` alreadyKnown：そっか、いちばん
+  - `katakana-quiz.html` vocabCards：シャンプー R5、コンサート R4
+  - `vocabulary.md`：飲食節加お茶；数字節加一番/全部；自然節加幽霊；動作節加信じる/練習/解散/演奏/演奏会/一緒に；情感節加有名
+  - `conversation.md`：口語節加一緒に
+  - `already-known.md`：加一番/そっか
+  - ⚠️ 演奏會的外來語說法是コンサート（concert），而非えんそうかい（正式書面語）
+
 ## 2026-05-01 17:00:00
 - 看劇補充 12 個單字 + 修正 2 項：
   - `katakana-quiz.html`：補加 ミルク R4、新增 メンバー R5（成員，比だんいん更日常）
