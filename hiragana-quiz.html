@@ -786,6 +786,15 @@ function setRound(n) {
   document.querySelectorAll('.round-btn').forEach(b => {
     b.classList.toggle('active', parseInt(b.dataset.round) === n);
   });
+  if (section === 'vocab') {
+    const showFilter = n === 0;
+    document.getElementById('topicFilter').style.display = showFilter ? 'flex' : 'none';
+    if (!showFilter && currentTopic !== 'all') {
+      currentTopic = 'all';
+      document.querySelectorAll('.topic-btn').forEach(b => b.classList.remove('active'));
+      document.querySelector('.topic-btn').classList.add('active');
+    }
+  }
   if (section === 'hiragana') {
     hiraganaQueue = buildHiraganaQueue(n);
   } else {
@@ -931,7 +940,7 @@ function switchSection(s) {
   document.getElementById('modeToggle').style.display = s === 'hiragana' ? 'flex' : 'none';
   document.getElementById('hintToggleWrap').style.display = s === 'hiragana' ? 'flex' : 'none';
   document.getElementById('vocabToggle').style.display = s === 'vocab' ? 'flex' : 'none';
-  document.getElementById('topicFilter').style.display = s === 'vocab' ? 'flex' : 'none';
+  document.getElementById('topicFilter').style.display = (s === 'vocab' && currentRound === 0) ? 'flex' : 'none';
   document.getElementById('roundFilter').style.display = 'flex';
 
   currentTopic = 'all';
