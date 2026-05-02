@@ -2,8 +2,6 @@
 
 **從台語記憶日文・五十音學習系統**
 
-[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/ines8964)
-
 這個 repo 是一套用 Claude AI 輔助建立的日文自學系統，起點是一份「本來就會念的單字片語」清單，透過 Claude Chat 以這些熟悉的詞為跳板教平假名，一邊學一邊把工具建起來。
 
 ## 核心學習邏輯
@@ -97,3 +95,5 @@ Claude 從這些詞的假名開始教（每次 10–15 個）
 ## 授權
 
 本專案採 [MIT License](LICENSE) 授權。
+
+[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/ines8964)
