@@ -2,7 +2,7 @@
 title: 單字
 date:
   created: 2026-04-28T15:00:00
-  updated: 2026-05-02T16:00:00
+  updated: 2026-05-02T16:30:00
 alias: vocab
 ---
 # 單字
@@ -69,6 +69,8 @@ alias: vocab
 | 先輩    | せんぱい   | senpai     | 前輩（台語「先輩」sian-pai）|
 | 学生    | がくせい   | gakusei    | 學生（台語 hak-sing 對應）|
 | 運転手  | うんてんしゅ | untenshu   | 司機             |
+| 日本人  | にほんじん  | nihonjin   | 日本人（じん＝人，國籍後綴音読み）|
+| 外国人  | がいこくじん | gaikokujin | 外國人（じん後綴）      |
 
 ### 名字後綴（敬稱）
 
@@ -120,7 +122,12 @@ alias: vocab
 | 晩ごはん   | ばんごはん   | bangohan     | 晚餐           |
 | 味噌      | みそ      | miso         | 味噌           |
 | 味噌汁    | みそしる    | misoshiru    | 味噌湯          |
-| 豚カツ    | とんかつ    | tonkatsu     | 豬排           |
+| 豚カツ    | とんかつ    | tonkatsu     | 豬排（とん＝豚音読み）  |
+| 豚汁     | とんじる    | tonjiru      | 豬肉味噌湯（とん音読み＋じる＝汁）|
+| 和食     | わしょく    | washoku      | 日本料理（和＋食しょく）|
+| 洋食     | ようしょく   | youshoku     | 西式料理（洋＋食しょく）|
+| 食事     | しょくじ    | shokuji      | 吃飯／用餐       |
+| 食堂     | しょくどう   | shokudou     | 食堂（しょく音読み）  |
 | しゃぶしゃぶ | しゃぶしゃぶ  | shabu shabu  | 涮涮鍋（擬聲語）    |
 | 明太子    | めんたいこ   | mentaiko     | 明太子          |
 | じゃがいも  | じゃがいも   | jagaimo      | 馬鈴薯          |
