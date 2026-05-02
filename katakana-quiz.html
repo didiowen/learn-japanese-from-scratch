@@ -791,7 +791,7 @@ function switchSection(section) {
   document.getElementById('tabKana').classList.toggle('active', section === 'kana');
   document.getElementById('tabVocab').classList.toggle('active', section === 'vocab');
   document.getElementById('kanaModes').style.display = section === 'kana' ? 'flex' : 'none';
-  document.getElementById('hintToggleWrap').style.display = section === 'kana' ? 'flex' : 'none';
+  document.getElementById('hintToggleWrap').style.display = 'flex';
   document.getElementById('roundFilter').style.display = 'flex';
   document.getElementById('vocabToggle').style.display = section === 'vocab' ? 'flex' : 'none';
   resetScore();
@@ -881,7 +881,7 @@ function checkVocab(chosen, field, btn) {
   } else {
     fb.innerHTML = isCorrect ? `✓ 正確！` : `✗ 正確是「${correct}」`;
   }
-  document.getElementById('hintText').textContent = '💡 ' + currentCard.hint;
+  if (showHint) document.getElementById('hintText').textContent = '💡 ' + currentCard.hint;
   document.getElementById('nextBtn').classList.add('visible');
 }
 

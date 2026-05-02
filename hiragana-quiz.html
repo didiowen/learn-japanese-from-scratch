@@ -873,7 +873,13 @@ function toggleHint() {
   btn.textContent = showHint ? '提示：開' : '提示：關';
   btn.classList.toggle('active', showHint);
   const hintEl = document.getElementById('hintText');
-  if (hintEl && currentCard) hintEl.textContent = showHint ? hintText(currentCard) : '';
+  if (section === 'hiragana') {
+    if (hintEl && currentCard) hintEl.textContent = showHint ? hintText(currentCard) : '';
+  } else {
+    if (hintEl && currentVocab && !answered && vocabDir === 'jp-to-zh') {
+      hintEl.textContent = showHint ? `💡 ${currentVocab.reading}` : '';
+    }
+  }
 }
 
 // 本來就會的單字——降低出現頻率（從第二輪才開始復習）
@@ -997,7 +1003,7 @@ function switchSection(s) {
   document.getElementById('tabHiragana').classList.toggle('active', s === 'hiragana');
   document.getElementById('tabVocab').classList.toggle('active', s === 'vocab');
   document.getElementById('kanaModes').style.display = s === 'hiragana' ? 'flex' : 'none';
-  document.getElementById('hintToggleWrap').style.display = s === 'hiragana' ? 'flex' : 'none';
+  document.getElementById('hintToggleWrap').style.display = 'flex';
   document.getElementById('vocabToggle').style.display = s === 'vocab' ? 'flex' : 'none';
   document.getElementById('roundFilter').style.display = 'flex';
 
@@ -1272,7 +1278,7 @@ function renderVocabMultiple() {
   document.getElementById('quizContent').innerHTML = `
     <div class="question-type">${qtype}</div>
     <div class="${isJp ? 'main-char' : 'main-meaning'}" style="${isJp ? 'font-size:2.8rem' : ''}">${question}</div>
-    <div class="hint" id="hintText"></div>
+    <div class="hint" id="hintText">${showHint && vocabDir === 'jp-to-zh' ? `💡 ${currentVocab.reading}` : ''}</div>
     <div class="options">
       ${options.map(opt => `<button class="option-btn vocab" onclick="checkVocabMultiple('${opt.replace(/'/g, "\\'")}', this)">${opt}</button>`).join('')}
     </div>
