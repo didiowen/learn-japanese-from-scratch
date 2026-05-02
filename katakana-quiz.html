@@ -777,9 +777,14 @@ function toggleHint() {
   const btn = document.getElementById('hintToggleBtn');
   btn.textContent = showHint ? '提示：開' : '提示：關';
   btn.classList.toggle('active', showHint);
-  const subEl = document.getElementById('subInfo');
-  if (subEl && currentCard) {
-    subEl.textContent = showHint ? `平假名：${currentCard.hiragana}　來源：${currentCard.kanji}` : '';
+  if (currentSection === 'kana') {
+    const subEl = document.getElementById('subInfo');
+    if (subEl && currentCard) {
+      subEl.textContent = showHint ? `平假名：${currentCard.hiragana}　來源：${currentCard.kanji}` : '';
+    }
+  } else if (currentSection === 'vocab' && currentCard && !answered && vocabDir === 'jp-to-zh') {
+    const hintEl = document.getElementById('hintText');
+    if (hintEl) hintEl.textContent = showHint ? `💡 ${currentCard.reading}` : '';
   }
 }
 
