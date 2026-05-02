@@ -806,6 +806,26 @@ const vocabCards = [
   { meaning: '茶', display: 'おちゃ', reading: 'ocha', kanji: 'お茶', topic: 'food', round: 4 },
   { meaning: '有名的', display: 'ゆうめい', reading: 'yuumei', kanji: '有名', topic: 'daily', round: 4 },
   { meaning: '第一／最～', display: 'いちばん', reading: 'ichiban', kanji: '一番', topic: 'daily', round: 5 },
+  { meaning: '神奇的', display: 'ふしぎ', reading: 'fushigi', kanji: '不思議', topic: 'daily', round: 5 },
+  { meaning: '天空', display: 'そら', reading: 'sora', kanji: '空', topic: 'nature', round: 3 },
+  { meaning: '自由', display: 'じゆう', reading: 'jiyuu', kanji: '自由', topic: 'daily', round: 3 },
+  { meaning: '飛', display: 'とぶ', reading: 'tobu', kanji: '飛ぶ', topic: 'daily', round: 5 },
+  { meaning: '去', display: 'いく', reading: 'iku', kanji: '行く', topic: 'daily', round: 2 },
+  { meaning: '實現願望', display: 'かなえる', reading: 'kanaeru', kanji: '叶える', topic: 'daily', round: 2 },
+  { meaning: '功課', display: 'しゅくだい', reading: 'shukudai', kanji: '宿題', topic: 'daily', round: 4 },
+  { meaning: '值日生', display: 'とうばん', reading: 'touban', kanji: '当番', topic: 'daily', round: 5 },
+  { meaning: '考試', display: 'しけん', reading: 'shiken', kanji: '試験', topic: 'daily', round: 3 },
+  { meaning: '跑腿差事', display: 'おつかい', reading: 'otsukai', kanji: 'お使い', topic: 'daily', round: 4 },
+  { meaning: '辛苦／糟糕', display: 'たいへん', reading: 'taihen', kanji: '大変', topic: 'daily', round: 5 },
+  { meaning: '幫助', display: 'たすける', reading: 'tasukeru', kanji: '助ける', topic: 'daily', round: 4 },
+  { meaning: '方便', display: 'べんり', reading: 'benri', kanji: '便利', topic: 'daily', round: 5 },
+  { meaning: '工具', display: 'どうぐ', reading: 'dougu', kanji: '道具', topic: 'daily', round: 4 },
+  { meaning: '玩具', display: 'おもちゃ', reading: 'omocha', topic: 'daily', round: 4 },
+  { meaning: '國家', display: 'くに', reading: 'kuni', kanji: '国', topic: 'nature', round: 2 },
+  { meaning: '島嶼', display: 'しま', reading: 'shima', kanji: '島', topic: 'nature', round: 4 },
+  { meaning: '很多', display: 'たくさん', reading: 'takusan', kanji: '沢山', topic: 'number', round: 4 },
+  { meaning: '未來', display: 'みらい', reading: 'mirai', kanji: '未来', topic: 'time', round: 4 },
+  { meaning: '機器', display: 'きかい', reading: 'kikai', kanji: '機械', topic: 'daily', round: 2 },
 ];
 
 // ═══════════════════════════════
@@ -901,7 +921,12 @@ const alreadyKnown = new Set([
 // 最近加入的單字批次（數字越大＝越近加入＝越優先出現）
 // 未被 SRS 記錄過的字才受影響；新增單字時加到最新批次號 + 1
 const recentBatch = {
-  // 批次 3（2026-05-01 最新）
+  // 批次 4（2026-05-02 最新）
+  'ふしぎ': 4, 'そら': 4, 'じゆう': 4, 'とぶ': 4, 'いく': 4,
+  'かなえる': 4, 'しゅくだい': 4, 'とうばん': 4, 'しけん': 4, 'おつかい': 4,
+  'たいへん': 4, 'たすける': 4, 'べんり': 4, 'どうぐ': 4, 'おもちゃ': 4,
+  'くに': 4, 'しま': 4, 'たくさん': 4, 'みらい': 4, 'きかい': 4,
+  // 批次 3（2026-05-01）
   'いっしょに': 3, 'しんじる': 3, 'ゆうれい': 3, 'ぜんぶ': 3,
   'れんしゅう': 3, 'かいさん': 3, 'えんそう': 3, 'おちゃ': 3,
   'ゆうめい': 3,
