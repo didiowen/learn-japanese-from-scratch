@@ -49,7 +49,7 @@ body {
   background: white;
   color: var(--neutral);
   font-family: 'Noto Sans JP', 'Noto Sans TC', sans-serif;
-  font-size: 0.82rem;
+  font-size: 1rem;
   cursor: pointer;
   letter-spacing: 0.04em;
   transition: all 0.2s;
@@ -78,7 +78,7 @@ body {
   padding: 8px;
   border: none;
   border-radius: 7px;
-  font-size: 0.78rem;
+  font-size: 0.95rem;
   font-family: 'Noto Sans JP', 'Noto Sans TC', sans-serif;
   cursor: pointer;
   background: transparent;
@@ -132,13 +132,13 @@ body {
 .sr-badge {
   position: absolute;
   top: 12px; right: 14px;
-  font-size: 0.6rem;
+  font-size: 0.75rem;
   color: var(--soft);
   opacity: 0.5;
   letter-spacing: 0.08em;
 }
 .question-type {
-  font-size: 0.68rem;
+  font-size: 0.85rem;
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--soft);
@@ -154,14 +154,14 @@ body {
   color: var(--ink);
 }
 .main-meaning {
-  font-size: 1.5rem;
+  font-size: 1.8rem;
   text-align: center;
   line-height: 1.3;
   margin: 8px 0 6px;
   color: var(--ink);
   font-weight: 400;
 }
-.hint { font-size: 0.73rem; color: var(--neutral); text-align: center; margin-bottom: 20px; min-height: 16px; font-style: italic; }
+.hint { font-size: 0.88rem; color: var(--neutral); text-align: center; margin-bottom: 20px; min-height: 16px; font-style: italic; }
 
 /* ── Options ── */
 .options { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px; }
@@ -170,7 +170,7 @@ body {
   border: 1.5px solid var(--border);
   border-radius: 10px;
   padding: 13px 8px;
-  font-size: 0.88rem;
+  font-size: 1.05rem;
   font-family: 'Noto Sans JP', 'Noto Sans TC', sans-serif;
   cursor: pointer;
   transition: all 0.15s;
@@ -182,7 +182,7 @@ body {
 .option-btn.correct { background: rgba(39,174,96,0.1); border-color: var(--success); color: var(--success); font-weight: 400; }
 .option-btn.wrong { background: rgba(192,57,43,0.08); border-color: var(--fail); color: var(--fail); }
 .option-btn:disabled { cursor: default; }
-.option-btn.vocab { font-family: 'Noto Sans JP', 'Noto Sans TC', sans-serif; font-size: 0.82rem; }
+.option-btn.vocab { font-family: 'Noto Sans JP', 'Noto Sans TC', sans-serif; font-size: 1rem; }
 
 /* ── Input ── */
 .input-wrap { margin-bottom: 12px; }
@@ -203,7 +203,7 @@ body {
 .romaji-input:focus { border-color: var(--accent); }
 .romaji-input.correct { border-color: var(--success); background: rgba(39,174,96,0.06); color: var(--success); }
 .romaji-input.wrong { border-color: var(--fail); background: rgba(192,57,43,0.06); }
-.input-hint { font-size: 0.68rem; color: var(--neutral); text-align: center; margin-bottom: 10px; font-style: italic; }
+.input-hint { font-size: 0.85rem; color: var(--neutral); text-align: center; margin-bottom: 10px; font-style: italic; }
 
 /* ── Buttons ── */
 .submit-btn {
@@ -213,7 +213,7 @@ body {
   border: none;
   border-radius: 10px;
   padding: 12px;
-  font-size: 0.85rem;
+  font-size: 1rem;
   font-family: 'Noto Sans JP', 'Noto Sans TC', sans-serif;
   cursor: pointer;
   letter-spacing: 0.06em;
@@ -228,7 +228,7 @@ body {
   border: none;
   border-radius: 10px;
   padding: 13px;
-  font-size: 0.85rem;
+  font-size: 1rem;
   font-family: 'Noto Sans JP', 'Noto Sans TC', sans-serif;
   cursor: pointer;
   letter-spacing: 0.06em;
@@ -244,7 +244,7 @@ body {
   text-align: center;
   padding: 10px;
   border-radius: 8px;
-  font-size: 0.8rem;
+  font-size: 0.95rem;
   line-height: 1.5;
   transition: all 0.2s;
   margin-bottom: 10px;
@@ -260,21 +260,21 @@ body {
   width: 100%;
   padding: 0 4px;
 }
-.score-item { text-align: center; font-size: 0.68rem; color: var(--neutral); letter-spacing: 0.05em; }
-.score-num { display: block; font-size: 1.3rem; font-weight: 400; color: var(--ink); font-family: 'Noto Sans JP', 'Noto Sans TC', sans-serif; }
+.score-item { text-align: center; font-size: 0.85rem; color: var(--neutral); letter-spacing: 0.05em; }
+.score-num { display: block; font-size: 1.5rem; font-weight: 400; color: var(--ink); font-family: 'Noto Sans JP', 'Noto Sans TC', sans-serif; }
 
 /* ── Result ── */
 .result-screen { text-align: center; padding: 16px 8px; }
 .result-screen .big-emoji { font-size: 3rem; margin: 8px 0; }
-.result-screen h2 { font-size: 1.05rem; font-weight: 400; margin-bottom: 8px; }
-.result-screen p { font-size: 0.8rem; color: var(--soft); margin-bottom: 18px; line-height: 1.6; }
+.result-screen h2 { font-size: 1.2rem; font-weight: 400; margin-bottom: 8px; }
+.result-screen p { font-size: 0.95rem; color: var(--soft); margin-bottom: 18px; line-height: 1.6; }
 .restart-btn {
   background: var(--accent);
   color: white;
   border: none;
   border-radius: 10px;
   padding: 12px 28px;
-  font-size: 0.85rem;
+  font-size: 1rem;
   font-family: 'Noto Sans JP', 'Noto Sans TC', sans-serif;
   cursor: pointer;
   letter-spacing: 0.06em;
@@ -295,7 +295,7 @@ body {
   padding: 5px 10px;
   border: 1.5px solid var(--border);
   border-radius: 20px;
-  font-size: 0.72rem;
+  font-size: 0.88rem;
   font-family: 'Noto Sans JP', 'Noto Sans TC', sans-serif;
   cursor: pointer;
   background: white;
@@ -321,7 +321,7 @@ body {
   padding: 5px 12px;
   border: 1.5px solid var(--border);
   border-radius: 20px;
-  font-size: 0.72rem;
+  font-size: 0.88rem;
   font-family: 'Noto Sans JP', 'Noto Sans TC', sans-serif;
   cursor: pointer;
   background: white;
@@ -352,7 +352,7 @@ body {
   background: white;
   color: var(--neutral);
   font-family: 'Noto Sans JP', 'Noto Sans TC', sans-serif;
-  font-size: 0.72rem;
+  font-size: 0.88rem;
   cursor: pointer;
   transition: all 0.2s;
   border-right: 1px solid var(--border);
@@ -552,157 +552,157 @@ const cards = [
 ];
 
 const vocabCards = [
-  { meaning: '不好意思／對不起', display: 'すみません', reading: 'sumimasen', topic: 'greeting', round: 4 },
-  { meaning: '謝謝', display: 'ありがとう', reading: 'arigatou', topic: 'greeting', round: 4 },
-  { meaning: '沒關係／不用了', display: 'だいじょうぶ', reading: 'daijoubu', topic: 'greeting', round: 5 },
-  { meaning: '好吃', display: 'おいしい', reading: 'oishii', topic: 'food', round: 3 },
-  { meaning: '我回來了', display: 'ただいま', reading: 'tadaima', topic: 'greeting', round: 4 },
-  { meaning: '真的', display: 'ほんとう', reading: 'hontou', topic: 'daily', round: 5 },
+  { meaning: '不好意思／對不起', display: 'すみません', reading: 'sumimasen', kanji: '済みません', topic: 'greeting', round: 4 },
+  { meaning: '謝謝', display: 'ありがとう', reading: 'arigatou', kanji: '有難う', topic: 'greeting', round: 4 },
+  { meaning: '沒關係／不用了', display: 'だいじょうぶ', reading: 'daijoubu', kanji: '大丈夫', topic: 'greeting', round: 5 },
+  { meaning: '好吃', display: 'おいしい', reading: 'oishii', kanji: '美味しい', topic: 'food', round: 3 },
+  { meaning: '我回來了', display: 'ただいま', reading: 'tadaima', kanji: '只今', topic: 'greeting', round: 4 },
+  { meaning: '真的', display: 'ほんとう', reading: 'hontou', kanji: '本当', topic: 'daily', round: 5 },
   { meaning: '這個', display: 'これ', reading: 'kore', topic: 'daily', round: 2 },
   { meaning: '等一下', display: 'ちょっとまって', reading: 'chotto matte', topic: 'daily', round: 4 },
-  { meaning: '加油！', display: 'がんばって', reading: 'ganbatte', topic: 'daily', round: 5 },
-  { meaning: '太好了', display: 'よかった', reading: 'yokatta', topic: 'daily', round: 4 },
-  { meaning: '我知道了', display: 'わかりました', reading: 'wakarimashita', topic: 'daily', round: 4 },
-  { meaning: '我不知道', display: 'わかりません', reading: 'wakarimasen', topic: 'daily', round: 4 },
+  { meaning: '加油！', display: 'がんばって', reading: 'ganbatte', kanji: '頑張って', topic: 'daily', round: 5 },
+  { meaning: '太好了', display: 'よかった', reading: 'yokatta', kanji: '良かった', topic: 'daily', round: 4 },
+  { meaning: '我知道了', display: 'わかりました', reading: 'wakarimashita', kanji: '分かりました', topic: 'daily', round: 4 },
+  { meaning: '我不知道', display: 'わかりません', reading: 'wakarimasen', kanji: '分かりません', topic: 'daily', round: 4 },
   { meaning: '喂？（電話）', display: 'もしもし', reading: 'moshi moshi', topic: 'greeting', round: 4 },
   { meaning: '確實呢', display: 'そうですね', reading: 'sou desu ne', topic: 'daily', round: 4 },
   { meaning: '是這樣嗎？', display: 'そうですか', reading: 'sou desu ka', topic: 'daily', round: 4 },
   { meaning: '真的！（加強）', display: 'ほんとうに', reading: 'hontou ni', topic: 'daily', round: 5 },
   { meaning: '為什麼？（口語）', display: 'どうして', reading: 'doushite', topic: 'question', round: 4 },
-  { meaning: '為什麼？（正式）', display: 'なぜ', reading: 'naze', topic: 'question', round: 3 },
-  { meaning: '花', display: 'はな', reading: 'hana', topic: 'nature', round: 5 },
-  { meaning: '桃子', display: 'もも', reading: 'momo', topic: 'nature', round: 4 },
-  { meaning: '名片', display: 'めいし', reading: 'meishi', topic: 'daily', round: 4 },
-  { meaning: '便當', display: 'べんとう', reading: 'bentou', topic: 'food', round: 5 },
+  { meaning: '為什麼？（正式）', display: 'なぜ', reading: 'naze', kanji: '何故', topic: 'question', round: 3 },
+  { meaning: '花', display: 'はな', reading: 'hana', kanji: '花', topic: 'nature', round: 5 },
+  { meaning: '桃子', display: 'もも', reading: 'momo', kanji: '桃', topic: 'nature', round: 4 },
+  { meaning: '名片', display: 'めいし', reading: 'meishi', kanji: '名刺', topic: 'daily', round: 4 },
+  { meaning: '便當', display: 'べんとう', reading: 'bentou', kanji: '弁当', topic: 'food', round: 5 },
   { meaning: '大嬸', display: 'おばさん', reading: 'obasan', topic: 'family', round: 5 },
   { meaning: '大叔', display: 'おじさん', reading: 'ojisan', topic: 'family', round: 3 },
-  { meaning: '司機', display: 'うんてんしゅ', reading: 'untenshu', topic: 'daily', round: 4 },
-  { meaning: '廣島', display: 'ひろしま', reading: 'hiroshima', topic: 'nature', round: 5 },
-  { meaning: '森林', display: 'もり', reading: 'mori', topic: 'nature', round: 4 },
+  { meaning: '司機', display: 'うんてんしゅ', reading: 'untenshu', kanji: '運転手', topic: 'daily', round: 4 },
+  { meaning: '廣島', display: 'ひろしま', reading: 'hiroshima', kanji: '広島', topic: 'nature', round: 5 },
+  { meaning: '森林', display: 'もり', reading: 'mori', kanji: '森', topic: 'nature', round: 4 },
   { meaning: '早安（正式）', display: 'おはようございます', reading: 'ohayou gozaimasu', topic: 'greeting', round: 5 },
   { meaning: '早安（朋友）', display: 'おはよう', reading: 'ohayou', topic: 'greeting', round: 5 },
-  { meaning: '開動了', display: 'いただきます', reading: 'itadakimasu', topic: 'greeting', round: 4 },
-  { meaning: '東京', display: 'とうきょう', reading: 'toukyou', topic: 'nature', round: 4 },
-  { meaning: '大阪', display: 'おおさか', reading: 'oosaka', topic: 'nature', round: 3 },
-  { meaning: '京都', display: 'きょうと', reading: 'kyouto', topic: 'nature', round: 4 },
-  { meaning: '富士山', display: 'ふじさん', reading: 'fujisan', topic: 'nature', round: 5 },
-  { meaning: '媽媽', display: 'おかあさん', reading: 'okaasan', topic: 'family', round: 3 },
-  { meaning: '爸爸', display: 'おとうさん', reading: 'otousan', topic: 'family', round: 4 },
-  { meaning: '老師', display: 'せんせい', reading: 'sensei', topic: 'family', round: 3 },
-  { meaning: '姊姊', display: 'おねえさん', reading: 'oneesan', topic: 'family', round: 3 },
-  { meaning: '哥哥', display: 'おにいさん', reading: 'oniisan', topic: 'family', round: 3 },
-  { meaning: '弟弟', display: 'おとうと', reading: 'otouto', topic: 'family', round: 4 },
-  { meaning: '妹妹', display: 'いもうと', reading: 'imouto', topic: 'family', round: 4 },
-  { meaning: '可愛', display: 'かわいい', reading: 'kawaii', topic: 'daily', round: 3 },
+  { meaning: '開動了', display: 'いただきます', reading: 'itadakimasu', kanji: '頂きます', topic: 'greeting', round: 4 },
+  { meaning: '東京', display: 'とうきょう', reading: 'toukyou', kanji: '東京', topic: 'nature', round: 4 },
+  { meaning: '大阪', display: 'おおさか', reading: 'oosaka', kanji: '大阪', topic: 'nature', round: 3 },
+  { meaning: '京都', display: 'きょうと', reading: 'kyouto', kanji: '京都', topic: 'nature', round: 4 },
+  { meaning: '富士山', display: 'ふじさん', reading: 'fujisan', kanji: '富士山', topic: 'nature', round: 5 },
+  { meaning: '媽媽', display: 'おかあさん', reading: 'okaasan', kanji: 'お母さん', topic: 'family', round: 3 },
+  { meaning: '爸爸', display: 'おとうさん', reading: 'otousan', kanji: 'お父さん', topic: 'family', round: 4 },
+  { meaning: '老師', display: 'せんせい', reading: 'sensei', kanji: '先生', topic: 'family', round: 3 },
+  { meaning: '姊姊', display: 'おねえさん', reading: 'oneesan', kanji: 'お姉さん', topic: 'family', round: 3 },
+  { meaning: '哥哥', display: 'おにいさん', reading: 'oniisan', kanji: 'お兄さん', topic: 'family', round: 3 },
+  { meaning: '弟弟', display: 'おとうと', reading: 'otouto', kanji: '弟', topic: 'family', round: 4 },
+  { meaning: '妹妹', display: 'いもうと', reading: 'imouto', kanji: '妹', topic: 'family', round: 4 },
+  { meaning: '可愛', display: 'かわいい', reading: 'kawaii', kanji: '可愛い', topic: 'daily', round: 3 },
   { meaning: '慢慢來', display: 'ゆっくり', reading: 'yukkuri', topic: 'daily', round: 4 },
-  { meaning: '袋子', display: 'ふくろ', reading: 'fukuro', topic: 'daily', round: 5 },
+  { meaning: '袋子', display: 'ふくろ', reading: 'fukuro', kanji: '袋', topic: 'daily', round: 5 },
   { meaning: '歡迎光臨', display: 'いらっしゃいませ', reading: 'irasshaimase', topic: 'greeting', round: 4 },
-  { meaning: '一個人', display: 'ひとり', reading: 'hitori', topic: 'daily', round: 5 },
-  { meaning: '請給我', display: 'ください', reading: 'kudasai', topic: 'daily', round: 4 },
-  { meaning: '不行／不可以', display: 'だめ', reading: 'dame', topic: 'daily', round: 4 },
-  { meaning: 'お願いします（麻煩你了）', display: 'おねがいします', reading: 'onegaishimasu', topic: 'greeting', round: 4 },
-  { meaning: '早餐', display: 'あさごはん', reading: 'asagohan', topic: 'food', round: 5 },
-  { meaning: '午餐', display: 'ひるごはん', reading: 'hirugohan', topic: 'food', round: 5 },
-  { meaning: '晚餐', display: 'ばんごはん', reading: 'bangohan', topic: 'food', round: 5 },
-  { meaning: '今天早上', display: 'けさ', reading: 'kesa', topic: 'time', round: 3 },
-  { meaning: '今天', display: 'きょう', reading: 'kyou', topic: 'time', round: 3 },
-  { meaning: '明天', display: 'あした', reading: 'ashita', topic: 'time', round: 4 },
-  { meaning: '早上', display: 'あさ', reading: 'asa', topic: 'time', round: 3 },
-  { meaning: '中午', display: 'ひる', reading: 'hiru', topic: 'time', round: 5 },
-  { meaning: '晚上', display: 'ばん', reading: 'ban', topic: 'time', round: 5 },
-  { meaning: '好厲害！', display: 'すごい', reading: 'sugoi', topic: 'daily', round: 3 },
+  { meaning: '一個人', display: 'ひとり', reading: 'hitori', kanji: '一人', topic: 'daily', round: 5 },
+  { meaning: '請給我', display: 'ください', reading: 'kudasai', kanji: '下さい', topic: 'daily', round: 4 },
+  { meaning: '不行／不可以', display: 'だめ', reading: 'dame', kanji: '駄目', topic: 'daily', round: 4 },
+  { meaning: 'お願いします（麻煩你了）', display: 'おねがいします', reading: 'onegaishimasu', kanji: 'お願いします', topic: 'greeting', round: 4 },
+  { meaning: '早餐', display: 'あさごはん', reading: 'asagohan', kanji: '朝ご飯', topic: 'food', round: 5 },
+  { meaning: '午餐', display: 'ひるごはん', reading: 'hirugohan', kanji: '昼ご飯', topic: 'food', round: 5 },
+  { meaning: '晚餐', display: 'ばんごはん', reading: 'bangohan', kanji: '晩ご飯', topic: 'food', round: 5 },
+  { meaning: '今天早上', display: 'けさ', reading: 'kesa', kanji: '今朝', topic: 'time', round: 3 },
+  { meaning: '今天', display: 'きょう', reading: 'kyou', kanji: '今日', topic: 'time', round: 3 },
+  { meaning: '明天', display: 'あした', reading: 'ashita', kanji: '明日', topic: 'time', round: 4 },
+  { meaning: '早上', display: 'あさ', reading: 'asa', kanji: '朝', topic: 'time', round: 3 },
+  { meaning: '中午', display: 'ひる', reading: 'hiru', kanji: '昼', topic: 'time', round: 5 },
+  { meaning: '晚上', display: 'ばん', reading: 'ban', kanji: '晩', topic: 'time', round: 5 },
+  { meaning: '好厲害！', display: 'すごい', reading: 'sugoi', kanji: '凄い', topic: 'daily', round: 3 },
   { meaning: '糟糕！／超讚！（やばい）', display: 'やばい', reading: 'yabai', topic: 'daily', round: 5 },
-  { meaning: '你好', display: 'こんにちは', reading: 'konnichiwa', topic: 'greeting', round: 5 },
+  { meaning: '你好', display: 'こんにちは', reading: 'konnichiwa', kanji: '今日は', topic: 'greeting', round: 5 },
   { meaning: '是什麼？／怎麼了？', display: 'なんですか', reading: 'nan desu ka', topic: 'question', round: 4 },
   { meaning: '什麼？（正式）', display: 'なに', reading: 'nani', topic: 'question', round: 2 },
-  { meaning: '絕對', display: 'ぜったい', reading: 'zettai', topic: 'daily', round: 4 },
-  { meaning: '夫妻', display: 'ふうふ', reading: 'fuufu', topic: 'family', round: 5 },
-  { meaning: '人生', display: 'じんせい', reading: 'jinsei', topic: 'daily', round: 3 },
-  { meaning: '炸雞', display: 'からあげ', reading: 'karaage', topic: 'food', round: 2 },
-  { meaning: '贏／勝利', display: 'かつ', reading: 'katsu', topic: 'daily', round: 4 },
-  { meaning: '精神好／有活力', display: 'げんき', reading: 'genki', topic: 'daily', round: 2 },
-  { meaning: '你好嗎？', display: 'おげんきですか', reading: 'ogenki desu ka', topic: 'greeting', round: 4 },
-  { meaning: '結婚', display: 'けっこん', reading: 'kekkon', topic: 'daily', round: 4 },
-  { meaning: '車站', display: 'えき', reading: 'eki', topic: 'nature', round: 2 },
-  { meaning: '壽司', display: 'すし', reading: 'sushi', topic: 'food', round: 3 },
-  { meaning: '酒／日本酒', display: 'さけ', reading: 'sake', topic: 'food', round: 3 },
-  { meaning: '鮭魚', display: 'さけ', reading: 'sake', topic: 'food', round: 3 },
-  { meaning: '藍色／綠色', display: 'あお', reading: 'ao', topic: 'color', round: 1 },
-  { meaning: '紅色', display: 'あか', reading: 'aka', topic: 'color', round: 2 },
-  { meaning: '白色', display: 'しろ', reading: 'shiro', topic: 'color', round: 3 },
-  { meaning: '黑色', display: 'くろ', reading: 'kuro', topic: 'color', round: 2 },
-  { meaning: '黃色', display: 'きいろ', reading: 'kiiro', topic: 'color', round: 2 },
-  { meaning: '綠色（植物）', display: 'みどり', reading: 'midori', topic: 'color', round: 4 },
-  { meaning: '棕色', display: 'ちゃいろ', reading: 'chairo', topic: 'color', round: 4 },
-  { meaning: '紫色', display: 'むらさき', reading: 'murasaki', topic: 'color', round: 4 },
+  { meaning: '絕對', display: 'ぜったい', reading: 'zettai', kanji: '絶対', topic: 'daily', round: 4 },
+  { meaning: '夫妻', display: 'ふうふ', reading: 'fuufu', kanji: '夫婦', topic: 'family', round: 5 },
+  { meaning: '人生', display: 'じんせい', reading: 'jinsei', kanji: '人生', topic: 'daily', round: 3 },
+  { meaning: '炸雞', display: 'からあげ', reading: 'karaage', kanji: '唐揚げ', topic: 'food', round: 2 },
+  { meaning: '贏／勝利', display: 'かつ', reading: 'katsu', kanji: '勝つ', topic: 'daily', round: 4 },
+  { meaning: '精神好／有活力', display: 'げんき', reading: 'genki', kanji: '元気', topic: 'daily', round: 2 },
+  { meaning: '你好嗎？', display: 'おげんきですか', reading: 'ogenki desu ka', kanji: 'お元気ですか', topic: 'greeting', round: 4 },
+  { meaning: '結婚', display: 'けっこん', reading: 'kekkon', kanji: '結婚', topic: 'daily', round: 4 },
+  { meaning: '車站', display: 'えき', reading: 'eki', kanji: '駅', topic: 'nature', round: 2 },
+  { meaning: '壽司', display: 'すし', reading: 'sushi', kanji: '寿司', topic: 'food', round: 3 },
+  { meaning: '酒／日本酒', display: 'さけ', reading: 'sake', kanji: '酒', topic: 'food', round: 3 },
+  { meaning: '鮭魚', display: 'さけ', reading: 'sake', kanji: '鮭', topic: 'food', round: 3 },
+  { meaning: '藍色／綠色', display: 'あお', reading: 'ao', kanji: '青', topic: 'color', round: 1 },
+  { meaning: '紅色', display: 'あか', reading: 'aka', kanji: '赤', topic: 'color', round: 2 },
+  { meaning: '白色', display: 'しろ', reading: 'shiro', kanji: '白', topic: 'color', round: 3 },
+  { meaning: '黑色', display: 'くろ', reading: 'kuro', kanji: '黒', topic: 'color', round: 2 },
+  { meaning: '黃色', display: 'きいろ', reading: 'kiiro', kanji: '黄色', topic: 'color', round: 2 },
+  { meaning: '綠色（植物）', display: 'みどり', reading: 'midori', kanji: '緑', topic: 'color', round: 4 },
+  { meaning: '棕色', display: 'ちゃいろ', reading: 'chairo', kanji: '茶色', topic: 'color', round: 4 },
+  { meaning: '紫色', display: 'むらさき', reading: 'murasaki', kanji: '紫', topic: 'color', round: 4 },
   { meaning: '粉紅色', display: 'ももいろ', reading: 'momoiro', topic: 'color', round: 4 },
   { meaning: '橘色', display: 'だいだいいろ', reading: 'daidaiiro', topic: 'color', round: 4 },
-  { meaning: '顏色', display: 'いろ', reading: 'iro', topic: 'color', round: 1 },
-  { meaning: '愛', display: 'あい', reading: 'ai', topic: 'nature', round: 1 },
+  { meaning: '顏色', display: 'いろ', reading: 'iro', kanji: '色', topic: 'color', round: 1 },
+  { meaning: '愛', display: 'あい', reading: 'ai', kanji: '愛', topic: 'nature', round: 1 },
   { meaning: '海鷗', display: 'かもめ', reading: 'kamome', topic: 'nature', round: 4 },
-  { meaning: '櫻花', display: 'さくら', reading: 'sakura', topic: 'nature', round: 3 },
-  { meaning: '壽喜燒', display: 'すきやき', reading: 'sukiyaki', topic: 'food', round: 3 },
-  { meaning: '蕎麥麵', display: 'そば', reading: 'soba', topic: 'food', round: 5 },
-  { meaning: '炒麵', display: 'やきそば', reading: 'yakisoba', topic: 'food', round: 5 },
-  { meaning: '烤雞串', display: 'やきとり', reading: 'yakitori', topic: 'food', round: 4 },
-  { meaning: '燒烤（料理字尾）', display: 'やき', reading: 'yaki', topic: 'food', round: 3 },
+  { meaning: '櫻花', display: 'さくら', reading: 'sakura', kanji: '桜', topic: 'nature', round: 3 },
+  { meaning: '壽喜燒', display: 'すきやき', reading: 'sukiyaki', kanji: '鋤焼き', topic: 'food', round: 3 },
+  { meaning: '蕎麥麵', display: 'そば', reading: 'soba', kanji: '蕎麦', topic: 'food', round: 5 },
+  { meaning: '炒麵', display: 'やきそば', reading: 'yakisoba', kanji: '焼きそば', topic: 'food', round: 5 },
+  { meaning: '烤雞串', display: 'やきとり', reading: 'yakitori', kanji: '焼き鳥', topic: 'food', round: 4 },
+  { meaning: '燒烤（料理字尾）', display: 'やき', reading: 'yaki', kanji: '焼き', topic: 'food', round: 3 },
   { meaning: '可以嗎？', display: 'いいですか', reading: 'ii desu ka', topic: 'daily', round: 4 },
   { meaning: '好／可以／不用了', display: 'いいです', reading: 'ii desu', topic: 'daily', round: 4 },
   { meaning: '不用了（正式）', display: 'けっこうです', reading: 'kekkou desu', topic: 'daily', round: 4 },
   { meaning: '晚上好', display: 'こんばんは', reading: 'konbanwa', topic: 'greeting', round: 5 },
   { meaning: '晚安（睡前）', display: 'おやすみなさい', reading: 'oyasumi nasai', topic: 'greeting', round: 4 },
   { meaning: '晚安（朋友）', display: 'おやすみ', reading: 'oyasumi', topic: 'greeting', round: 4 },
-  { meaning: '鑰匙', display: 'かぎ', reading: 'kagi', topic: 'nature', round: 2 },
-  { meaning: '飯糰', display: 'おにぎり', reading: 'onigiri', topic: 'food', round: 2 },
+  { meaning: '鑰匙', display: 'かぎ', reading: 'kagi', kanji: '鍵', topic: 'nature', round: 2 },
+  { meaning: '飯糰', display: 'おにぎり', reading: 'onigiri', kanji: 'お握り', topic: 'food', round: 2 },
   { meaning: '馬上', display: 'すぐ', reading: 'sugu', topic: 'daily', round: 3 },
   { meaning: '很多／滿滿的', display: 'いっぱい', reading: 'ippai', topic: 'daily', round: 5 },
-  { meaning: '天婦羅', display: 'てんぷら', reading: 'tenpura', topic: 'food', round: 5 },
+  { meaning: '天婦羅', display: 'てんぷら', reading: 'tenpura', kanji: '天麩羅', topic: 'food', round: 5 },
   { meaning: '剛剛好', display: 'ぴったり', reading: 'pittari', topic: 'daily', round: 5 },
   { meaning: '肚子餓（擬聲）', display: 'ぺこぺこ', reading: 'peko peko', topic: 'daily', round: 5 },
   { meaning: '所以／因此', display: 'だから', reading: 'dakara', topic: 'daily', round: 4 },
   { meaning: '但是', display: 'でも', reading: 'demo', topic: 'daily', round: 4 },
-  { meaning: '你（粗魯）', display: 'おまえ', reading: 'omae', topic: 'family', round: 4 },
-  { meaning: '伴手禮', display: 'おみやげ', reading: 'omiyage', topic: 'daily', round: 4 },
-  { meaning: '爺爺', display: 'おじいさん', reading: 'ojiisan', topic: 'family', round: 3 },
-  { meaning: '奶奶', display: 'おばあさん', reading: 'obaasan', topic: 'family', round: 5 },
+  { meaning: '你（粗魯）', display: 'おまえ', reading: 'omae', kanji: 'お前', topic: 'family', round: 4 },
+  { meaning: '伴手禮', display: 'おみやげ', reading: 'omiyage', kanji: 'お土産', topic: 'daily', round: 4 },
+  { meaning: '爺爺', display: 'おじいさん', reading: 'ojiisan', kanji: 'お爺さん', topic: 'family', round: 3 },
+  { meaning: '奶奶', display: 'おばあさん', reading: 'obaasan', kanji: 'お婆さん', topic: 'family', round: 5 },
 
   { meaning: '然後／而且', display: 'そして', reading: 'soshite', topic: 'daily', round: 4 },
-  { meaning: '寶藏／財寶', display: 'たから', reading: 'takara', topic: 'nature', round: 4 },
+  { meaning: '寶藏／財寶', display: 'たから', reading: 'takara', kanji: '宝', topic: 'nature', round: 4 },
   { meaning: '對不起（正式道歉）', display: 'ごめんなさい', reading: 'gomen nasai', topic: 'greeting', round: 4 },
-  { meaning: '吃', display: 'たべる', reading: 'taberu', topic: 'food', round: 5 },
-  { meaning: '學習', display: 'べんきょうする', reading: 'benkyou suru', topic: 'daily', round: 5 },
-  { meaning: '一', display: 'いち', reading: 'ichi', topic: 'number', round: 4 },
-  { meaning: '二', display: 'に', reading: 'ni', topic: 'number', round: 2 },
-  { meaning: '三', display: 'さん', reading: 'san', topic: 'number', round: 3 },
-  { meaning: '四', display: 'し／よん', reading: 'shi / yon', topic: 'number', round: 3 },
-  { meaning: '五', display: 'ご', reading: 'go', topic: 'number', round: 2 },
-  { meaning: '六', display: 'ろく', reading: 'roku', topic: 'number', round: 2 },
-  { meaning: '七', display: 'しち／なな', reading: 'shichi / nana', topic: 'number', round: 4 },
-  { meaning: '八', display: 'はち', reading: 'hachi', topic: 'number', round: 5 },
-  { meaning: '九', display: 'く／きゅう', reading: 'ku / kyuu', topic: 'number', round: 3 },
-  { meaning: '十', display: 'じゅう', reading: 'juu', topic: 'number', round: 3 },
-  { meaning: '昨天', display: 'きのう', reading: 'kinou', topic: 'time', round: 2 },
-  { meaning: '狗', display: 'いぬ', reading: 'inu', topic: 'nature', round: 2 },
-  { meaning: '座位', display: 'せき', reading: 'seki', topic: 'daily', round: 3 },
-  { meaning: '家／房子', display: 'いえ', reading: 'ie', topic: 'daily', round: 1 },
-  { meaning: '家（口語）', display: 'うち', reading: 'uchi', topic: 'daily', round: 4 },
-  { meaning: '你（正式）／親愛的', display: 'あなた', reading: 'anata', topic: 'family', round: 4 },
-  { meaning: '前天', display: 'おととい', reading: 'ototoi', topic: 'time', round: 4 },
-  { meaning: '後天', display: 'あさって', reading: 'asatte', topic: 'time', round: 4 },
-  { meaning: '現在', display: 'いま', reading: 'ima', topic: 'time', round: 4 },
-  { meaning: '幾點？', display: 'なんじ', reading: 'nanji', topic: 'question', round: 3 },
-  { meaning: '熊', display: 'くま', reading: 'kuma', topic: 'nature', round: 4 },
-  { meaning: '味噌', display: 'みそ', reading: 'miso', topic: 'food', round: 4 },
-  { meaning: '味噌湯', display: 'みそしる', reading: 'misoshiru', topic: 'food', round: 4 },
+  { meaning: '吃', display: 'たべる', reading: 'taberu', kanji: '食べる', topic: 'food', round: 5 },
+  { meaning: '學習', display: 'べんきょうする', reading: 'benkyou suru', kanji: '勉強する', topic: 'daily', round: 5 },
+  { meaning: '一', display: 'いち', reading: 'ichi', kanji: '一', topic: 'number', round: 4 },
+  { meaning: '二', display: 'に', reading: 'ni', kanji: '二', topic: 'number', round: 2 },
+  { meaning: '三', display: 'さん', reading: 'san', kanji: '三', topic: 'number', round: 3 },
+  { meaning: '四', display: 'し／よん', reading: 'shi / yon', kanji: '四', topic: 'number', round: 3 },
+  { meaning: '五', display: 'ご', reading: 'go', kanji: '五', topic: 'number', round: 2 },
+  { meaning: '六', display: 'ろく', reading: 'roku', kanji: '六', topic: 'number', round: 2 },
+  { meaning: '七', display: 'しち／なな', reading: 'shichi / nana', kanji: '七', topic: 'number', round: 4 },
+  { meaning: '八', display: 'はち', reading: 'hachi', kanji: '八', topic: 'number', round: 5 },
+  { meaning: '九', display: 'く／きゅう', reading: 'ku / kyuu', kanji: '九', topic: 'number', round: 3 },
+  { meaning: '十', display: 'じゅう', reading: 'juu', kanji: '十', topic: 'number', round: 3 },
+  { meaning: '昨天', display: 'きのう', reading: 'kinou', kanji: '昨日', topic: 'time', round: 2 },
+  { meaning: '狗', display: 'いぬ', reading: 'inu', kanji: '犬', topic: 'nature', round: 2 },
+  { meaning: '座位', display: 'せき', reading: 'seki', kanji: '席', topic: 'daily', round: 3 },
+  { meaning: '家／房子', display: 'いえ', reading: 'ie', kanji: '家', topic: 'daily', round: 1 },
+  { meaning: '家（口語）', display: 'うち', reading: 'uchi', kanji: '家', topic: 'daily', round: 4 },
+  { meaning: '你（正式）／親愛的', display: 'あなた', reading: 'anata', kanji: '貴方', topic: 'family', round: 4 },
+  { meaning: '前天', display: 'おととい', reading: 'ototoi', kanji: '一昨日', topic: 'time', round: 4 },
+  { meaning: '後天', display: 'あさって', reading: 'asatte', kanji: '明後日', topic: 'time', round: 4 },
+  { meaning: '現在', display: 'いま', reading: 'ima', kanji: '今', topic: 'time', round: 4 },
+  { meaning: '幾點？', display: 'なんじ', reading: 'nanji', kanji: '何時', topic: 'question', round: 3 },
+  { meaning: '熊', display: 'くま', reading: 'kuma', kanji: '熊', topic: 'nature', round: 4 },
+  { meaning: '味噌', display: 'みそ', reading: 'miso', kanji: '味噌', topic: 'food', round: 4 },
+  { meaning: '味噌湯', display: 'みそしる', reading: 'misoshiru', kanji: '味噌汁', topic: 'food', round: 4 },
   { meaning: 'どこ（哪裡）', display: 'どこ', reading: 'doko', topic: 'question', round: 4 },
   { meaning: 'いくら（多少錢）', display: 'いくら', reading: 'ikura', topic: 'question', round: 2 },
-  { meaning: '烤肉', display: 'やきにく', reading: 'yakiniku', topic: 'food', round: 3 },
-  { meaning: '肉', display: 'にく', reading: 'niku', topic: 'food', round: 2 },
-  { meaning: '夜晚（文學性）', display: 'よる', reading: 'yoru', topic: 'time', round: 3 },
+  { meaning: '烤肉', display: 'やきにく', reading: 'yakiniku', kanji: '焼き肉', topic: 'food', round: 3 },
+  { meaning: '肉', display: 'にく', reading: 'niku', kanji: '肉', topic: 'food', round: 2 },
+  { meaning: '夜晚（文學性）', display: 'よる', reading: 'yoru', kanji: '夜', topic: 'time', round: 3 },
   { meaning: '什麼時候？', display: 'いつ', reading: 'itsu', topic: 'question', round: 4 },
-  { meaning: '百', display: 'ひゃく', reading: 'hyaku', topic: 'number', round: 5 },
-  { meaning: '千', display: 'せん', reading: 'sen', topic: 'number', round: 3 },
-  { meaning: '万', display: 'まん', reading: 'man', topic: 'number', round: 4 },
+  { meaning: '百', display: 'ひゃく', reading: 'hyaku', kanji: '百', topic: 'number', round: 5 },
+  { meaning: '千', display: 'せん', reading: 'sen', kanji: '千', topic: 'number', round: 3 },
+  { meaning: '万', display: 'まん', reading: 'man', kanji: '万', topic: 'number', round: 4 },
   { meaning: '一個', display: 'ひとつ', reading: 'hitotsu', topic: 'number', round: 5 },
   { meaning: '兩個', display: 'ふたつ', reading: 'futatsu', topic: 'number', round: 5 },
   { meaning: '三個', display: 'みっつ', reading: 'mittsu', topic: 'number', round: 4 },
@@ -713,78 +713,78 @@ const vocabCards = [
   { meaning: '八個', display: 'やっつ', reading: 'yattsu', topic: 'number', round: 4 },
   { meaning: '九個', display: 'ここのつ', reading: 'kokonotsu', topic: 'number', round: 4 },
   { meaning: '十個', display: 'とお', reading: 'too', topic: 'number', round: 4 },
-  { meaning: '名字', display: 'なまえ', reading: 'namae', topic: 'daily', round: 4 },
-  { meaning: '猴子', display: 'さる', reading: 'saru', topic: 'nature', round: 3 },
+  { meaning: '名字', display: 'なまえ', reading: 'namae', kanji: '名前', topic: 'daily', round: 4 },
+  { meaning: '猴子', display: 'さる', reading: 'saru', kanji: '猿', topic: 'nature', round: 3 },
   { meaning: '那個（靠近對方）', display: 'それ', reading: 'sore', topic: 'daily', round: 3 },
   { meaning: '那個（兩人都遠）', display: 'あれ', reading: 'are', topic: 'daily', round: 1 },
   { meaning: '我（男性口語）', display: 'おれ', reading: 'ore', topic: 'family', round: 1 },
   { meaning: '衣服', display: 'ふく', reading: 'fuku', topic: 'daily', round: 5 },
-  { meaning: '雪', display: 'ゆき', reading: 'yuki', topic: 'nature', round: 3 },
-  { meaning: '秋天', display: 'あき', reading: 'aki', topic: 'nature', round: 2 },
-  { meaning: '春天', display: 'はる', reading: 'haru', topic: 'nature', round: 5 },
+  { meaning: '雪', display: 'ゆき', reading: 'yuki', kanji: '雪', topic: 'nature', round: 3 },
+  { meaning: '秋天', display: 'あき', reading: 'aki', kanji: '秋', topic: 'nature', round: 2 },
+  { meaning: '春天', display: 'はる', reading: 'haru', kanji: '春', topic: 'nature', round: 5 },
   { meaning: '耳朵', display: 'みみ', reading: 'mimi', topic: 'daily', round: 4 },
   { meaning: '人', display: 'ひと', reading: 'hito', topic: 'daily', round: 5 },
-  { meaning: '冬天', display: 'ふゆ', reading: 'fuyu', topic: 'nature', round: 5 },
-  { meaning: '夏天', display: 'なつ', reading: 'natsu', topic: 'nature', round: 4 },
+  { meaning: '冬天', display: 'ふゆ', reading: 'fuyu', kanji: '冬', topic: 'nature', round: 5 },
+  { meaning: '夏天', display: 'なつ', reading: 'natsu', kanji: '夏', topic: 'nature', round: 4 },
   { meaning: '豬排', display: 'とんかつ', reading: 'tonkatsu', topic: 'food', round: 4 },
   { meaning: '明太子', display: 'めんたいこ', reading: 'mentaiko', topic: 'food', round: 4 },
   { meaning: '馬鈴薯', display: 'じゃがいも', reading: 'jagaimo', topic: 'food', round: 4 },
   { meaning: '請／請便', display: 'どうぞ', reading: 'douzo', topic: 'greeting', round: 4 },
   { meaning: '混蛋／笨蛋', display: 'ばかやろう', reading: 'baka yarou', topic: 'daily', round: 5 },
-  { meaning: '白蘿蔔', display: 'だいこん', reading: 'daikon', topic: 'food', round: 4 },
-  { meaning: '世界', display: 'せかい', reading: 'sekai', topic: 'nature', round: 3 },
-  { meaning: '宇宙', display: 'うちゅう', reading: 'uchuu', topic: 'nature', round: 4 },
+  { meaning: '白蘿蔔', display: 'だいこん', reading: 'daikon', kanji: '大根', topic: 'food', round: 4 },
+  { meaning: '世界', display: 'せかい', reading: 'sekai', kanji: '世界', topic: 'nature', round: 3 },
+  { meaning: '宇宙', display: 'うちゅう', reading: 'uchuu', kanji: '宇宙', topic: 'nature', round: 4 },
   { meaning: '是／對', display: 'はい', reading: 'hai', topic: 'daily', round: 5 },
   { meaning: '不／不是', display: 'いいえ', reading: 'iie', topic: 'daily', round: 1 },
   { meaning: '涮涮鍋', display: 'しゃぶしゃぶ', reading: 'shabu shabu', topic: 'food', round: 5 },
-  { meaning: '照燒', display: 'てりやき', reading: 'teriyaki', topic: 'food', round: 4 },
-  { meaning: '貓', display: 'ねこ', reading: 'neko', topic: 'nature', round: 2 },
-  { meaning: '頭', display: 'あたま', reading: 'atama', topic: 'daily', round: 4 },
-  { meaning: '前輩', display: 'せんぱい', reading: 'senpai', topic: 'family', round: 5 },
-  { meaning: '心情／感覺', display: 'きもち', reading: 'kimochi', topic: 'daily', round: 4 },
+  { meaning: '照燒', display: 'てりやき', reading: 'teriyaki', kanji: '照り焼き', topic: 'food', round: 4 },
+  { meaning: '貓', display: 'ねこ', reading: 'neko', kanji: '猫', topic: 'nature', round: 2 },
+  { meaning: '頭', display: 'あたま', reading: 'atama', kanji: '頭', topic: 'daily', round: 4 },
+  { meaning: '前輩', display: 'せんぱい', reading: 'senpai', kanji: '先輩', topic: 'family', round: 5 },
+  { meaning: '心情／感覺', display: 'きもち', reading: 'kimochi', kanji: '気持ち', topic: 'daily', round: 4 },
   { meaning: '關東煮', display: 'おでん', reading: 'oden', topic: 'food', round: 4 },
   { meaning: '山葵', display: 'わさび', reading: 'wasabi', topic: 'food', round: 5 },
-  { meaning: '學生', display: 'がくせい', reading: 'gakusei', topic: 'daily', round: 3 },
-  { meaning: '風', display: 'かぜ', reading: 'kaze', topic: 'nature', round: 3 },
-  { meaning: '鹽', display: 'しお', reading: 'shio', topic: 'food', round: 3 },
-  { meaning: '電影', display: 'えいが', reading: 'eiga', topic: 'daily', round: 2 },
+  { meaning: '學生', display: 'がくせい', reading: 'gakusei', kanji: '学生', topic: 'daily', round: 3 },
+  { meaning: '風', display: 'かぜ', reading: 'kaze', kanji: '風', topic: 'nature', round: 3 },
+  { meaning: '鹽', display: 'しお', reading: 'shio', kanji: '塩', topic: 'food', round: 3 },
+  { meaning: '電影', display: 'えいが', reading: 'eiga', kanji: '映画', topic: 'daily', round: 2 },
   { meaning: '零（口語）', display: 'ぜろ', reading: 'zero', topic: 'number', round: 3 },
-  { meaning: '電話', display: 'でんわ', reading: 'denwa', topic: 'daily', round: 4 },
-  { meaning: '蛇', display: 'へび', reading: 'hebi', topic: 'nature', round: 5 },
-  { meaning: '可惜／遺憾', display: 'ざんねん', reading: 'zannen', topic: 'daily', round: 3 },
-  { meaning: '雨', display: 'あめ', reading: 'ame', topic: 'nature', round: 4 },
-  { meaning: '圖書館', display: 'としょかん', reading: 'toshokan', topic: 'daily', round: 4 },
-  { meaning: '夢', display: 'ゆめ', reading: 'yume', topic: 'daily', round: 4 },
-  { meaning: '別墅／別荘', display: 'べっそう', reading: 'bessou', topic: 'daily', round: 5 },
-  { meaning: '信念', display: 'しんねん', reading: 'shinnen', topic: 'daily', round: 3 },
+  { meaning: '電話', display: 'でんわ', reading: 'denwa', kanji: '電話', topic: 'daily', round: 4 },
+  { meaning: '蛇', display: 'へび', reading: 'hebi', kanji: '蛇', topic: 'nature', round: 5 },
+  { meaning: '可惜／遺憾', display: 'ざんねん', reading: 'zannen', kanji: '残念', topic: 'daily', round: 3 },
+  { meaning: '雨', display: 'あめ', reading: 'ame', kanji: '雨', topic: 'nature', round: 4 },
+  { meaning: '圖書館', display: 'としょかん', reading: 'toshokan', kanji: '図書館', topic: 'daily', round: 4 },
+  { meaning: '夢', display: 'ゆめ', reading: 'yume', kanji: '夢', topic: 'daily', round: 4 },
+  { meaning: '別墅／別荘', display: 'べっそう', reading: 'bessou', kanji: '別荘', topic: 'daily', round: 5 },
+  { meaning: '信念', display: 'しんねん', reading: 'shinnen', kanji: '信念', topic: 'daily', round: 3 },
   { meaning: '再見（正式）', display: 'さようなら', reading: 'sayounara', topic: 'greeting', round: 3 },
   { meaning: '剛才／剛剛', display: 'さっき', reading: 'sakki', topic: 'daily', round: 3 },
-  { meaning: '牛奶', display: 'ぎゅうにゅう', reading: 'gyuunyuu', topic: 'food', round: 3 },
-  { meaning: '團員', display: 'だんいん', reading: 'dain', topic: 'daily', round: 4 },
-  { meaning: '喜歡', display: 'すき', reading: 'suki', topic: 'daily', round: 3 },
-  { meaning: '鐵板燒', display: 'てっぱんやき', reading: 'teppanyaki', topic: 'food', round: 5 },
+  { meaning: '牛奶', display: 'ぎゅうにゅう', reading: 'gyuunyuu', kanji: '牛乳', topic: 'food', round: 3 },
+  { meaning: '團員', display: 'だんいん', reading: 'dain', kanji: '団員', topic: 'daily', round: 4 },
+  { meaning: '喜歡', display: 'すき', reading: 'suki', kanji: '好き', topic: 'daily', round: 3 },
+  { meaning: '鐵板燒', display: 'てっぱんやき', reading: 'teppanyaki', kanji: '鉄板焼き', topic: 'food', round: 5 },
   { meaning: '又來了？', display: 'またですか', reading: 'mata desu ka', topic: 'daily', round: 4 },
   { meaning: '不可能！／沒想到！', display: 'まさか', reading: 'masaka', topic: 'daily', round: 4 },
   { meaning: '再見（口語）', display: 'じゃあね', reading: 'jaa ne', topic: 'greeting', round: 3 },
-  { meaning: '時間', display: 'じかん', reading: 'jikan', topic: 'time', round: 3 },
-  { meaning: '超喜歡', display: 'だいすき', reading: 'daisuki', topic: 'daily', round: 4 },
-  { meaning: '公司', display: 'かいしゃ', reading: 'kaisha', topic: 'daily', round: 3 },
-  { meaning: '星星', display: 'ほし', reading: 'hoshi', topic: 'nature', round: 5 },
-  { meaning: '船', display: 'ふね', reading: 'fune', topic: 'nature', round: 5 },
+  { meaning: '時間', display: 'じかん', reading: 'jikan', kanji: '時間', topic: 'time', round: 3 },
+  { meaning: '超喜歡', display: 'だいすき', reading: 'daisuki', kanji: '大好き', topic: 'daily', round: 4 },
+  { meaning: '公司', display: 'かいしゃ', reading: 'kaisha', kanji: '会社', topic: 'daily', round: 3 },
+  { meaning: '星星', display: 'ほし', reading: 'hoshi', kanji: '星', topic: 'nature', round: 5 },
+  { meaning: '船', display: 'ふね', reading: 'fune', kanji: '船', topic: 'nature', round: 5 },
   { meaning: '這樣啊（口語）', display: 'そっか', reading: 'sokka', topic: 'daily', round: 3 },
   { meaning: '太好了！做到了！', display: 'やった', reading: 'yatta', topic: 'daily', round: 4 },
-  { meaning: '地方／正在做的時候', display: 'ところ', reading: 'tokoro', topic: 'daily', round: 4 },
-  { meaning: '謊言／不會吧！', display: 'うそ', reading: 'uso', topic: 'daily', round: 3 },
-  { meaning: '一起', display: 'いっしょに', reading: 'issho ni', topic: 'daily', round: 3 },
-  { meaning: '相信', display: 'しんじる', reading: 'shinjiru', topic: 'daily', round: 3 },
-  { meaning: '幽靈', display: 'ゆうれい', reading: 'yuurei', topic: 'daily', round: 3 },
-  { meaning: '全部／全都', display: 'ぜんぶ', reading: 'zenbu', topic: 'daily', round: 5 },
-  { meaning: '練習', display: 'れんしゅう', reading: 'renshuu', topic: 'daily', round: 3 },
-  { meaning: '解散', display: 'かいさん', reading: 'kaisan', topic: 'daily', round: 3 },
-  { meaning: '演奏', display: 'えんそう', reading: 'ensou', topic: 'daily', round: 3 },
-  { meaning: '茶', display: 'おちゃ', reading: 'ocha', topic: 'food', round: 4 },
-  { meaning: '有名的', display: 'ゆうめい', reading: 'yuumei', topic: 'daily', round: 4 },
-  { meaning: '第一／最～', display: 'いちばん', reading: 'ichiban', topic: 'daily', round: 5 },
+  { meaning: '地方／正在做的時候', display: 'ところ', reading: 'tokoro', kanji: '所', topic: 'daily', round: 4 },
+  { meaning: '謊言／不會吧！', display: 'うそ', reading: 'uso', kanji: '嘘', topic: 'daily', round: 3 },
+  { meaning: '一起', display: 'いっしょに', reading: 'issho ni', kanji: '一緒に', topic: 'daily', round: 3 },
+  { meaning: '相信', display: 'しんじる', reading: 'shinjiru', kanji: '信じる', topic: 'daily', round: 3 },
+  { meaning: '幽靈', display: 'ゆうれい', reading: 'yuurei', kanji: '幽霊', topic: 'daily', round: 3 },
+  { meaning: '全部／全都', display: 'ぜんぶ', reading: 'zenbu', kanji: '全部', topic: 'daily', round: 5 },
+  { meaning: '練習', display: 'れんしゅう', reading: 'renshuu', kanji: '練習', topic: 'daily', round: 3 },
+  { meaning: '解散', display: 'かいさん', reading: 'kaisan', kanji: '解散', topic: 'daily', round: 3 },
+  { meaning: '演奏', display: 'えんそう', reading: 'ensou', kanji: '演奏', topic: 'daily', round: 3 },
+  { meaning: '茶', display: 'おちゃ', reading: 'ocha', kanji: 'お茶', topic: 'food', round: 4 },
+  { meaning: '有名的', display: 'ゆうめい', reading: 'yuumei', kanji: '有名', topic: 'daily', round: 4 },
+  { meaning: '第一／最～', display: 'いちばん', reading: 'ichiban', kanji: '一番', topic: 'daily', round: 5 },
 ];
 
 // ═══════════════════════════════
@@ -1226,11 +1226,13 @@ function checkVocabMultiple(chosen, btn) {
   advanceSRS(currentVocab, isCorrect);
   const fb = document.getElementById('feedback');
   fb.className = `feedback ${isCorrect ? 'show-correct' : 'show-wrong'}`;
+  const kp = currentVocab.kanji ? `${currentVocab.kanji} ` : '';
   const hint = vocabDir === 'jp-to-zh'
-    ? `${currentVocab.display}（${currentVocab.reading}）`
-    : `${currentVocab.meaning} → ${currentVocab.display}`;
-  fb.innerHTML = isCorrect ? `✓ 正確！${hint}` : `✗ 正確是「${correct}」`;
-  document.getElementById('hintText').textContent = `💡 ${currentVocab.display}（${currentVocab.reading}）`;
+    ? `${kp}${currentVocab.display}（${currentVocab.reading}）`
+    : `${currentVocab.meaning} → ${kp}${currentVocab.display}`;
+  const wrongHint = vocabDir === 'jp-to-zh' ? correct : `${kp}${correct}`;
+  fb.innerHTML = isCorrect ? `✓ 正確！${hint}` : `✗ 正確是「${wrongHint}」`;
+  document.getElementById('hintText').textContent = `💡 ${kp}${currentVocab.display}（${currentVocab.reading}）`;
   document.getElementById('nextBtn').classList.add('visible');
 }
 
