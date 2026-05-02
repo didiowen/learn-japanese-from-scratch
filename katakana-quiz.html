@@ -329,6 +329,33 @@ h1.title {
 .vocab-btn:last-child { border-right: none; }
 .vocab-btn.active { background: var(--soft); color: white; font-weight: 400; }
 
+
+/* ── Hint toggle ── */
+.hint-toggle-wrap {
+  max-width: 360px;
+  width: 100%;
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: flex-end;
+}
+.hint-toggle-btn {
+  padding: 5px 12px;
+  border: 1.5px solid var(--border);
+  border-radius: 20px;
+  font-size: 0.88rem;
+  font-family: 'Noto Sans JP', 'Noto Sans TC', sans-serif;
+  cursor: pointer;
+  background: white;
+  color: var(--soft);
+  transition: all 0.15s;
+}
+.hint-toggle-btn.active {
+  background: var(--ink);
+  color: var(--paper);
+  border-color: var(--ink);
+  font-weight: 400;
+}
+
 /* ── Topic filter ── */
 .topic-filter {
   display: flex;
@@ -403,6 +430,11 @@ h1.title {
   <button class="mode-tab" id="tab2" onclick="switchMode('char-to-input')">字→讀音<br>輸入</button>
   <button class="mode-tab" id="tab3" onclick="switchMode('reading-to-char')">讀音→字<br>選擇</button>
   <button class="mode-tab" id="tab4" onclick="switchMode('reading-to-input')">讀音→字<br>輸入</button>
+</div>
+
+<!-- Hint toggle（五十音 only） -->
+<div class="hint-toggle-wrap" id="hintToggleWrap">
+  <button class="hint-toggle-btn" id="hintToggleBtn" onclick="toggleHint()">提示：關</button>
 </div>
 
 <!-- 單字 controls（隱藏直到切換） -->
@@ -655,6 +687,7 @@ let totalCorrect = 0;
 let streak = 0;
 let answered = false;
 let currentCard = null;
+let showHint = false;
 
 // ═══════════════════════════════
 // UTILS
@@ -737,6 +770,20 @@ function normalizeRomaji(s) {
 }
 
 // ═══════════════════════════════
+// HINT TOGGLE
+// ═══════════════════════════════
+function toggleHint() {
+  showHint = !showHint;
+  const btn = document.getElementById('hintToggleBtn');
+  btn.textContent = showHint ? '提示：開' : '提示：關';
+  btn.classList.toggle('active', showHint);
+  const subEl = document.getElementById('subInfo');
+  if (subEl && currentCard) {
+    subEl.textContent = showHint ? `平假名：${currentCard.hiragana}　來源：${currentCard.kanji}` : '';
+  }
+}
+
+// ═══════════════════════════════
 // SECTION SWITCHING
 // ═══════════════════════════════
 function switchSection(section) {
@@ -744,6 +791,7 @@ function switchSection(section) {
   document.getElementById('tabKana').classList.toggle('active', section === 'kana');
   document.getElementById('tabVocab').classList.toggle('active', section === 'vocab');
   document.getElementById('kanaModes').style.display = section === 'kana' ? 'flex' : 'none';
+  document.getElementById('hintToggleWrap').style.display = section === 'kana' ? 'flex' : 'none';
   document.getElementById('roundFilter').style.display = 'flex';
   document.getElementById('vocabToggle').style.display = section === 'vocab' ? 'flex' : 'none';
   resetScore();
@@ -894,7 +942,7 @@ function renderCharToReadingMultiple() {
   document.getElementById('quizContent').innerHTML = `
     <div class="question-type">這個片假名怎麼讀？</div>
     <div class="main-char">${currentCard.char}</div>
-    <div class="sub-info">平假名：${currentCard.hiragana}　來源：${currentCard.kanji}</div>
+    <div class="sub-info" id="subInfo">${showHint ? `平假名：${currentCard.hiragana}　來源：${currentCard.kanji}` : ''}</div>
     <div class="hint" id="hintText"></div>
     <div class="options">
       ${options.map(opt => `<button class="option-btn reading" onclick="checkCharToReading('${opt}', this)">${opt}</button>`).join('')}
@@ -918,7 +966,7 @@ function checkCharToReading(chosen, btn) {
   const fb = document.getElementById('feedback');
   fb.className = `feedback ${isCorrect ? 'show-correct' : 'show-wrong'}`;
   fb.innerHTML = isCorrect ? `✓ 正確！` : `✗ 正確是「${correct}」`;
-  document.getElementById('hintText').textContent = '💡 ' + currentCard.hint;
+  if (showHint) document.getElementById('hintText').textContent = '💡 ' + currentCard.hint;
   document.getElementById('nextBtn').classList.add('visible');
 }
 
@@ -955,8 +1003,10 @@ function submitCharToInput() {
   const fb = document.getElementById('feedback');
   fb.className = `feedback ${isCorrect ? 'show-correct' : 'show-wrong'}`;
   fb.innerHTML = isCorrect ? `✓ 正確！` : `✗ 正確是「${currentCard.reading}」`;
-  document.getElementById('subInfo').textContent = `平假名：${currentCard.hiragana}　來源：${currentCard.kanji}`;
-  document.getElementById('hintText').textContent = '💡 ' + currentCard.hint;
+  if (showHint) {
+    document.getElementById('subInfo').textContent = `平假名：${currentCard.hiragana}　來源：${currentCard.kanji}`;
+    document.getElementById('hintText').textContent = '💡 ' + currentCard.hint;
+  }
   document.getElementById('nextBtn').classList.add('visible');
 }
 
@@ -1003,8 +1053,10 @@ function checkReadingToChar(chosen, btn) {
   const fb = document.getElementById('feedback');
   fb.className = `feedback ${isCorrect ? 'show-correct' : 'show-wrong'}`;
   fb.innerHTML = isCorrect ? `✓ 正確！` : `✗ 正確是「${correct}」`;
-  document.getElementById('subInfo').textContent = `平假名：${currentCard.hiragana}　來源：${currentCard.kanji}`;
-  document.getElementById('hintText').textContent = '💡 ' + currentCard.hint;
+  if (showHint) {
+    document.getElementById('subInfo').textContent = `平假名：${currentCard.hiragana}　來源：${currentCard.kanji}`;
+    document.getElementById('hintText').textContent = '💡 ' + currentCard.hint;
+  }
   document.getElementById('nextBtn').classList.add('visible');
 }
 
@@ -1041,8 +1093,10 @@ function submitReadingToInput() {
   const fb = document.getElementById('feedback');
   fb.className = `feedback ${isCorrect ? 'show-correct' : 'show-wrong'}`;
   fb.innerHTML = isCorrect ? `✓ 正確！` : `✗ 正確是「${currentCard.char}」`;
-  document.getElementById('subInfo').textContent = `平假名：${currentCard.hiragana}　來源：${currentCard.kanji}`;
-  document.getElementById('hintText').textContent = '💡 ' + currentCard.hint;
+  if (showHint) {
+    document.getElementById('subInfo').textContent = `平假名：${currentCard.hiragana}　來源：${currentCard.kanji}`;
+    document.getElementById('hintText').textContent = '💡 ' + currentCard.hint;
+  }
   document.getElementById('nextBtn').classList.add('visible');
 }
 
