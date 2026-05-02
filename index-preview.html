@@ -4,15 +4,15 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>日文學習測驗</title>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400;700&family=Noto+Sans+TC:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Klee+One:wght@400;600&display=swap" rel="stylesheet">
 <style>
 :root {
-  --paper:   oklch(96% 0.008 80);
-  --ink:     oklch(18% 0.010 260);
+  --paper:   oklch(99% 0.002 60);
+  --ink:     oklch(7%  0.012 250);
   --accent:  oklch(47% 0.160 25);
-  --soft:    oklch(55% 0.040 80);
-  --rule:    oklch(82% 0.018 80);
-  --muted:   oklch(65% 0.020 80);
+  --soft:    oklch(40% 0.030 250);
+  --rule:    oklch(88% 0.006 80);
+  --muted:   oklch(55% 0.015 250);
 }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -20,7 +20,7 @@
 body {
   background: var(--paper);
   color: var(--ink);
-  font-family: 'Noto Sans TC', sans-serif;
+  font-family: 'Klee One', sans-serif;
   font-size: 18px;
   line-height: 1.7;
   min-height: 100dvh;
@@ -48,11 +48,11 @@ body {
 }
 
 h1 {
-  font-family: 'Noto Serif JP', serif;
+  font-family: 'Chiron Hei HK', 'Noto Sans JP', 'Klee One', sans-serif;
   font-size: clamp(2.4rem, 6vw, 3.8rem);
-  font-weight: 300;
-  line-height: 1.15;
-  letter-spacing: -0.01em;
+  font-weight: 400;
+  line-height: 1.2;
+  letter-spacing: 0.02em;
   color: var(--ink);
   margin-bottom: 20px;
 }
@@ -107,7 +107,7 @@ h1 em {
 .entry a:hover::before { height: 60%; }
 
 .kana {
-  font-family: 'Noto Serif JP', serif;
+  font-family: 'Chiron Hei HK', 'Noto Sans JP', 'Klee One', sans-serif;
   font-size: 2rem;
   font-weight: 400;
   color: var(--accent);
@@ -127,7 +127,7 @@ h1 em {
 
 .label {
   font-size: 1.1rem;
-  font-weight: 500;
+  font-weight: 400;
   letter-spacing: 0.02em;
 }
 
