@@ -1300,7 +1300,7 @@ function checkVocabMultiple(chosen, btn) {
     : `${currentVocab.meaning} → ${kp}${currentVocab.display}`;
   const wrongHint = vocabDir === 'jp-to-zh' ? correct : `${kp}${correct}`;
   fb.innerHTML = isCorrect ? `✓ 正確！${hint}` : `✗ 正確是「${wrongHint}」`;
-  document.getElementById('hintText').textContent = `💡 ${kp}${currentVocab.display}（${currentVocab.reading}）`;
+  document.getElementById('hintText').textContent = '';
   document.getElementById('nextBtn').classList.add('visible');
 }
 
