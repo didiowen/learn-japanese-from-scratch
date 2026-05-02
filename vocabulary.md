@@ -2,7 +2,7 @@
 title: 單字
 date:
   created: 2026-04-28T15:00:00
-  updated: 2026-05-01T18:00:00
+  updated: 2026-05-02T16:00:00
 alias: vocab
 ---
 # 單字
@@ -336,3 +336,94 @@ alias: vocab
 | 嘘    | うそ    | uso     | 謊言；うそ！ = 不會吧！（驚訝反應）  |
 | ところ | ところ   | tokoro  | 地方；〜ているところ＝正在做〜的時候（文法點）|
 | 有名  | ゆうめい  | yuumei  | 有名的／出名                              |
+
+## 🔤 外來語（片假名）
+
+### 飲食飲料
+
+| 片假名 | 讀音 | 意思 | 來源 |
+| ------ | ---- | ---- | ---- |
+| コーヒー | kōhī | 咖啡 | coffee |
+| ビール | bīru | 啤酒 | beer |
+| コーラ | kōra | 可樂 | cola |
+| ケーキ | kēki | 蛋糕 | cake |
+| ジュース | jūsu | 果汁 | juice |
+| ワイン | wain | 葡萄酒 | wine |
+| アイス | aisu | 冰淇淋 | ice |
+| スープ | sūpu | 湯 | soup |
+| チーズ | chīzu | 起司 | cheese |
+| ガーリック | gārikku | 大蒜 | garlic |
+| パン | pan | 麵包 | 葡文 pão |
+| ラーメン | rāmen | 拉麵 | 中文「拉麵」|
+| ハンバーガー | hanbāgā | 漢堡 | hamburger |
+| ピザ | piza | 披薩 | pizza |
+| フルーツ | furūtsu | 水果 | fruits |
+| グリル | guriru | 烤架 | grill |
+
+### 交通・場所
+
+| 片假名 | 讀音 | 意思 | 來源 |
+| ------ | ---- | ---- | ---- |
+| タクシー | takushī | 計程車 | taxi |
+| バス | basu | 公車 | bus |
+| ホテル | hoteru | 飯店 | hotel |
+| レストラン | resutoran | 餐廳 | restaurant |
+| スーパー | sūpā | 超市 | supermarket |
+| デパート | depāto | 百貨公司 | department store |
+| コンビニ | konbini | 便利商店 | convenience store |
+| トイレ | toire | 廁所 | toilet |
+| ドア | doa | 門 | door |
+| パスポート | pasupōto | 護照 | passport |
+
+### 運動・娛樂
+
+| 片假名 | 讀音 | 意思 | 來源 |
+| ------ | ---- | ---- | ---- |
+| ゲーム | gēmu | 遊戲 | game |
+| スキー | sukī | 滑雪 | ski |
+| ヨガ | yoga | 瑜伽 | yoga |
+| ダンス | dansu | 舞蹈 | dance |
+| ギター | gitā | 吉他 | guitar |
+| ラリー | rarī | 拉力賽 | rally |
+| チャンス | chansu | 機會 | chance |
+| ルール | rūru | 規則 | rule |
+| エール | ēru | 加油聲 | yell |
+| ルーキー | rūkī | 新人 | rookie |
+| ゴール | gōru | 球門／終點 | goal |
+| ランナー | rannā | 跑者 | runner |
+| コーラス | kōrasu | 合唱 | chorus |
+
+### 日常物品
+
+| 片假名 | 讀音 | 意思 | 來源 |
+| ------ | ---- | ---- | ---- |
+| ペン | pen | 筆 | pen |
+| ポケット | poketto | 口袋 | pocket |
+| ベッド | beddo | 床 | bed |
+| マスク | masuku | 口罩 | mask |
+| ボール | bōru | 球 | ball |
+| ブーツ | būtsu | 靴子 | boots |
+| アイロン | airon | 熨斗 | iron |
+| ヘルメット | herumetto | 安全帽 | helmet |
+| チケット | chiketto | 票 | ticket |
+| レシート | reshīto | 收據 | receipt |
+| ガス | gasu | 瓦斯 | gas |
+| サイズ | saizu | 尺寸 | size |
+| カラー | karā | 顏色 | color |
+| アイコン | aikon | 圖示 | icon |
+| テスト | tesuto | 考試 | test |
+| ニュース | nyūsu | 新聞 | news |
+| セール | sēru | 特賣 | sale |
+
+### 其他
+
+| 片假名 | 讀音 | 意思 | 來源 |
+| ------ | ---- | ---- | ---- |
+| ロール | rōru | 捲／角色 | roll / role |
+| オーロラ | ōrora | 極光 | aurora |
+| リール | rīru | 捲盤 | reel |
+| ガール | gāru | 女孩 | girl |
+| クール | kūru | 酷 | cool |
+| コーナー | kōnā | 角落 | corner |
+| ゾーン | zōn | 區域 | zone |
+| ゼロ | zero | 零 | zero |
