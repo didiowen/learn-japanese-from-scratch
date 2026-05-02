@@ -375,6 +375,24 @@ alias: vocab
 | ドア | doa | 門 | door |
 | パスポート | pasupōto | 護照 | passport |
 
+### 運動・娛樂
+
+| 片假名 | 讀音 | 意思 | 來源 |
+| ------ | ---- | ---- | ---- |
+| ゲーム | gēmu | 遊戲 | game |
+| スキー | sukī | 滑雪 | ski |
+| ヨガ | yoga | 瑜伽 | yoga |
+| ダンス | dansu | 舞蹈 | dance |
+| ギター | gitā | 吉他 | guitar |
+| ラリー | rarī | 拉力賽 | rally |
+| チャンス | chansu | 機會 | chance |
+| ルール | rūru | 規則 | rule |
+| エール | ēru | 加油聲 | yell |
+| ルーキー | rūkī | 新人 | rookie |
+| ゴール | gōru | 球門／終點 | goal |
+| ランナー | rannā | 跑者 | runner |
+| コーラス | kōrasu | 合唱 | chorus |
+
 ### 日常物品
 
 | 片假名 | 讀音 | 意思 | 來源 |
@@ -394,18 +412,6 @@ alias: vocab
 | カラー | karā | 顏色 | color |
 | アイコン | aikon | 圖示 | icon |
 | テスト | tesuto | 考試 | test |
-
-### 運動・娛樂
-
-| 片假名 | 讀音 | 意思 | 來源 |
-| ------ | ---- | ---- | ---- |
-| ゲーム | gēmu | 遊戲 | game |
-| スキー | sukī | 滑雪 | ski |
-| ヨガ | yoga | 瑜伽 | yoga |
-| ダンス | dansu | 舞蹈 | dance |
-| ギター | gitā | 吉他 | guitar |
-| ラリー | rarī | 拉力賽 | rally |
-| チャンス | chansu | 機會 | chance |
 | ニュース | nyūsu | 新聞 | news |
 | セール | sēru | 特賣 | sale |
 
@@ -413,17 +419,11 @@ alias: vocab
 
 | 片假名 | 讀音 | 意思 | 來源 |
 | ------ | ---- | ---- | ---- |
-| ルール | rūru | 規則 | rule |
 | ロール | rōru | 捲／角色 | roll / role |
-| エール | ēru | 加油聲 | yell |
 | オーロラ | ōrora | 極光 | aurora |
 | リール | rīru | 捲盤 | reel |
-| ルーキー | rūkī | 新人 | rookie |
 | ガール | gāru | 女孩 | girl |
 | クール | kūru | 酷 | cool |
-| ゴール | gōru | 球門／終點 | goal |
 | コーナー | kōnā | 角落 | corner |
-| ランナー | rannā | 跑者 | runner |
-| コーラス | kōrasu | 合唱 | chorus |
 | ゾーン | zōn | 區域 | zone |
 | ゼロ | zero | 零 | zero |
