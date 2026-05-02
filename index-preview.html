@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>日文學習測驗</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400;700&family=Noto+Sans+TC:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --paper:   oklch(96% 0.008 80);
+  --ink:     oklch(18% 0.010 260);
+  --accent:  oklch(47% 0.160 25);
+  --soft:    oklch(55% 0.040 80);
+  --rule:    oklch(82% 0.018 80);
+  --muted:   oklch(65% 0.020 80);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: 'Noto Sans TC', sans-serif;
+  font-size: 18px;
+  line-height: 1.7;
+  min-height: 100dvh;
+  display: grid;
+  place-items: center;
+  padding: clamp(48px, 8vw, 96px) clamp(24px, 6vw, 80px);
+}
+
+.page {
+  width: 100%;
+  max-width: 640px;
+}
+
+/* ── Header ── */
+.header {
+  margin-bottom: clamp(48px, 8vw, 80px);
+}
+
+.eyebrow {
+  font-size: 0.78rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 20px;
+}
+
+h1 {
+  font-family: 'Noto Serif JP', serif;
+  font-size: clamp(2.4rem, 6vw, 3.8rem);
+  font-weight: 300;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+  margin-bottom: 20px;
+}
+
+h1 em {
+  font-style: normal;
+  color: var(--accent);
+}
+
+.lead {
+  font-size: clamp(0.95rem, 2vw, 1.05rem);
+  color: var(--soft);
+  max-width: 44ch;
+  line-height: 1.75;
+}
+
+/* ── Nav entries ── */
+.entries {
+  list-style: none;
+  border-top: 1px solid var(--rule);
+}
+
+.entry {
+  border-bottom: 1px solid var(--rule);
+}
+
+.entry a {
+  display: grid;
+  grid-template-columns: 56px 1fr;
+  align-items: center;
+  gap: 24px;
+  padding: 28px 0;
+  text-decoration: none;
+  color: inherit;
+  position: relative;
+  transition: padding-left 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.entry a::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 2px;
+  height: 0;
+  background: var(--accent);
+  transition: height 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.entry a:hover { padding-left: 12px; }
+.entry a:hover::before { height: 60%; }
+
+.kana {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 2rem;
+  font-weight: 400;
+  color: var(--accent);
+  line-height: 1;
+  text-align: center;
+  opacity: 0.85;
+  transition: opacity 0.2s;
+}
+
+.entry a:hover .kana { opacity: 1; }
+
+.meta {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.label {
+  font-size: 1.1rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+}
+
+.desc {
+  font-size: 0.85rem;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+/* ── Footer ── */
+.footer {
+  margin-top: clamp(48px, 8vw, 72px);
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
+.footer a {
+  font-size: 0.82rem;
+  color: var(--muted);
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: color 0.15s;
+}
+
+.footer a:hover { color: var(--soft); }
+
+.footer-sep {
+  width: 1px;
+  height: 14px;
+  background: var(--rule);
+}
+
+/* ── Reduced motion ── */
+@media (prefers-reduced-motion: reduce) {
+  .entry a, .entry a::before, .kana, .footer a { transition: none; }
+}
+</style>
+</head>
+<body>
+  <main class="page">
+    <header class="header">
+      <p class="eyebrow">日文自學系統</p>
+      <h1>從台語出發，<br>學會<em>日文假名</em></h1>
+      <p class="lead">以你已經會念的詞為跳板，透過字形聯想與 SRS 記憶系統，把「聽得懂」變成「看得懂」。</p>
+    </header>
+
+    <ul class="entries">
+      <li class="entry">
+        <a href="hiragana-quiz.html">
+          <span class="kana">あ</span>
+          <span class="meta">
+            <span class="label">平假名測驗</span>
+            <span class="desc">五十音・濁音・單字　SRS 間隔記憶</span>
+          </span>
+        </a>
+      </li>
+      <li class="entry">
+        <a href="katakana-quiz.html">
+          <span class="kana">ア</span>
+          <span class="meta">
+            <span class="label">片假名測驗</span>
+            <span class="desc">五十音・濁音・外來語單字　SRS 間隔記憶</span>
+          </span>
+        </a>
+      </li>
+      <li class="entry">
+        <a href="notes/">
+          <span class="kana">ノ</span>
+          <span class="meta">
+            <span class="label">學習筆記</span>
+            <span class="desc">字表・記憶鉤・語法・會話　Docsify 筆記站</span>
+          </span>
+        </a>
+      </li>
+    </ul>
+
+    <footer class="footer">
+      <a href="https://github.com/didiowen/nihongo" target="_blank" rel="noopener">
+        <svg width="15" height="15" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+        didiowen/nihongo
+      </a>
+      <span class="footer-sep"></span>
+      <a href="https://ko-fi.com/ines8964" target="_blank" rel="noopener">
+        ☕ Ko-fi
+      </a>
+    </footer>
+  </main>
+
+  <!-- Ko-fi floating widget -->
+  <script src='https://storage.ko-fi.com/cdn/scripts/overlay-widget.js'></script>
+  <script>
+    kofiWidgetOverlay.draw('ines8964', {
+      'type': 'floating-chat',
+      'floating-chat.donateButton.text': 'Support Me',
+      'floating-chat.donateButton.background-color': '#c0392b',
+      'floating-chat.donateButton.text-color': '#fff'
+    });
+  </script>
+</body>
+</html>
