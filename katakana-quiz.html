@@ -590,6 +590,16 @@ const alreadyKnown = new Set([
   'ライター',
 ]);
 
+// 最近加入的單字批次（數字越大＝越近加入＝越優先出現）
+const recentBatch = {
+  // 批次 3（2026-05-01 最新）
+  'シャンプー': 3, 'コンサート': 3,
+  // 批次 2（2026-05-01）
+  'ミルク': 2, 'メンバー': 2,
+  // 批次 1（2026-05-01）
+  'エプロン': 1,
+};
+
 // 形近字干擾組
 const similarGroups = [
   ['シ', 'ツ'],
@@ -756,7 +766,12 @@ function switchSection(section) {
 function buildVocabQueue() {
   let filtered = currentTopic === 'all' ? vocabCards : vocabCards.filter(v => v.topic === currentTopic);
   if (currentRound > 0) filtered = filtered.filter(v => v.round <= currentRound);
-  vocabQueue = filtered.map(c => ({ ...c, level: vocabProgress[c.word] ?? (alreadyKnown.has(c.word) ? 2 : 0), nextReview: 0 }));
+  vocabQueue = filtered.map(c => {
+    const saved = vocabProgress[c.word];
+    const level = saved ?? (alreadyKnown.has(c.word) ? 2 : 0);
+    const nextReview = saved != null ? 0 : -((recentBatch[c.word] ?? 0) * 5);
+    return { ...c, level, nextReview };
+  });
   queue = vocabQueue;
 }
 

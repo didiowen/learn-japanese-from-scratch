@@ -881,6 +881,22 @@ const alreadyKnown = new Set([
   'そっか','いちばん',
 ]);
 
+// 最近加入的單字批次（數字越大＝越近加入＝越優先出現）
+// 未被 SRS 記錄過的字才受影響；新增單字時加到最新批次號 + 1
+const recentBatch = {
+  // 批次 3（2026-05-01 最新）
+  'いっしょに': 3, 'しんじる': 3, 'ゆうれい': 3, 'ぜんぶ': 3,
+  'れんしゅう': 3, 'かいさん': 3, 'えんそう': 3, 'おちゃ': 3,
+  'ゆうめい': 3,
+  // 批次 2（2026-05-01）
+  'またですか': 2, 'まさか': 2, 'じゃあね': 2, 'じかん': 2,
+  'だいすき': 2, 'かいしゃ': 2, 'ほし': 2, 'ふね': 2,
+  'やった': 2, 'ところ': 2, 'うそ': 2,
+  // 批次 1（2026-05-01）
+  'ゆめ': 1, 'べっそう': 1, 'しんねん': 1, 'さようなら': 1, 'さっき': 1,
+  'ぎゅうにゅう': 1, 'だんいん': 1, 'すき': 1, 'てっぱんやき': 1,
+};
+
 // 形近字群組——出現在干擾選項的優先池
 const similarGroups = [
   ['さ', 'ち'],           // 鏡像
@@ -1000,11 +1016,12 @@ function setTopic(topic) {
 function getFilteredVocab() {
   let filtered = currentTopic === 'all' ? vocabCards : vocabCards.filter(c => c.topic === currentTopic);
   if (currentRound > 0) filtered = filtered.filter(c => c.round <= currentRound);
-  return filtered.map(c => ({
-    ...c,
-    level: vocabProgress[c.display] ?? (alreadyKnown.has(c.display) ? 2 : 0),
-    nextReview: 0,
-  }));
+  return filtered.map(c => {
+    const saved = vocabProgress[c.display];
+    const level = saved ?? (alreadyKnown.has(c.display) ? 2 : 0);
+    const nextReview = saved != null ? 0 : -((recentBatch[c.display] ?? 0) * 5);
+    return { ...c, level, nextReview };
+  });
 }
 
 function setMode(mode) {
