@@ -185,7 +185,7 @@ alias: vocab
 | 桃色  | ももいろ      | momoiro    | 粉紅色     | **ピンク**（現代通用）    | pinku       |
 | 橙色  | だいだいいろ    | daidaiiro  | 橘色      | **オレンジ**（現代通用）   | orenji      |
 | 灰色  | はいいろ      | haiiro     | 灰色      | **グレー**（現代通用）    | gurē        |
-| 色   | いろ        | iro        | 顏色      | —                   | —           |
+| 色   | いろ        | iro        | 顏色      | カラー               | karā        |
 
 ## 🔢 數字
 
@@ -409,7 +409,6 @@ alias: vocab
 | レシート | reshīto | 收據 | receipt |
 | ガス | gasu | 瓦斯 | gas |
 | サイズ | saizu | 尺寸 | size |
-| カラー | karā | 顏色 | color |
 | アイコン | aikon | 圖示 | icon |
 | テスト | tesuto | 考試 | test |
 | ニュース | nyūsu | 新聞 | news |
