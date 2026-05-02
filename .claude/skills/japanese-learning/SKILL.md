@@ -22,8 +22,8 @@ description: >
 ## 學習者背景
 
 - 母語：台語、華語；略懂粵語；熟悉注音符號和漢字
-- 已完成平假名五十音（含濁音、半濁音）
-- 正在進行片假名學習
+- 平假名、片假名五十音（含濁音、半濁音）皆已完成
+- 目前進入單字擴充與會話學習階段，主要來源：日劇聽到的詞彙
 
 ## 記憶鉤優先順序
 
@@ -72,8 +72,9 @@ description: >
 1. 拆解每個假名（標明新/舊）
 2. 說明漢字來源和台語連結（如有）
 3. 同音異義詞提示
-4. 更新測驗 vocabCards（加 topic 標籤）
-5. 將單字加入對應筆記檔，並更新 `date > updated`（格式 `YYYY-MM-DDTHH:mm:ss`）：
+4. 更新測驗 vocabCards（加 topic 標籤、round 欄位）
+5. 將單字加入對應測驗的 `recentBatch`（批次號 = 目前最大值 + 1；目前最大：**3**，下次用 **4**）
+6. 將單字加入對應筆記檔，並更新 `date > updated`（格式 `YYYY-MM-DDTHH:mm:ss`）：
    - 一般單字 → `vocabulary.md` 對應主題區塊
    - 會話句型／口語表達 → `conversation.md` 對應情境區塊
    - 片假名外來語 → `katakana.md` 對應單字區塊
@@ -82,11 +83,19 @@ description: >
 
 **topic 標籤**：`greeting` / `food` / `family` / `time` / `color` / `number` / `nature` / `daily` / `question`
 
+**round 計算**：`word_round = max(所有字符輪次)`；輪次：R1（あ・ら行・ん）、R2（か・が・な行）、R3（さ・ざ・や・わ行・小假名ゃゅょ）、R4（た・だ・ま行）、R5（は・ば・ぱ行・っ）
+
+### recentBatch 機制
+
+`hiragana-quiz.html` 和 `katakana-quiz.html` 各有 `recentBatch` 物件，數字越大 = 越近加入 = 越優先出現。未被 SRS 記錄的字依批次獲得負的 `nextReview` 初始值（批次 N → -N×5），確保新字在每次 session 開始時優先被考到。已有 SRS 紀錄的字不受影響。
+
 ### 「我本來就會」
 
-使用者說某個單字「本來就會」時：
-1. 照常拆解假名
-2. 將該單字加入 `already-known.md`（格式與既有內容一致）
+使用者說某個單字「本來就會」時，**同時更新兩處**：
+1. `already-known.md`：加入表格（漢字 ｜ 假名 ｜ 羅馬拼音 ｜ 意思）
+2. 對應測驗的 `alreadyKnown` Set（hiragana 用 `display` 欄位、katakana 用 `word` 欄位）
+
+`alreadyKnown` 的字初始 SRS 等級為 2（間隔 8 題），降低出現頻率。注意：這類字**不加入** `recentBatch`。
 
 ### 更新筆記後
 

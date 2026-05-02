@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## 專案概述
 
-台灣學習者日文學習系統——假名記憶、單字管理、測驗工具維護。學習者母語台語、華語，略懂粵語，熟悉注音符號和漢字。已完成平假名五十音（含濁音、半濁音），正在進行片假名學習。
+台灣學習者日文學習系統——假名記憶、單字管理、測驗工具維護。學習者母語台語、華語，略懂粵語，熟悉注音符號和漢字。平假名、片假名五十音（含濁音、半濁音）皆已完成，目前進入單字擴充與會話學習階段。
 
 ## 記憶鉤優先順序
 
@@ -46,6 +46,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 | `already-known.md` | 已知單字片語，在測驗中減少出現頻率 |
 | `kanji.md` | 漢字筆記（字表、發音規則、單字分類） |
 | `grammar.md` | N5 語法筆記（G1–G12，句型、活用、例句） |
+| `PRODUCT.md` | 設計策略文件（受眾、品牌個性、設計原則，impeccable skill 使用） |
 
 參考文件（`.claude/skills/japanese-learning/references/` 目錄）：
 - `quiz-structure.md` — 測驗 HTML 結構與更新方法
@@ -70,8 +71,9 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 1. 拆解每個假名（標明新/舊）
 2. 說明漢字來源和台語連結（如有）
 3. 同音異義詞提示
-4. 更新測驗 vocabCards（加 topic 標籤）
-5. 將單字加入對應筆記檔，並更新 frontmatter 的 `date > updated`：
+4. 更新測驗 vocabCards（加 topic 標籤、round 欄位）
+5. 將單字加入 `recentBatch`（見下方說明）
+6. 將單字加入對應筆記檔，並更新 frontmatter 的 `date > updated`：
    - 一般單字 → `vocabulary.md` 對應主題區塊
    - 會話句型／口語表達 → `conversation.md` 對應情境區塊
    - 片假名外來語 → `katakana.md` 對應單字區塊
@@ -80,6 +82,29 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 **topic 標籤**：`greeting` / `food` / `family` / `time` / `color` / `number` / `nature` / `daily` / `question`
 
+### recentBatch 機制（新單字優先出現）
+
+`hiragana-quiz.html` 和 `katakana-quiz.html` 各有一個 `recentBatch` 物件，控制未被 SRS 記錄的單字出現優先度：
+
+```js
+const recentBatch = {
+  '單字': 批次號,  // 數字越大 = 越近加入 = 越優先
+};
+```
+
+- 每次新增單字，加入 `recentBatch` 並使用**目前最大批次號 + 1**
+- 目前最大批次號：**3**（2026-05-01），下次新增請用 **4**
+- 批次號轉換為 `nextReview = -(批次號 × 5)`，確保新字在 `pickFromQueue` 排序中優先
+- 已被 SRS 記錄過的字不受影響
+
+### 「我本來就會」的單字
+
+使用者說某個單字「本來就會」時，需同時更新兩處：
+1. `already-known.md`：加入表格（漢字 ｜ 假名 ｜ 羅馬拼音 ｜ 意思）
+2. 對應測驗的 `alreadyKnown` Set：加入假名（hiragana 用 `display`、katakana 用 `word`）
+
+`alreadyKnown` 中的字初始 SRS 等級為 2（間隔 8 題），降低出現頻率。
+
 ### 更新學習日誌
 每次修改任何 `.md` 筆記檔後，在 `log.md` 新增條目：
 - 標題格式：`## YYYY-MM-DD HH:MM:SS`（GMT+8，精確到秒）
@@ -87,6 +112,21 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ### 更新測驗 HTML
 詳見 `.claude/skills/japanese-learning/references/quiz-structure.md`。更新時用 Python 處理中文字串避免編碼問題，覆寫前先確認。
+
+**單字輪次（round）計算規則**（嚴格字符規則）：
+- `word_round = max(所有字符的輪次)`
+- 平假名輪次：R1（あ・ら行・ん）、R2（か・が・な行）、R3（さ・ざ・や・わ行）、R4（た・だ・ま行）、R5（は・ば・ぱ行）
+- 小假名 ゃゅょ 及 っ 依所屬行計算（ゃゅょ → R3，っ → R5）
+- 片假名輪次規則相同
+
+### 設計維護（index.html）
+
+`index.html` 採現代日式風格，設計原則詳見 `PRODUCT.md`。UI 設計任務使用 `/impeccable` skill。
+
+- **配色**：OKLCH，禁用純 `#000`/`#fff`；底色微暖白、墨色深靛、強調磚紅
+- **字型**：Noto Serif JP（標題）+ Noto Sans TC（內文）
+- **無障礙**：最小字體 18px，WCAG AA，互動目標 ≥ 44×44px，尊重 prefers-reduced-motion
+- **禁止**：gradient text、glassmorphism、等高卡片格、side-stripe border
 
 ### Push 後立即建 PR
 每次推送功能分支後，**立即用 GitHub MCP 工具建立 PR**，不等使用者手動開。
