@@ -62,7 +62,40 @@ body {
   font-weight: 400;
 }
 
-/* ── Mode toggle ── */
+/* ── Mode tabs（四格，五十音用）── */
+.mode-tabs {
+  display: flex;
+  gap: 0;
+  max-width: 360px;
+  width: 100%;
+  margin-bottom: 18px;
+  border: 1.5px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+.mode-tab {
+  flex: 1;
+  padding: 10px 4px;
+  border: none;
+  background: white;
+  color: var(--neutral);
+  font-family: 'Noto Sans JP', 'Noto Sans TC', sans-serif;
+  font-size: 0.85rem;
+  cursor: pointer;
+  letter-spacing: 0.02em;
+  line-height: 1.3;
+  transition: all 0.2s;
+  border-right: 1px solid var(--border);
+  text-align: center;
+}
+.mode-tab:last-child { border-right: none; }
+.mode-tab.active {
+  background: var(--ink);
+  color: var(--paper);
+  font-weight: 400;
+}
+
+/* ── Vocab mode toggle（單字方向，保留） ── */
 .mode-toggle {
   display: flex;
   gap: 8px;
@@ -380,10 +413,12 @@ body {
   <button class="round-btn" data-round="5" onclick="setRound(5)">第5輪</button>
   <button class="round-btn" data-round="0" onclick="setRound(0)">全部</button>
 </div>
-<!-- Mode toggle (五十音 only) -->
-<div class="mode-toggle" id="modeToggle">
-  <button class="mode-btn active" id="btnMultiple" onclick="setMode('multiple')">選擇題</button>
-  <button class="mode-btn" id="btnInput" onclick="setMode('input')">輸入題</button>
+<!-- Mode tabs (五十音 only) -->
+<div class="mode-tabs" id="kanaModes">
+  <button class="mode-tab active" id="tab1" onclick="switchMode('char-to-reading')">字→讀音<br>選擇</button>
+  <button class="mode-tab" id="tab2" onclick="switchMode('char-to-input')">字→讀音<br>輸入</button>
+  <button class="mode-tab" id="tab3" onclick="switchMode('reading-to-char')">讀音→字<br>選擇</button>
+  <button class="mode-tab" id="tab4" onclick="switchMode('reading-to-input')">讀音→字<br>輸入</button>
 </div>
 
 <!-- Hint toggle (五十音 only) -->
@@ -395,20 +430,6 @@ body {
 <div class="mode-toggle" id="vocabToggle" style="display:none;">
   <button class="mode-btn active" id="btnJpToZh" onclick="setVocabDir('jp-to-zh')">日文→中文</button>
   <button class="mode-btn" id="btnZhToJp" onclick="setVocabDir('zh-to-jp')">中文→日文</button>
-</div>
-
-<!-- Topic filter (vocab only) -->
-<div class="topic-filter" id="topicFilter" style="display:none;">
-  <button class="topic-btn active" onclick="setTopic('all')">全部</button>
-  <button class="topic-btn" onclick="setTopic('greeting')">🗣 問候</button>
-  <button class="topic-btn" onclick="setTopic('food')">🍱 飲食</button>
-  <button class="topic-btn" onclick="setTopic('family')">👨‍👩‍👧‍👦 家族</button>
-  <button class="topic-btn" onclick="setTopic('time')">📅 時間</button>
-  <button class="topic-btn" onclick="setTopic('color')">🎨 顏色</button>
-  <button class="topic-btn" onclick="setTopic('number')">🔢 數字</button>
-  <button class="topic-btn" onclick="setTopic('nature')">🌸 自然</button>
-  <button class="topic-btn" onclick="setTopic('daily')">💬 日常</button>
-  <button class="topic-btn" onclick="setTopic('question')">❓ 疑問詞</button>
 </div>
 
 <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
@@ -429,72 +450,72 @@ body {
 // DATA
 // ═══════════════════════════════
 const cards = [
-  { char: 'す', round: 3, reading: 'su', hint: '「寸」台語念 tshùn，母音 u 對應' },
-  { char: 'み', round: 4, reading: 'mi', hint: '「美」台語念 bí，吳音鼻音化' },
-  { char: 'ま', round: 4, reading: 'ma', hint: '「末」台語念 buāt；媽媽的 ma' },
-  { char: 'せ', round: 3, reading: 'se', hint: '「世」台語發 sè，漢字字形幾乎沒變' },
-  { char: 'ん', round: 1, reading: 'n', hint: '「无」通「亡」，台語念 bông，取韻尾 n；打字打 nn' },
-  { char: 'お', round: 1, reading: 'o', hint: '「於」台語古音發「oo」' },
-  { char: 'い', round: 1, reading: 'i', hint: '「以」台語念 i，兩根豎線並排' },
-  { char: 'し', round: 3, reading: 'shi', hint: '「之」台語念 tsi，接近 shi；釣魚線形狀' },
-  { char: 'た', round: 4, reading: 'ta', hint: '「太」台語發 tài，去韻尾 i 得「ta」' },
-  { char: 'だ', round: 4, reading: 'da', hint: '「太＋゛」た加濁點 t→d' },
-  { char: 'う', round: 1, reading: 'u', hint: '「宇」台語念 u，像小碗裝 udon' },
-  { char: 'ぶ', round: 5, reading: 'bu', hint: '「不＋゛」台語「武」bú 接近 bu' },
-  { char: 'じ', round: 3, reading: 'ji', hint: '「之＋゛」し加濁點，聲帶一震動' },
-  { char: 'ほ', round: 5, reading: 'ho', hint: '「保」台語發 pó，古代念 po，演變成 ho' },
-  { char: 'と', round: 4, reading: 'to', hint: '「止」台語念 tóo；Tokyo 釘子釘地圖' },
-  { char: 'あ', round: 1, reading: 'a', hint: '「安」台語念 an，張嘴就來' },
-  { char: 'り', round: 1, reading: 'ri', hint: '「利」台語念 lī，流利的線' },
-  { char: 'が', round: 2, reading: 'ga', hint: '「加＋゛」か加濁點 k→g' },
-  { char: 'こ', round: 2, reading: 'ko', hint: '「己」台語「古」發 kóo，ko音由此來' },
-  { char: 'れ', round: 1, reading: 're', hint: '「礼」台語發 lé；漢字右邊勾對應假名底部勾' },
-  { char: 'ち', round: 4, reading: 'chi', hint: '「知」粵語「知」zi，接近 chi；字形像問號' },
-  { char: 'て', round: 4, reading: 'te', hint: '「天」台語念 tien，去「i,n」得「te」' },
-  { char: 'ぼ', round: 5, reading: 'bo', hint: '「保＋゛」ほ加濁點；台語「無」bô → bo' },
-  { char: 'く', round: 2, reading: 'ku', hint: '「久」台語念 kú' },
-  { char: 'は', round: 5, reading: 'ha／wa', hint: '「波」中古音「pha」去 p 得「ha」；當助詞念 wa' },
-  { char: 'か', round: 2, reading: 'ka', hint: '「加」台語念 ka' },
-  { char: 'さ', round: 3, reading: 'sa', hint: '「左」台語「差」tsa，去 t 得 sa' },
-  { char: 'に', round: 2, reading: 'ni', hint: '「仁」吳音「にん nin」去韻尾 n 得「ni」' },
-  { char: 'ご', round: 2, reading: 'go', hint: '「己＋゛」こ加濁點，台語「五」gō → go' },
-  { char: 'ろ', round: 1, reading: 'ro', hint: '「呂」台語「路」lōo，ro音由此來' },
-  { char: 'な', round: 2, reading: 'na', hint: '「奈」台語發 nāi，去韻尾 i 得「na」' },
-  { char: 'き', round: 2, reading: 'ki', hint: '「幾」台語念 kí' },
-  { char: 'ゅ', round: 3, reading: 'yu', hint: '「由（小）」小字跟前面合讀，母音變 u' },
-  { char: 'じゅ', round: 3, reading: 'ju', hint: '「之＋゛／由」じ＋ゅ合讀 → ju' },
-  { char: 'ば', round: 5, reading: 'ba', hint: '「波＋゛」は加濁點 h→b' },
-  { char: 'わ', round: 3, reading: 'wa', hint: '「和」上古音發 hâ；漢字右邊口對應假名封閉彎' },
-  { char: 'の', round: 2, reading: 'no', hint: '「乃」中古音「nó」；像漩渦帶尾巴' },
-  { char: 'も', round: 4, reading: 'mo', hint: '「毛」台語念 mo，幾乎一樣' },
-  { char: 'え', round: 1, reading: 'e', hint: '「衣」台語發 è，草書像衣領形狀' },
-  { char: 'で', round: 4, reading: 'de', hint: '「天＋゛」て加濁點 t→d' },
-  { char: 'そ', round: 3, reading: 'so', hint: '「曾」草書像 S 往右彎' },
-  { char: 'ざ', round: 3, reading: 'za', hint: '「左＋゛」さ加濁點 s→z' },
-  { char: 'ね', round: 2, reading: 'ne', hint: '「祢」台語發 né' },
-  { char: 'ぜ', round: 3, reading: 'ze', hint: '「世＋゛」せ加濁點，Zero → ze' },
-  { char: 'ど', round: 4, reading: 'do', hint: '「止＋゛」と加濁點 t→d' },
-  { char: 'む', round: 4, reading: 'mu', hint: '「武」台語念 bú，吳音鼻音化' },
-  { char: 'め', round: 4, reading: 'me', hint: '「女」台語「妹」念 bē，母音 e 對應' },
-  { char: 'へ', round: 5, reading: 'he', hint: '「部」古代念 pe，演變成 he；注音ㄟ字形幾乎一樣' },
-  { char: 'べ', round: 5, reading: 'be', hint: '「部＋゛」へ加濁點；英文 Bento 便當 → be' },
-  { char: 'ひ', round: 5, reading: 'hi', hint: '「比」古代念 pi，演變成 hi' },
-  { char: 'び', round: 5, reading: 'bi', hint: '「比＋゛」ひ加濁點 h→b → bi' },
-  { char: 'ふ', round: 5, reading: 'fu', hint: '「不」台語發 hū；漢字「婦」日語讀音' },
-  { char: 'ら', round: 1, reading: 'ra', hint: '「良」台語漳州音 liâŋ，去「i,ŋ」轉來' },
-  { char: 'る', round: 1, reading: 'ru', hint: '「留」台語念 liû，r 音接近' },
-  { char: 'け', round: 2, reading: 'ke', hint: '「計」台語念 kè，幾乎一樣！' },
-  { char: 'げ', round: 2, reading: 'ge', hint: '「計＋゛」け加濁點 k→g' },
-  { char: 'つ', round: 4, reading: 'tsu', hint: '「川」台語發 tsuan，去韻尾 an 得「tsu」' },
-  { char: 'づ', round: 4, reading: 'zu', hint: '「川＋゛」つ加濁點 → zu，現代幾乎跟ず同音' },
-  { char: 'よ', round: 3, reading: 'yo', hint: '「與」字形像英文 yo！古吳音' },
-  { char: 'ょ', round: 3, reading: 'yo', hint: '「與（小）」小字跟前面合讀，母音變 o' },
-  { char: 'や', round: 3, reading: 'ya', hint: '「也」台語念 iā' },
-  { char: 'ゃ', round: 3, reading: 'ya', hint: '「也（小）」小字跟前面合讀，母音變 a' },
-  { char: 'ゆ', round: 3, reading: 'yu', hint: '「由」台語發 iû' },
-  { char: 'ぬ', round: 2, reading: 'nu', hint: '「奴」華語「奴」nú 完全對應；比め多一個圈' },
-  { char: 'を', round: 3, reading: 'o（wo）', hint: '「遠」お＋一橫，像戴帽子；幾乎只當受詞助詞' },
-  { char: 'ず', round: 3, reading: 'zu', hint: '「寸＋゛」す加濁點 s→z → zu' },
+  { char: 'す', round: 3, reading: 'su', katakana: 'ス', hint: '「寸」台語念 tshùn，母音 u 對應' },
+  { char: 'み', round: 4, reading: 'mi', katakana: 'ミ', hint: '「美」台語念 bí，吳音鼻音化' },
+  { char: 'ま', round: 4, reading: 'ma', katakana: 'マ', hint: '「末」台語念 buāt；媽媽的 ma' },
+  { char: 'せ', round: 3, reading: 'se', katakana: 'セ', hint: '「世」台語發 sè，漢字字形幾乎沒變' },
+  { char: 'ん', round: 1, reading: 'n', katakana: 'ン', hint: '「无」通「亡」，台語念 bông，取韻尾 n；打字打 nn' },
+  { char: 'お', round: 1, reading: 'o', katakana: 'オ', hint: '「於」台語古音發「oo」' },
+  { char: 'い', round: 1, reading: 'i', katakana: 'イ', hint: '「以」台語念 i，兩根豎線並排' },
+  { char: 'し', round: 3, reading: 'shi', katakana: 'シ', hint: '「之」台語念 tsi，接近 shi；釣魚線形狀' },
+  { char: 'た', round: 4, reading: 'ta', katakana: 'タ', hint: '「太」台語發 tài，去韻尾 i 得「ta」' },
+  { char: 'だ', round: 4, reading: 'da', katakana: 'ダ', hint: '「太＋゛」た加濁點 t→d' },
+  { char: 'う', round: 1, reading: 'u', katakana: 'ウ', hint: '「宇」台語念 u，像小碗裝 udon' },
+  { char: 'ぶ', round: 5, reading: 'bu', katakana: 'ブ', hint: '「不＋゛」台語「武」bú 接近 bu' },
+  { char: 'じ', round: 3, reading: 'ji', katakana: 'ジ', hint: '「之＋゛」し加濁點，聲帶一震動' },
+  { char: 'ほ', round: 5, reading: 'ho', katakana: 'ホ', hint: '「保」台語發 pó，古代念 po，演變成 ho' },
+  { char: 'と', round: 4, reading: 'to', katakana: 'ト', hint: '「止」台語念 tóo；Tokyo 釘子釘地圖' },
+  { char: 'あ', round: 1, reading: 'a', katakana: 'ア', hint: '「安」台語念 an，張嘴就來' },
+  { char: 'り', round: 1, reading: 'ri', katakana: 'リ', hint: '「利」台語念 lī，流利的線' },
+  { char: 'が', round: 2, reading: 'ga', katakana: 'ガ', hint: '「加＋゛」か加濁點 k→g' },
+  { char: 'こ', round: 2, reading: 'ko', katakana: 'コ', hint: '「己」台語「古」發 kóo，ko音由此來' },
+  { char: 'れ', round: 1, reading: 're', katakana: 'レ', hint: '「礼」台語發 lé；漢字右邊勾對應假名底部勾' },
+  { char: 'ち', round: 4, reading: 'chi', katakana: 'チ', hint: '「知」粵語「知」zi，接近 chi；字形像問號' },
+  { char: 'て', round: 4, reading: 'te', katakana: 'テ', hint: '「天」台語念 tien，去「i,n」得「te」' },
+  { char: 'ぼ', round: 5, reading: 'bo', katakana: 'ボ', hint: '「保＋゛」ほ加濁點；台語「無」bô → bo' },
+  { char: 'く', round: 2, reading: 'ku', katakana: 'ク', hint: '「久」台語念 kú' },
+  { char: 'は', round: 5, reading: 'ha／wa', katakana: 'ハ', hint: '「波」中古音「pha」去 p 得「ha」；當助詞念 wa' },
+  { char: 'か', round: 2, reading: 'ka', katakana: 'カ', hint: '「加」台語念 ka' },
+  { char: 'さ', round: 3, reading: 'sa', katakana: 'サ', hint: '「左」台語「差」tsa，去 t 得 sa' },
+  { char: 'に', round: 2, reading: 'ni', katakana: 'ニ', hint: '「仁」吳音「にん nin」去韻尾 n 得「ni」' },
+  { char: 'ご', round: 2, reading: 'go', katakana: 'ゴ', hint: '「己＋゛」こ加濁點，台語「五」gō → go' },
+  { char: 'ろ', round: 1, reading: 'ro', katakana: 'ロ', hint: '「呂」台語「路」lōo，ro音由此來' },
+  { char: 'な', round: 2, reading: 'na', katakana: 'ナ', hint: '「奈」台語發 nāi，去韻尾 i 得「na」' },
+  { char: 'き', round: 2, reading: 'ki', katakana: 'キ', hint: '「幾」台語念 kí' },
+  { char: 'ゅ', round: 3, reading: 'yu', katakana: 'ュ', hint: '「由（小）」小字跟前面合讀，母音變 u' },
+  { char: 'じゅ', round: 3, reading: 'ju', katakana: 'ジュ', hint: '「之＋゛／由」じ＋ゅ合讀 → ju' },
+  { char: 'ば', round: 5, reading: 'ba', katakana: 'バ', hint: '「波＋゛」は加濁點 h→b' },
+  { char: 'わ', round: 3, reading: 'wa', katakana: 'ワ', hint: '「和」上古音發 hâ；漢字右邊口對應假名封閉彎' },
+  { char: 'の', round: 2, reading: 'no', katakana: 'ノ', hint: '「乃」中古音「nó」；像漩渦帶尾巴' },
+  { char: 'も', round: 4, reading: 'mo', katakana: 'モ', hint: '「毛」台語念 mo，幾乎一樣' },
+  { char: 'え', round: 1, reading: 'e', katakana: 'エ', hint: '「衣」台語發 è，草書像衣領形狀' },
+  { char: 'で', round: 4, reading: 'de', katakana: 'デ', hint: '「天＋゛」て加濁點 t→d' },
+  { char: 'そ', round: 3, reading: 'so', katakana: 'ソ', hint: '「曾」草書像 S 往右彎' },
+  { char: 'ざ', round: 3, reading: 'za', katakana: 'ザ', hint: '「左＋゛」さ加濁點 s→z' },
+  { char: 'ね', round: 2, reading: 'ne', katakana: 'ネ', hint: '「祢」台語發 né' },
+  { char: 'ぜ', round: 3, reading: 'ze', katakana: 'ゼ', hint: '「世＋゛」せ加濁點，Zero → ze' },
+  { char: 'ど', round: 4, reading: 'do', katakana: 'ド', hint: '「止＋゛」と加濁點 t→d' },
+  { char: 'む', round: 4, reading: 'mu', katakana: 'ム', hint: '「武」台語念 bú，吳音鼻音化' },
+  { char: 'め', round: 4, reading: 'me', katakana: 'メ', hint: '「女」台語「妹」念 bē，母音 e 對應' },
+  { char: 'へ', round: 5, reading: 'he', katakana: 'ヘ', hint: '「部」古代念 pe，演變成 he；注音ㄟ字形幾乎一樣' },
+  { char: 'べ', round: 5, reading: 'be', katakana: 'ベ', hint: '「部＋゛」へ加濁點；英文 Bento 便當 → be' },
+  { char: 'ひ', round: 5, reading: 'hi', katakana: 'ヒ', hint: '「比」古代念 pi，演變成 hi' },
+  { char: 'び', round: 5, reading: 'bi', katakana: 'ビ', hint: '「比＋゛」ひ加濁點 h→b → bi' },
+  { char: 'ふ', round: 5, reading: 'fu', katakana: 'フ', hint: '「不」台語發 hū；漢字「婦」日語讀音' },
+  { char: 'ら', round: 1, reading: 'ra', katakana: 'ラ', hint: '「良」台語漳州音 liâŋ，去「i,ŋ」轉來' },
+  { char: 'る', round: 1, reading: 'ru', katakana: 'ル', hint: '「留」台語念 liû，r 音接近' },
+  { char: 'け', round: 2, reading: 'ke', katakana: 'ケ', hint: '「計」台語念 kè，幾乎一樣！' },
+  { char: 'げ', round: 2, reading: 'ge', katakana: 'ゲ', hint: '「計＋゛」け加濁點 k→g' },
+  { char: 'つ', round: 4, reading: 'tsu', katakana: 'ツ', hint: '「川」台語發 tsuan，去韻尾 an 得「tsu」' },
+  { char: 'づ', round: 4, reading: 'zu', katakana: 'ヅ', hint: '「川＋゛」つ加濁點 → zu，現代幾乎跟ず同音' },
+  { char: 'よ', round: 3, reading: 'yo', katakana: 'ヨ', hint: '「與」字形像英文 yo！古吳音' },
+  { char: 'ょ', round: 3, reading: 'yo', katakana: 'ョ', hint: '「與（小）」小字跟前面合讀，母音變 o' },
+  { char: 'や', round: 3, reading: 'ya', katakana: 'ヤ', hint: '「也」台語念 iā' },
+  { char: 'ゃ', round: 3, reading: 'ya', katakana: 'ャ', hint: '「也（小）」小字跟前面合讀，母音變 a' },
+  { char: 'ゆ', round: 3, reading: 'yu', katakana: 'ユ', hint: '「由」台語發 iû' },
+  { char: 'ぬ', round: 2, reading: 'nu', katakana: 'ヌ', hint: '「奴」華語「奴」nú 完全對應；比め多一個圈' },
+  { char: 'を', round: 3, reading: 'o（wo）', katakana: 'ヲ', hint: '「遠」お＋一橫，像戴帽子；幾乎只當受詞助詞' },
+  { char: 'ず', round: 3, reading: 'zu', katakana: 'ズ', hint: '「寸＋゛」す加濁點 s→z → zu' },
   {
     char: 'ぎ',
     round: 2,
@@ -817,15 +838,6 @@ function setRound(n) {
   document.querySelectorAll('.round-btn').forEach(b => {
     b.classList.toggle('active', parseInt(b.dataset.round) === n);
   });
-  if (section === 'vocab') {
-    const showFilter = n === 0;
-    document.getElementById('topicFilter').style.display = showFilter ? 'flex' : 'none';
-    if (!showFilter && currentTopic !== 'all') {
-      currentTopic = 'all';
-      document.querySelectorAll('.topic-btn').forEach(b => b.classList.remove('active'));
-      document.querySelector('.topic-btn').classList.add('active');
-    }
-  }
   if (section === 'hiragana') {
     hiraganaQueue = buildHiraganaQueue(n);
   } else {
@@ -836,7 +848,7 @@ function setRound(n) {
 }
 
 let section = 'hiragana'; // 'hiragana' | 'vocab'
-let hiraganaMode = 'multiple'; // 'multiple' | 'input'
+let hiraganaMode = 'char-to-reading'; // 'char-to-reading' | 'char-to-input' | 'reading-to-char' | 'reading-to-input'
 let vocabDir = 'jp-to-zh'; // 'jp-to-zh' | 'zh-to-jp'
 
 // SRS state per card
@@ -851,7 +863,6 @@ let currentCard = null;
 let currentVocab = null;
 
 let currentRound = 1;
-let currentTopic = 'all';
 let showHint = false;
 
 function getSessionLimit() { return currentRound === 0 ? 50 : 30; }
@@ -862,7 +873,7 @@ function toggleHint() {
   btn.textContent = showHint ? '提示：開' : '提示：關';
   btn.classList.toggle('active', showHint);
   const hintEl = document.getElementById('hintText');
-  if (hintEl && currentCard) hintEl.textContent = showHint ? '💡 ' + currentCard.hint : '';
+  if (hintEl && currentCard) hintEl.textContent = showHint ? hintText(currentCard) : '';
 }
 
 // 本來就會的單字——降低出現頻率（從第二輪才開始復習）
@@ -985,15 +996,10 @@ function switchSection(s) {
   section = s;
   document.getElementById('tabHiragana').classList.toggle('active', s === 'hiragana');
   document.getElementById('tabVocab').classList.toggle('active', s === 'vocab');
-  document.getElementById('modeToggle').style.display = s === 'hiragana' ? 'flex' : 'none';
+  document.getElementById('kanaModes').style.display = s === 'hiragana' ? 'flex' : 'none';
   document.getElementById('hintToggleWrap').style.display = s === 'hiragana' ? 'flex' : 'none';
   document.getElementById('vocabToggle').style.display = s === 'vocab' ? 'flex' : 'none';
-  document.getElementById('topicFilter').style.display = (s === 'vocab' && currentRound === 0) ? 'flex' : 'none';
   document.getElementById('roundFilter').style.display = 'flex';
-
-  currentTopic = 'all';
-  document.querySelectorAll('.topic-btn').forEach(b => b.classList.remove('active'));
-  document.querySelector('.topic-btn').classList.add('active');
 
   if (s === 'hiragana') {
     hiraganaQueue = buildHiraganaQueue(currentRound);
@@ -1004,18 +1010,8 @@ function switchSection(s) {
   nextCard();
 }
 
-function setTopic(topic) {
-  currentTopic = topic;
-  document.querySelectorAll('.topic-btn').forEach(b => b.classList.remove('active'));
-  event.target.classList.add('active');
-  vocabQueue = getFilteredVocab();
-  resetScore();
-  nextCard();
-}
-
 function getFilteredVocab() {
-  let filtered = currentTopic === 'all' ? vocabCards : vocabCards.filter(c => c.topic === currentTopic);
-  if (currentRound > 0) filtered = filtered.filter(c => c.round <= currentRound);
+  let filtered = currentRound > 0 ? vocabCards.filter(c => c.round <= currentRound) : vocabCards;
   return filtered.map(c => {
     const saved = vocabProgress[c.display];
     const level = saved ?? (alreadyKnown.has(c.display) ? 2 : 0);
@@ -1024,10 +1020,11 @@ function getFilteredVocab() {
   });
 }
 
-function setMode(mode) {
+function switchMode(mode) {
   hiraganaMode = mode;
-  document.getElementById('btnMultiple').classList.toggle('active', mode === 'multiple');
-  document.getElementById('btnInput').classList.toggle('active', mode === 'input');
+  ['tab1','tab2','tab3','tab4'].forEach(id => document.getElementById(id).classList.remove('active'));
+  const tabMap = { 'char-to-reading': 'tab1', 'char-to-input': 'tab2', 'reading-to-char': 'tab3', 'reading-to-input': 'tab4' };
+  document.getElementById(tabMap[mode]).classList.add('active');
   hiraganaQueue = buildHiraganaQueue(currentRound);
   resetScore();
   nextCard();
@@ -1052,7 +1049,10 @@ function nextCard() {
   if (section === 'hiragana') {
     currentCard = pickFromQueue(hiraganaQueue);
     if (!currentCard) { showResult(); return; }
-    hiraganaMode === 'multiple' ? renderHiraganaMultiple() : renderHiraganaInput();
+    if (hiraganaMode === 'char-to-reading') renderHiraganaMultiple();
+    else if (hiraganaMode === 'char-to-input') renderHiraganaInput();
+    else if (hiraganaMode === 'reading-to-char') renderReadingToCharMultiple();
+    else renderReadingToCharInput();
   } else {
     currentVocab = pickFromQueue(vocabQueue);
     if (!currentVocab) { showResult(); return; }
@@ -1091,12 +1091,17 @@ function getHiraganaDistractors(card) {
   return shuffle([correct, ...distractors]);
 }
 
+function hintText(card) {
+  const kata = card.katakana ? card.katakana + '　' : '';
+  return `💡 ${kata}${card.hint}`;
+}
+
 function renderHiraganaMultiple() {
   const options = getHiraganaDistractors(currentCard);
   document.getElementById('quizContent').innerHTML = `
     <div class="question-type">這個字怎麼讀？</div>
     <div class="main-char">${currentCard.char}</div>
-    <div class="hint" id="hintText">${showHint ? '💡 ' + currentCard.hint : ''}</div>
+    <div class="hint" id="hintText">${showHint ? hintText(currentCard) : ''}</div>
     <div class="options">
       ${options.map(opt => `<button class="option-btn" onclick="checkHiraganaMultiple('${opt.replace(/'/g, "\\'")}', this)">${opt}</button>`).join('')}
     </div>
@@ -1119,7 +1124,7 @@ function checkHiraganaMultiple(chosen, btn) {
   const fb = document.getElementById('feedback');
   fb.className = `feedback ${isCorrect ? 'show-correct' : 'show-wrong'}`;
   fb.innerHTML = isCorrect ? `✓ 正確！` : `✗ 正確是「${correct}」`;
-  if (showHint) document.getElementById('hintText').textContent = '💡 ' + currentCard.hint;
+  document.getElementById('hintText').textContent = hintText(currentCard);
   document.getElementById('nextBtn').classList.add('visible');
 }
 
@@ -1132,7 +1137,7 @@ function renderHiraganaInput() {
     <div class="question-type">輸入羅馬字讀音</div>
     <div class="main-char">${currentCard.char}</div>
     ${isN ? '<div class="input-hint">ん → nn</div>' : ''}
-    <div class="hint" id="hintText">${showHint ? '💡 ' + currentCard.hint : ''}</div>
+    <div class="hint" id="hintText">${showHint ? hintText(currentCard) : ''}</div>
     <div class="input-wrap">
       <input class="romaji-input" id="romajiInput" type="text" placeholder="輸入羅馬字…"
         autocomplete="off" autocorrect="off" autocapitalize="none" spellcheck="false"
@@ -1162,7 +1167,89 @@ function submitHiraganaInput() {
   const fb = document.getElementById('feedback');
   fb.className = `feedback ${isCorrect ? 'show-correct' : 'show-wrong'}`;
   fb.innerHTML = isCorrect ? `✓ 正確！` : `✗ 正確是「${currentCard.reading}」`;
-  if (showHint) document.getElementById('hintText').textContent = '💡 ' + currentCard.hint;
+  document.getElementById('hintText').textContent = hintText(currentCard);
+  document.getElementById('nextBtn').classList.add('visible');
+}
+
+// ═══════════════════════════════
+// HIRAGANA: 讀音→字 選擇
+// ═══════════════════════════════
+function getCharDistractors(card) {
+  const correct = card.char;
+  const similarChars = new Set();
+  for (const group of similarGroups) {
+    if (group.includes(correct)) group.forEach(c => { if (c !== correct) similarChars.add(c); });
+  }
+  const similarPool = cards.filter(c => similarChars.has(c.char) && c.char !== correct).map(c => c.char);
+  const others = shuffle(cards.map(c => c.char).filter(c => c !== correct && !similarPool.includes(c)));
+  return shuffle([correct, ...shuffle([...similarPool, ...others]).slice(0, 3)]);
+}
+
+function renderReadingToCharMultiple() {
+  const options = getCharDistractors(currentCard);
+  document.getElementById('quizContent').innerHTML = `
+    <div class="question-type">哪個平假名是這個讀音？</div>
+    <div class="main-char">${currentCard.reading}</div>
+    <div class="hint" id="hintText">${showHint ? hintText(currentCard) : ''}</div>
+    <div class="options">
+      ${options.map(opt => `<button class="option-btn" onclick="checkReadingToChar('${opt.replace(/'/g, "\\'")}', this)">${opt}</button>`).join('')}
+    </div>
+    <div class="feedback" id="feedback"></div>
+    <button class="next-btn" id="nextBtn" onclick="nextCard()">下一題 →</button>
+  `;
+}
+
+function checkReadingToChar(chosen, btn) {
+  if (answered) return;
+  answered = true;
+  const correct = currentCard.char;
+  const isCorrect = chosen === correct;
+  document.querySelectorAll('.option-btn').forEach(b => {
+    b.disabled = true;
+    if (b.textContent.trim() === correct) b.classList.add('correct');
+  });
+  if (!isCorrect) btn.classList.add('wrong');
+  advanceSRS(currentCard, isCorrect);
+  const fb = document.getElementById('feedback');
+  fb.className = `feedback ${isCorrect ? 'show-correct' : 'show-wrong'}`;
+  fb.innerHTML = isCorrect ? `✓ 正確！` : `✗ 正確是「${correct}」`;
+  document.getElementById('hintText').textContent = hintText(currentCard);
+  document.getElementById('nextBtn').classList.add('visible');
+}
+
+// ═══════════════════════════════
+// HIRAGANA: 讀音→字 輸入
+// ═══════════════════════════════
+function renderReadingToCharInput() {
+  document.getElementById('quizContent').innerHTML = `
+    <div class="question-type">輸入對應的平假名</div>
+    <div class="main-char">${currentCard.reading}</div>
+    <div class="hint" id="hintText">${showHint ? hintText(currentCard) : ''}</div>
+    <div class="input-wrap">
+      <input class="romaji-input" id="kanaInput" type="text" placeholder="輸入平假名…"
+        autocomplete="off" autocorrect="off" autocapitalize="none" spellcheck="false"
+        onkeydown="if(event.key==='Enter')submitReadingToChar()">
+    </div>
+    <button class="submit-btn" onclick="submitReadingToChar()">確認</button>
+    <div class="feedback" id="feedback"></div>
+    <button class="next-btn" id="nextBtn" onclick="nextCard()">下一題 →</button>
+  `;
+  setTimeout(() => document.getElementById('kanaInput')?.focus(), 80);
+}
+
+function submitReadingToChar() {
+  if (answered) return;
+  const inp = document.getElementById('kanaInput');
+  if (!inp?.value.trim()) return;
+  answered = true;
+  const isCorrect = inp.value.trim() === currentCard.char;
+  inp.disabled = true;
+  inp.classList.add(isCorrect ? 'correct' : 'wrong');
+  advanceSRS(currentCard, isCorrect);
+  const fb = document.getElementById('feedback');
+  fb.className = `feedback ${isCorrect ? 'show-correct' : 'show-wrong'}`;
+  fb.innerHTML = isCorrect ? `✓ 正確！` : `✗ 正確是「${currentCard.char}」`;
+  document.getElementById('hintText').textContent = hintText(currentCard);
   document.getElementById('nextBtn').classList.add('visible');
 }
 
@@ -1172,26 +1259,7 @@ function submitHiraganaInput() {
 function getVocabDistractors(vocab) {
   const correct = vocabDir === 'jp-to-zh' ? vocab.meaning : vocab.display;
   const getVal = v => vocabDir === 'jp-to-zh' ? v.meaning : v.display;
-
-  // 同主題的干擾選項（排除正確答案）
-  const sameTopicPool = shuffle(
-    vocabCards
-      .filter(v => v.topic === vocab.topic && getVal(v) !== correct)
-      .map(getVal)
-  );
-
-  // 其他主題補足
-  const otherPool = shuffle(
-    vocabCards
-      .filter(v => v.topic !== vocab.topic && getVal(v) !== correct)
-      .map(getVal)
-  );
-
-  // 優先取至少 2 個同主題，再補其他
-  const samePick = sameTopicPool.slice(0, 2);
-  const otherPick = otherPool.slice(0, 3 - samePick.length);
-  const distractors = shuffle([...samePick, ...otherPick]).slice(0, 3);
-
+  const distractors = shuffle(vocabCards.filter(v => getVal(v) !== correct).map(getVal)).slice(0, 3);
   return shuffle([correct, ...distractors]);
 }
 

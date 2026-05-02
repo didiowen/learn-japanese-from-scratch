@@ -410,11 +410,6 @@ h1.title {
   <button class="vocab-btn active" id="btnJpZh" onclick="setVocabDir('jp-to-zh')">日文→中文</button>
   <button class="vocab-btn" id="btnZhJp" onclick="setVocabDir('zh-to-jp')">中文→日文</button>
 </div>
-<div class="topic-filter" id="topicFilter" style="display:none">
-  <button class="topic-btn active" onclick="setTopic('all')">全部</button>
-  <button class="topic-btn" onclick="setTopic('food')">🍱 飲食</button>
-  <button class="topic-btn" onclick="setTopic('daily')">💬 日常</button>
-</div>
 
 <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
 
@@ -652,7 +647,6 @@ let currentSection = 'kana';
 let currentRound = 1;
 let currentMode = 'char-to-reading';
 let vocabDir = 'jp-to-zh';
-let currentTopic = 'all';
 let queue = [];
 let vocabQueue = [];
 let sessionCount = 0;
@@ -752,7 +746,6 @@ function switchSection(section) {
   document.getElementById('kanaModes').style.display = section === 'kana' ? 'flex' : 'none';
   document.getElementById('roundFilter').style.display = 'flex';
   document.getElementById('vocabToggle').style.display = section === 'vocab' ? 'flex' : 'none';
-  document.getElementById('topicFilter').style.display = section === 'vocab' ? 'flex' : 'none';
   resetScore();
   if (section === 'kana') {
     queue = buildKanaQueue(currentRound);
@@ -764,8 +757,7 @@ function switchSection(section) {
 }
 
 function buildVocabQueue() {
-  let filtered = currentTopic === 'all' ? vocabCards : vocabCards.filter(v => v.topic === currentTopic);
-  if (currentRound > 0) filtered = filtered.filter(v => v.round <= currentRound);
+  let filtered = currentRound > 0 ? vocabCards.filter(v => v.round <= currentRound) : vocabCards;
   vocabQueue = filtered.map(c => {
     const saved = vocabProgress[c.word];
     const level = saved ?? (alreadyKnown.has(c.word) ? 2 : 0);
@@ -779,15 +771,6 @@ function setVocabDir(dir) {
   vocabDir = dir;
   document.getElementById('btnJpZh').classList.toggle('active', dir === 'jp-to-zh');
   document.getElementById('btnZhJp').classList.toggle('active', dir === 'zh-to-jp');
-  resetScore();
-  buildVocabQueue();
-  nextCard();
-}
-
-function setTopic(topic) {
-  currentTopic = topic;
-  document.querySelectorAll('.topic-btn').forEach(b => b.classList.remove('active'));
-  event.target.classList.add('active');
   resetScore();
   buildVocabQueue();
   nextCard();
@@ -820,7 +803,6 @@ function renderVocabZhToJp() {
   document.getElementById('quizContent').innerHTML = `
     <div class="question-type">這個意思的片假名是？</div>
     <div class="main-char" style="font-size:2.4rem">${card.meaning}</div>
-    <div class="sub-info">${card.reading}</div>
     <div class="hint" id="hintText"></div>
     <div class="options">
       ${opts.map(o => `<button class="option-btn" onclick="checkVocab('${o}','word',this)">${o}</button>`).join('')}
@@ -843,7 +825,14 @@ function checkVocab(chosen, field, btn) {
   advanceSRS(currentCard, isCorrect);
   const fb = document.getElementById('feedback');
   fb.className = `feedback ${isCorrect ? 'show-correct' : 'show-wrong'}`;
-  fb.innerHTML = isCorrect ? `✓ 正確！` : `✗ 正確是「${correct}」`;
+  const isZhToJp = field === 'word';
+  const kp = currentCard.kanji ? `${currentCard.kanji} ` : '';
+  if (isZhToJp) {
+    const wordInfo = `${kp}${currentCard.word}（${currentCard.reading}）`;
+    fb.innerHTML = isCorrect ? `✓ 正確！${wordInfo}` : `✗ 正確是「${kp}${correct}」`;
+  } else {
+    fb.innerHTML = isCorrect ? `✓ 正確！` : `✗ 正確是「${correct}」`;
+  }
   document.getElementById('hintText').textContent = '💡 ' + currentCard.hint;
   document.getElementById('nextBtn').classList.add('visible');
 }
