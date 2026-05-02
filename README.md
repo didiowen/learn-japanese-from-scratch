@@ -95,3 +95,5 @@ Claude 從這些詞的假名開始教（每次 10–15 個）
 ## 授權
 
 本專案採 [MIT License](LICENSE) 授權。
+
+[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/ines8964)
