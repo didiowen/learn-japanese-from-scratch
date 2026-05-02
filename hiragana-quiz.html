@@ -621,7 +621,7 @@ const vocabCards = [
   { meaning: '一個人', display: 'ひとり', reading: 'hitori', kanji: '一人', topic: 'daily', round: 5 },
   { meaning: '請給我', display: 'ください', reading: 'kudasai', kanji: '下さい', topic: 'daily', round: 4 },
   { meaning: '不行／不可以', display: 'だめ', reading: 'dame', kanji: '駄目', topic: 'daily', round: 4 },
-  { meaning: 'お願いします（麻煩你了）', display: 'おねがいします', reading: 'onegaishimasu', kanji: 'お願いします', topic: 'greeting', round: 4 },
+  { meaning: '麻煩你了', display: 'おねがいします', reading: 'onegaishimasu', kanji: 'お願いします', topic: 'greeting', round: 4 },
   { meaning: '早餐', display: 'あさごはん', reading: 'asagohan', kanji: '朝ご飯', topic: 'food', round: 5 },
   { meaning: '午餐', display: 'ひるごはん', reading: 'hirugohan', kanji: '昼ご飯', topic: 'food', round: 5 },
   { meaning: '晚餐', display: 'ばんごはん', reading: 'bangohan', kanji: '晩ご飯', topic: 'food', round: 5 },
@@ -632,7 +632,7 @@ const vocabCards = [
   { meaning: '中午', display: 'ひる', reading: 'hiru', kanji: '昼', topic: 'time', round: 5 },
   { meaning: '晚上', display: 'ばん', reading: 'ban', kanji: '晩', topic: 'time', round: 5 },
   { meaning: '好厲害！', display: 'すごい', reading: 'sugoi', kanji: '凄い', topic: 'daily', round: 3 },
-  { meaning: '糟糕！／超讚！（やばい）', display: 'やばい', reading: 'yabai', topic: 'daily', round: 5 },
+  { meaning: '糟糕！／超讚！', display: 'やばい', reading: 'yabai', topic: 'daily', round: 5 },
   { meaning: '你好', display: 'こんにちは', reading: 'konnichiwa', kanji: '今日は', topic: 'greeting', round: 5 },
   { meaning: '是什麼？／怎麼了？', display: 'なんですか', reading: 'nan desu ka', topic: 'question', round: 4 },
   { meaning: '什麼？（正式）', display: 'なに', reading: 'nani', topic: 'question', round: 2 },
@@ -715,8 +715,8 @@ const vocabCards = [
   { meaning: '熊', display: 'くま', reading: 'kuma', kanji: '熊', topic: 'nature', round: 4 },
   { meaning: '味噌', display: 'みそ', reading: 'miso', kanji: '味噌', topic: 'food', round: 4 },
   { meaning: '味噌湯', display: 'みそしる', reading: 'misoshiru', kanji: '味噌汁', topic: 'food', round: 4 },
-  { meaning: 'どこ（哪裡）', display: 'どこ', reading: 'doko', topic: 'question', round: 4 },
-  { meaning: 'いくら（多少錢）', display: 'いくら', reading: 'ikura', topic: 'question', round: 2 },
+  { meaning: '哪裡', display: 'どこ', reading: 'doko', topic: 'question', round: 4 },
+  { meaning: '多少錢', display: 'いくら', reading: 'ikura', topic: 'question', round: 2 },
   { meaning: '烤肉', display: 'やきにく', reading: 'yakiniku', kanji: '焼き肉', topic: 'food', round: 3 },
   { meaning: '肉', display: 'にく', reading: 'niku', kanji: '肉', topic: 'food', round: 2 },
   { meaning: '夜晚（文學性）', display: 'よる', reading: 'yoru', kanji: '夜', topic: 'time', round: 3 },
@@ -1300,7 +1300,7 @@ function checkVocabMultiple(chosen, btn) {
     : `${currentVocab.meaning} → ${kp}${currentVocab.display}`;
   const wrongHint = vocabDir === 'jp-to-zh' ? correct : `${kp}${correct}`;
   fb.innerHTML = isCorrect ? `✓ 正確！${hint}` : `✗ 正確是「${wrongHint}」`;
-  document.getElementById('hintText').textContent = `💡 ${kp}${currentVocab.display}（${currentVocab.reading}）`;
+  document.getElementById('hintText').textContent = '';
   document.getElementById('nextBtn').classList.add('visible');
 }
 
