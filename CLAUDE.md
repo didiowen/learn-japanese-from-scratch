@@ -79,7 +79,9 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 1. 拆解每個假名（標明新/舊）
 2. 說明漢字來源和台語連結（如有）
 3. 同音異義詞提示
-4. 更新測驗 vocabCards（加 topic 標籤、round 欄位）
+4. 更新測驗 vocabCards，格式：`{ meaning, display, reading, kanji?, topic, round }`
+   - `meaning`：**純中文意思**，不能夾雜日文假名（填 `'哪裡'`，不是 `'どこ（哪裡）'`）
+   - `kanji`：有常見漢字寫法就必須加（一杯、何処、服、耳等）；純口語／擬聲語／純假名詞可省略（ゆっくり、じゃあね）；片假名外來語不加
 5. 將單字加入 `recentBatch`（見下方說明）
 6. 將單字加入對應筆記檔，並更新 frontmatter 的 `date > updated`：
    - 一般單字 → `vocabulary.md` 對應主題區塊
@@ -136,8 +138,8 @@ const recentBatch = {
 - **無障礙**：最小字體 18px，WCAG AA，互動目標 ≥ 44×44px，尊重 prefers-reduced-motion
 - **禁止**：gradient text、glassmorphism、等高卡片格、side-stripe border
 
-### Push 後立即建 PR
-每次 `git push` 後，若該分支**尚無開啟的 PR**，立即用 GitHub MCP 工具建立，不等使用者手動開。建立後**詢問使用者是否要立即合併**，如果是則馬上執行 merge。
+### Push 後立即建 PR 並合併
+每次 `git push` 後，若該分支**尚無開啟的 PR**，立即用 GitHub MCP 工具建立並**直接合併**，不需詢問使用者。smoke test 通過即視為可合併。
 
 PR 描述格式：
 ```

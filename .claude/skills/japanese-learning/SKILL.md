@@ -72,9 +72,10 @@ description: >
 1. 拆解每個假名（標明新/舊）
 2. 說明漢字來源和台語連結（如有）
 3. 同音異義詞提示
-4. 更新測驗 vocabCards（加 topic 標籤、round 欄位；若有漢字寫法加 kanji 欄位）
+4. 更新測驗 vocabCards（加 topic 標籤、round 欄位）
    - `meaning` 欄位只放純中文意思，**不能夾雜日文假名**（例：應填 `'哪裡'`，不是 `'どこ（哪裡）'`）
    - hiragana vocabCard 格式：`{ meaning, display, reading, kanji?, topic, round }`
+   - **kanji 欄位規則**：有常見漢字寫法就必須加（一杯、何処、服、耳等）；純口語表達／擬聲語／純假名詞可省略（ゆっくり、じゃあね）；片假名外來語不加
 5. 將單字加入對應測驗的 `recentBatch`（批次號 = 目前最大值 + 1；目前最大：**4**，下次用 **5**）
 6. 將單字加入對應筆記檔，並更新 `date > updated`（格式 `YYYY-MM-DDTHH:mm:ss`）：
    - 一般單字 → `vocabulary.md` 對應主題區塊
