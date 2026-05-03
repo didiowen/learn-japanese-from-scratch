@@ -610,6 +610,9 @@ const vocabCards = [
   { word: 'メンバー',   reading: 'menbā',     meaning: '成員／團員', hint: '唸出來就是 member，メ+ン+バ+ー', topic: 'daily', round: 5 },
   { word: 'シャンプー', reading: 'shanpuu',   meaning: '洗髮精',    hint: '唸出來就是 shampoo，シャ+ン+プ+ー；シャ是拗音', topic: 'daily', round: 5 },
   { word: 'コンサート', reading: 'konsāto',   meaning: '演唱會／音樂會', hint: '唸出來就是 concert，コ+ン+サ+ー+ト', topic: 'daily', round: 4 },
+  // 旅遊交通（batch 4）
+  { word: 'チェックイン',   reading: 'chekku-in',   meaning: '辦理入住', hint: 'check-in 音譯，チェ是拗音（チ+小ェ），ッ促音停拍', topic: 'daily', round: 5 },
+  { word: 'チェックアウト', reading: 'chekku-auto', meaning: '退房',     hint: 'check-out 音譯，ッ促音後爆ク，アウト=out', topic: 'daily', round: 5 },
 ];
 
 // 本來就會的單字（降低頻率）
@@ -619,7 +622,9 @@ const alreadyKnown = new Set([
 
 // 最近加入的單字批次（數字越大＝越近加入＝越優先出現）
 const recentBatch = {
-  // 批次 3（2026-05-01 最新）
+  // 批次 4（2026-05-03 最新）
+  'チェックイン': 4, 'チェックアウト': 4,
+  // 批次 3（2026-05-01）
   'シャンプー': 3, 'コンサート': 3,
   // 批次 2（2026-05-01）
   'ミルク': 2, 'メンバー': 2,

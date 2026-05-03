@@ -7,6 +7,13 @@ alias: log
 ---
 # 學習日誌
 
+## 2026-05-03 10:30:00
+- 旅遊常用會話第二彈：交通、方向、飯店單字
+- `vocabulary.md`：新增 🚆 交通・旅遊 分類（11 個單字：でんしゃ、ちかてつ、くうこう、のりかえ、きっぷ、みぎ、ひだり、まっすぐ、ちず、よやく、へや）
+- `conversation.md`：新增「旅遊交通」章節（計程車、電車、問路、飯店 check-in、緊急求救句型）
+- `hiragana-quiz.html`：vocabCards 新增 11 張旅遊單字（batch 5）；recentBatch 批次 5
+- `katakana-quiz.html`：vocabCards 新增チェックイン・チェックアウト（batch 4）；recentBatch 批次 4
+
 ## 2026-05-02 20:00:00
 - `hiragana-quiz.html`：11 張 vocabCard 補上 kanji 欄位（いっぱい→一杯、桃色、橙色、何処、幾ら、服、耳、人、明太子、豚カツ、馬鹿野郎）
 - `conversation.md`：おやすみ／おやすみなさい 漢字欄補上お休み／お休みなさい

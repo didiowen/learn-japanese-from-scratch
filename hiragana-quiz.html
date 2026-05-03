@@ -820,6 +820,18 @@ const vocabCards = [
   { meaning: '很多', display: 'たくさん', reading: 'takusan', kanji: '沢山', topic: 'number', round: 4 },
   { meaning: '未來', display: 'みらい', reading: 'mirai', kanji: '未来', topic: 'time', round: 4 },
   { meaning: '機器', display: 'きかい', reading: 'kikai', kanji: '機械', topic: 'daily', round: 2 },
+  // 旅遊交通（batch 5）
+  { meaning: '電車', display: 'でんしゃ', reading: 'densha', kanji: '電車', topic: 'daily', round: 4 },
+  { meaning: '地下鐵', display: 'ちかてつ', reading: 'chikatetsu', kanji: '地下鉄', topic: 'daily', round: 4 },
+  { meaning: '機場', display: 'くうこう', reading: 'kuukou', kanji: '空港', topic: 'daily', round: 2 },
+  { meaning: '轉乘', display: 'のりかえ', reading: 'norikae', kanji: '乗り換え', topic: 'daily', round: 2 },
+  { meaning: '車票', display: 'きっぷ', reading: 'kippu', kanji: '切符', topic: 'daily', round: 5 },
+  { meaning: '右邊', display: 'みぎ', reading: 'migi', kanji: '右', topic: 'daily', round: 4 },
+  { meaning: '左邊', display: 'ひだり', reading: 'hidari', kanji: '左', topic: 'daily', round: 5 },
+  { meaning: '直走', display: 'まっすぐ', reading: 'massugu', topic: 'daily', round: 5 },
+  { meaning: '地圖', display: 'ちず', reading: 'chizu', kanji: '地図', topic: 'daily', round: 4 },
+  { meaning: '預約', display: 'よやく', reading: 'yoyaku', kanji: '予約', topic: 'daily', round: 3 },
+  { meaning: '房間', display: 'へや', reading: 'heya', kanji: '部屋', topic: 'daily', round: 5 },
 ];
 
 // ═══════════════════════════════
@@ -915,7 +927,10 @@ const alreadyKnown = new Set([
 // 最近加入的單字批次（數字越大＝越近加入＝越優先出現）
 // 未被 SRS 記錄過的字才受影響；新增單字時加到最新批次號 + 1
 const recentBatch = {
-  // 批次 4（2026-05-02 最新）
+  // 批次 5（2026-05-03 最新）
+  'でんしゃ': 5, 'ちかてつ': 5, 'くうこう': 5, 'のりかえ': 5, 'きっぷ': 5,
+  'みぎ': 5, 'ひだり': 5, 'まっすぐ': 5, 'ちず': 5, 'よやく': 5, 'へや': 5,
+  // 批次 4（2026-05-02）
   'ふしぎ': 4, 'そら': 4, 'じゆう': 4, 'とぶ': 4, 'いく': 4,
   'かなえる': 4, 'しけん': 4, 'べんり': 4, 'どうぐ': 4,
   'くに': 4, 'しま': 4, 'たくさん': 4, 'みらい': 4, 'きかい': 4,
