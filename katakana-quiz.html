@@ -886,7 +886,7 @@ function checkVocab(chosen, field, btn) {
   } else {
     fb.innerHTML = isCorrect ? `✓ 正確！` : `✗ 正確是「${correct}」`;
   }
-  if (showHint) document.getElementById('hintText').textContent = '💡 ' + currentCard.hint;
+  document.getElementById('hintText').textContent = '💡 ' + currentCard.hint;
   document.getElementById('nextBtn').classList.add('visible');
 }
 
@@ -971,7 +971,7 @@ function checkCharToReading(chosen, btn) {
   const fb = document.getElementById('feedback');
   fb.className = `feedback ${isCorrect ? 'show-correct' : 'show-wrong'}`;
   fb.innerHTML = isCorrect ? `✓ 正確！` : `✗ 正確是「${correct}」`;
-  if (showHint) document.getElementById('hintText').textContent = '💡 ' + currentCard.hint;
+  document.getElementById('hintText').textContent = '💡 ' + currentCard.hint;
   document.getElementById('nextBtn').classList.add('visible');
 }
 
