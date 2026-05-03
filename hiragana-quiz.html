@@ -1308,18 +1308,21 @@ function renderVocabMultiple() {
 function checkVocabMultiple(chosen, btn) {
   if (answered) return;
   answered = true;
-  const correct = vocabDir === 'jp-to-zh' ? currentVocab.meaning : currentVocab.display;
-  const isCorrect = chosen === correct;
+  // Accept all meanings sharing the same display (homonyms like さけ＝鮭魚／酒)
+  const correctAnswers = vocabDir === 'jp-to-zh'
+    ? vocabCards.filter(c => c.display === currentVocab.display).map(c => c.meaning)
+    : [currentVocab.display];
+  const isCorrect = correctAnswers.includes(chosen);
   document.querySelectorAll('.option-btn').forEach(b => {
     b.disabled = true;
-    if (b.textContent.trim() === correct) b.classList.add('correct');
+    if (correctAnswers.includes(b.textContent.trim())) b.classList.add('correct');
   });
   if (!isCorrect) btn.classList.add('wrong');
   advanceSRS(currentVocab, isCorrect);
   const fb = document.getElementById('feedback');
   fb.className = `feedback ${isCorrect ? 'show-correct' : 'show-wrong'}`;
   const kp = currentVocab.kanji ? `${currentVocab.kanji} ` : '';
-  const wrongHint = vocabDir === 'jp-to-zh' ? correct : `${kp}${correct}`;
+  const wrongHint = vocabDir === 'jp-to-zh' ? correctAnswers.join('／') : `${kp}${currentVocab.display}`;
   fb.innerHTML = isCorrect ? `✓ 正確！` : `✗ 正確是「${wrongHint}」`;
   document.getElementById('hintText').textContent = `💡 ${kp}${currentVocab.display}（${currentVocab.reading}）`;
   document.getElementById('nextBtn').classList.add('visible');
