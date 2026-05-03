@@ -832,6 +832,7 @@ const vocabCards = [
   { meaning: '地圖', display: 'ちず', reading: 'chizu', kanji: '地図', topic: 'daily', round: 4 },
   { meaning: '預約', display: 'よやく', reading: 'yoyaku', kanji: '予約', topic: 'daily', round: 3 },
   { meaning: '房間', display: 'へや', reading: 'heya', kanji: '部屋', topic: 'daily', round: 5 },
+  { meaning: '鹽烤', display: 'しおやき', reading: 'shioyaki', kanji: '塩焼き', topic: 'food', round: 3 },
 ];
 
 // ═══════════════════════════════
@@ -927,7 +928,9 @@ const alreadyKnown = new Set([
 // 最近加入的單字批次（數字越大＝越近加入＝越優先出現）
 // 未被 SRS 記錄過的字才受影響；新增單字時加到最新批次號 + 1
 const recentBatch = {
-  // 批次 5（2026-05-03 最新）
+  // 批次 6（2026-05-03 最新）
+  'しおやき': 6,
+  // 批次 5（2026-05-03）
   'でんしゃ': 5, 'ちかてつ': 5, 'くうこう': 5, 'のりかえ': 5, 'きっぷ': 5,
   'みぎ': 5, 'ひだり': 5, 'まっすぐ': 5, 'ちず': 5, 'よやく': 5, 'へや': 5,
   // 批次 4（2026-05-02）
