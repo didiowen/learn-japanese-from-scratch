@@ -138,8 +138,8 @@ const recentBatch = {
 - **無障礙**：最小字體 18px，WCAG AA，互動目標 ≥ 44×44px，尊重 prefers-reduced-motion
 - **禁止**：gradient text、glassmorphism、等高卡片格、side-stripe border
 
-### Push 後立即建 PR
-每次 `git push` 後，若該分支**尚無開啟的 PR**，立即用 GitHub MCP 工具建立，不等使用者手動開。建立後**詢問使用者是否要立即合併**，如果是則馬上執行 merge。
+### Push 後立即建 PR 並合併
+每次 `git push` 後，若該分支**尚無開啟的 PR**，立即用 GitHub MCP 工具建立並**直接合併**，不需詢問使用者。smoke test 通過即視為可合併。
 
 PR 描述格式：
 ```
