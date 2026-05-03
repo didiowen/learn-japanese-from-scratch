@@ -55,6 +55,14 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## 工作流程
 
+### General workflow
+
+1. **Explore first, plan, then code** — read relevant files and understand the current state before making changes.
+2. **Smoke test before commit** — for scripts, a dry-run counts; for notes/edits, verify the output looks correct before staging.
+3. **Check git status before starting work** — confirm the correct branch and no unexpected prior changes.
+4. **Read an existing note before creating a new one** — match frontmatter format and conventions rather than guessing.
+5. **One concern per commit** — keep commits focused; don't bundle unrelated changes.
+
 ### 學新假名
 **每次只介紹 5–10 個**，確認記熟後再進下一批。不要一次把整行或整個五十音全部教完。
 
@@ -129,7 +137,7 @@ const recentBatch = {
 - **禁止**：gradient text、glassmorphism、等高卡片格、side-stripe border
 
 ### Push 後立即建 PR
-每次推送功能分支後，**立即用 GitHub MCP 工具建立 PR**，不等使用者手動開。
+每次 `git push` 後，若該分支**尚無開啟的 PR**，立即用 GitHub MCP 工具建立，不等使用者手動開。建立後**詢問使用者是否要立即合併**，如果是則馬上執行 merge。
 
 PR 描述格式：
 ```
