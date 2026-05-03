@@ -7,6 +7,9 @@ alias: log
 ---
 # 學習日誌
 
+## 2026-05-02 19:30:00
+- `vocabulary.md`：數字節更新たくさん說明；加入いっぱい及たくさん vs いっぱい比較說明（語感差異、獨特用法、精一杯）
+
 ## 2026-05-02 19:00:00
 - `hiragana-quiz.html`：從 vocabCards 及 recentBatch 刪除宿題／当番／お使い／大変／助ける／玩具（おもちゃ）六字（與 vocabulary.md 同步）
 
