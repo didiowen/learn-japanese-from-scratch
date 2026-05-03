@@ -403,9 +403,31 @@ h1.title {
 }
 .round-btn:last-child { border-right: none; }
 .round-btn.active { background: var(--accent); color: white; font-weight: 400; }
+
+/* ── Nav links ── */
+.nav-links {
+  display: flex;
+  gap: 20px;
+  width: 100%;
+  max-width: 360px;
+  margin-bottom: 12px;
+}
+.nav-links a {
+  color: var(--soft);
+  text-decoration: none;
+  font-size: 0.85rem;
+  letter-spacing: 0.03em;
+  transition: color 0.2s;
+}
+.nav-links a:hover { color: var(--accent); }
 </style>
 </head>
 <body>
+
+<nav class="nav-links">
+  <a href="index.html">← 首頁</a>
+  <a href="notes/">📖 學習筆記</a>
+</nav>
 
 <h1 class="title">片假名記憶測驗</h1>
 
