@@ -75,7 +75,7 @@ description: >
 4. 更新測驗 vocabCards（加 topic 標籤、round 欄位；若有漢字寫法加 kanji 欄位）
    - `meaning` 欄位只放純中文意思，**不能夾雜日文假名**（例：應填 `'哪裡'`，不是 `'どこ（哪裡）'`）
    - hiragana vocabCard 格式：`{ meaning, display, reading, kanji?, topic, round }`
-5. 將單字加入對應測驗的 `recentBatch`（批次號 = 目前最大值 + 1；目前最大：**3**，下次用 **4**）
+5. 將單字加入對應測驗的 `recentBatch`（批次號 = 目前最大值 + 1；目前最大：**4**，下次用 **5**）
 6. 將單字加入對應筆記檔，並更新 `date > updated`（格式 `YYYY-MM-DDTHH:mm:ss`）：
    - 一般單字 → `vocabulary.md` 對應主題區塊
    - 會話句型／口語表達 → `conversation.md` 對應情境區塊
