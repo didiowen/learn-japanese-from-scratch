@@ -2,7 +2,7 @@
 title: 會話
 date:
   created: 2026-04-28T10:18:31
-  updated: 2026-05-02T16:30:00
+  updated: 2026-05-02T20:00:00
 ---
 # 會話
 
@@ -16,8 +16,8 @@ date:
 | お早うございます  | おはようございます  | ohayou gozaimasu | 早安（正式）          |
 | 今日は       | こんにちは      | konnichiwa       | 你好／午安           |
 | 今晩は       | こんばんは      | konbanwa         | 晚上好             |
-| おやすみ      | おやすみ       | oyasumi          | 晚安（朋友）          |
-| おやすみなさい   | おやすみなさい    | oyasumi nasai    | 晚安（正式）          |
+| お休み      | おやすみ       | oyasumi          | 晚安（朋友）          |
+| お休みなさい   | おやすみなさい    | oyasumi nasai    | 晚安（正式）          |
 | お元気ですか    | おげんきですか    | ogenki desu ka   | 你好嗎？（久別重逢）      |
 | もしもし      | もしもし       | moshi moshi      | 喂？（接電話）         |
 | ただいま      | ただいま       | tadaima          | 我回來了            |
