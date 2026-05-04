@@ -7,6 +7,10 @@ alias: log
 ---
 # 學習日誌
 
+## 2026-05-03 11:30:00
+- `vocabulary.md`：おすすめ 漢字欄補上 お勧め／お薦め，附兩者語感說明
+- `hiragana-quiz.html`：新增 おすすめ vocabCard（food, round 4, batch 7）
+
 ## 2026-05-03 11:15:00
 - 新增單字：塩焼き（しおやき）→ `vocabulary.md` 飲食區塊、`hiragana-quiz.html` vocabCards（batch 6）
 
