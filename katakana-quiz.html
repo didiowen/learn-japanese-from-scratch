@@ -913,7 +913,7 @@ function checkVocab(chosen, field, btn) {
   } else {
     fb.innerHTML = isCorrect ? `✓ 正確！` : `✗ 正確是「${correct}」`;
   }
-  document.getElementById('hintText').textContent = '💡 ' + currentCard.hint;
+  document.getElementById('hintText').textContent = `💡 ${currentCard.reading}　${currentCard.hint}`;
   document.getElementById('nextBtn').classList.add('visible');
 }
 
