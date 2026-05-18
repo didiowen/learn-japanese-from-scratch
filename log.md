@@ -2,10 +2,16 @@
 title: 學習日誌
 date:
   created: 2026-04-28T18:26:48
-  updated: 2026-05-18T21:45:00
+  updated: 2026-05-18T21:55:00
 alias: log
 ---
 # 學習日誌
+
+## 2026-05-18 21:55:00
+- 緣起：村上春樹《女のいない男たち》書名解析
+- 新增 訓讀單字（batch 9）：女（おんな）、男（おとこ）
+  - `vocabulary.md` 人稱與家族區塊，緊接 じょせい／だんせい 排在訓讀對照位置
+  - `hiragana-quiz.html` vocabCards 加入 2 詞、recentBatch 新增批次 9
 
 ## 2026-05-18 21:45:00
 - `hiragana-quiz.html` 補上與片假名一致的兩項改進：
