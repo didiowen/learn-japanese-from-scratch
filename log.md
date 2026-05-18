@@ -2,10 +2,17 @@
 title: 學習日誌
 date:
   created: 2026-04-28T18:26:48
-  updated: 2026-05-18T21:21:00
+  updated: 2026-05-18T21:30:00
 alias: log
 ---
 # 學習日誌
+
+## 2026-05-18 21:30:00
+- 新增 4 個聽到的單字（batch 8）：
+  - 小説（しょうせつ）→ `vocabulary.md` 自然與事物
+  - 女性（じょせい）／男性（だんせい）→ `vocabulary.md` 人稱與家族
+  - 花火（はなび）→ `vocabulary.md` 自然與事物
+- `hiragana-quiz.html`：vocabCards 加入 4 詞、recentBatch 新增批次 8
 
 ## 2026-05-18 21:21:00
 - `katakana-quiz.html` 三項改進：
