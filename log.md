@@ -2,10 +2,20 @@
 title: 學習日誌
 date:
   created: 2026-04-28T18:26:48
-  updated: 2026-05-18T22:10:00
+  updated: 2026-05-18T22:20:00
 alias: log
 ---
 # 學習日誌
+
+## 2026-05-18 22:20:00
+- 新增咖哩家族 4 個片假名外來語（batch 3）：
+  - カレー（karē）→ 第二輪
+  - カレーライス（karē raisu）→ 第三輪
+  - チキンカレー（chikin karē）→ 第四輪
+  - ビーフカレー（bīfu karē）→ 第五輪
+- `katakana.md`：各分輪「單字」表格依輪次補入
+- `katakana-quiz.html`：vocabCards 加入 4 詞、recentBatch 新增批次 3
+- `CLAUDE.md`、`SKILL.md`、`quiz-structure.md`：片假名最大批次更新為 3
 
 ## 2026-05-18 22:10:00
 - 批次規則改為「同一天加入的算同一批」，重新編號 `recentBatch`：
