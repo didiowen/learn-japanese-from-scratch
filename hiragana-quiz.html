@@ -315,6 +315,41 @@ body {
 }
 .restart-btn:hover { opacity: 0.88; transform: translateY(-1px); }
 
+/* ── Wrong-answer review ── */
+.wrong-list {
+  margin-top: 20px;
+  text-align: left;
+  border-top: 1px solid var(--border);
+  padding-top: 14px;
+}
+.wrong-title {
+  font-size: 0.9rem;
+  color: var(--accent);
+  letter-spacing: 0.08em;
+  margin-bottom: 10px;
+  text-align: center;
+}
+.wrong-item {
+  padding: 9px 6px;
+  border-bottom: 1px dashed var(--border);
+  font-size: 0.88rem;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+.wrong-item:last-child { border-bottom: none; }
+.wrong-front {
+  font-family: 'Noto Sans JP', 'Noto Sans TC', sans-serif;
+  color: var(--ink);
+  font-size: 1.05rem;
+  font-weight: 500;
+  letter-spacing: 0.03em;
+}
+.wrong-back {
+  color: var(--soft);
+  line-height: 1.5;
+}
+
 /* ── Topic filter ── */
 .topic-filter {
   display: flex;
@@ -919,8 +954,9 @@ let currentVocab = null;
 
 let currentRound = 1;
 let showHint = false;
+let wrongAnswers = new Map();
 
-function getSessionLimit() { return currentRound === 0 ? 50 : 30; }
+function getSessionLimit() { return currentRound === 0 ? 50 : currentRound * 10; }
 
 function toggleHint() {
   showHint = !showHint;
@@ -1020,6 +1056,7 @@ function shuffle(arr) {
 
 function resetScore() {
   totalAnswered = 0; totalCorrect = 0; streak = 0; sessionCount = 0;
+  wrongAnswers = new Map();
   document.getElementById('scoreCorrect').textContent = 0;
   document.getElementById('scoreTotal').textContent = 0;
   document.getElementById('scoreStreak').textContent = 0;
@@ -1053,6 +1090,8 @@ function advanceSRS(item, correct) {
   } else {
     item.level = 0;
     streak = 0;
+    const key = item.char || item.display;
+    if (key) wrongAnswers.set(key, item);
   }
   item.nextReview = sessionCount + intervals[item.level];
   if (item.char) kanaProgress[item.char] = item.level;
@@ -1381,6 +1420,28 @@ function checkVocabMultiple(chosen, btn) {
 // ═══════════════════════════════
 // RESULT
 // ═══════════════════════════════
+function escapeHtml(s) {
+  return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+function renderWrongList() {
+  if (wrongAnswers.size === 0) return '';
+  const items = [...wrongAnswers.values()].map(c => {
+    if (c.char) {
+      const front = escapeHtml(c.char);
+      const kata = c.katakana ? `片假名：${escapeHtml(c.katakana)}　` : '';
+      const back = `${escapeHtml(c.reading)}　${kata}${escapeHtml(c.hint || '')}`;
+      return `<div class="wrong-item"><span class="wrong-front">${front}</span><span class="wrong-back">${back}</span></div>`;
+    } else {
+      const kp = c.kanji ? `${escapeHtml(c.kanji)} ` : '';
+      const front = `${kp}${escapeHtml(c.display)}`;
+      const back = `${escapeHtml(c.reading)}　${escapeHtml(c.meaning)}`;
+      return `<div class="wrong-item"><span class="wrong-front">${front}</span><span class="wrong-back">${back}</span></div>`;
+    }
+  }).join('');
+  return `<div class="wrong-list"><div class="wrong-title">答錯回顧（${wrongAnswers.size}）</div>${items}</div>`;
+}
+
 function showResult() {
   updateProgress();
   const pct = totalAnswered ? Math.round((totalCorrect / totalAnswered) * 100) : 0;
@@ -1395,6 +1456,7 @@ function showResult() {
       <h2>${msg}</h2>
       <p>${sub}<br><br>正確 ${totalCorrect} / ${totalAnswered} 題</p>
       <button class="restart-btn" onclick="restartCurrent()">再練一次</button>
+      ${renderWrongList()}
     </div>
   `;
 }
