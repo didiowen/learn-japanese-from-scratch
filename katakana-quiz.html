@@ -670,6 +670,11 @@ const vocabCards = [
   // 旅遊交通（batch 2）
   { word: 'チェックイン',   reading: 'chekku-in',   meaning: '辦理入住', hint: 'check-in 音譯，チェ是拗音（チ+小ェ），ッ促音停拍', topic: 'daily', round: 5 },
   { word: 'チェックアウト', reading: 'chekku-auto', meaning: '退房',     hint: 'check-out 音譯，ッ促音後爆ク，アウト=out', topic: 'daily', round: 5 },
+  // 咖哩家族（batch 3）
+  { word: 'カレー',         reading: 'karē',        meaning: '咖哩',     hint: 'curry → カレー；台語「咖哩」ka-lí 同源借詞', topic: 'food',  round: 2 },
+  { word: 'カレーライス',   reading: 'karē raisu',  meaning: '咖哩飯',   hint: 'curry + rice 和製英語；ライス＝rice', topic: 'food',  round: 3 },
+  { word: 'チキンカレー',   reading: 'chikin karē', meaning: '雞肉咖哩', hint: 'chicken + curry；チ+キ+ン+カ+レ+ー', topic: 'food',  round: 4 },
+  { word: 'ビーフカレー',   reading: 'bīfu karē',   meaning: '牛肉咖哩', hint: 'beef + curry；ビ+ー+フ+カ+レ+ー', topic: 'food',  round: 5 },
 ];
 
 // 本來就會的單字（降低頻率）
@@ -680,7 +685,9 @@ const alreadyKnown = new Set([
 // 最近加入的單字批次（數字越大＝越近加入＝越優先出現）
 // 規則：同一天加入的算同一批
 const recentBatch = {
-  // 批次 2（2026-05-03 最新）
+  // 批次 3（2026-05-18 最新）
+  'カレー': 3, 'カレーライス': 3, 'チキンカレー': 3, 'ビーフカレー': 3,
+  // 批次 2（2026-05-03）
   'チェックイン': 2, 'チェックアウト': 2,
   // 批次 1（2026-05-01）
   'シャンプー': 1, 'コンサート': 1,
