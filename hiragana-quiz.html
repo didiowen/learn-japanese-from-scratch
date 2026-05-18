@@ -856,6 +856,11 @@ const vocabCards = [
   { meaning: '房間', display: 'へや', reading: 'heya', kanji: '部屋', topic: 'daily', round: 5 },
   { meaning: '鹽烤', display: 'しおやき', reading: 'shioyaki', kanji: '塩焼き', topic: 'food', round: 3 },
   { meaning: '推薦', display: 'おすすめ', reading: 'osusume', kanji: 'お勧め／お薦め', topic: 'food', round: 4 },
+  // 聽到的單字（batch 8）
+  { meaning: '小說', display: 'しょうせつ', reading: 'shousetsu', kanji: '小説', topic: 'daily', round: 4 },
+  { meaning: '女性／女人', display: 'じょせい', reading: 'josei', kanji: '女性', topic: 'family', round: 3 },
+  { meaning: '男性／男人', display: 'だんせい', reading: 'dansei', kanji: '男性', topic: 'family', round: 4 },
+  { meaning: '煙火', display: 'はなび', reading: 'hanabi', kanji: '花火', topic: 'nature', round: 5 },
 ];
 
 // ═══════════════════════════════
@@ -951,7 +956,9 @@ const alreadyKnown = new Set([
 // 最近加入的單字批次（數字越大＝越近加入＝越優先出現）
 // 未被 SRS 記錄過的字才受影響；新增單字時加到最新批次號 + 1
 const recentBatch = {
-  // 批次 7（2026-05-03 最新）
+  // 批次 8（2026-05-18 最新）
+  'しょうせつ': 8, 'じょせい': 8, 'だんせい': 8, 'はなび': 8,
+  // 批次 7（2026-05-03）
   'おすすめ': 7,
   // 批次 6（2026-05-03）
   'しおやき': 6,
