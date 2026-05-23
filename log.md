@@ -2,10 +2,15 @@
 title: 學習日誌
 date:
   created: 2026-04-28T18:26:48
-  updated: 2026-05-18T23:05:00
+  updated: 2026-05-18T23:30:00
 alias: log
 ---
 # 學習日誌
+
+## 2026-05-18 23:30:00
+- 新增 A5 五十音寫字練習 PDF：`kana-writing-practice.pdf`（平假名＋片假名各一頁）
+  - 描紅淡字 + 3 個田字格空格、行群標籤、羅馬拼音
+  - 產生腳本 `tools/make_kana_practice.py`（reportlab，IPAGothic 字型）
 
 ## 2026-05-18 23:05:00
 - `grammar.md` G1 補充：です否定階梯（じゃない→じゃありません→ではありません）、〜じゃなくて、〜です（不是 A，是 B）句型、〜人國籍後綴
