@@ -2,10 +2,18 @@
 title: 學習日誌
 date:
   created: 2026-04-28T18:26:48
-  updated: 2026-05-18T23:50:00
+  updated: 2026-05-19T00:10:00
 alias: log
 ---
 # 學習日誌
+
+## 2026-05-19 00:10:00
+- `kana-writing-practice.pdf` 改版：解決列印濃淡不一問題
+  - 每行第一格改純黑實心示範字
+  - 後面 3 格改灰色虛線空心字（文字描邊 render mode 1 + 虛線）可臨摹
+  - 修正 reportlab 描邊模式殘留 bug（trace 後還原 render mode 0）
+  - 副標題改中文說明
+- `tools/make_kana_practice.py`：draw_cell 加 mode 參數（model／trace）
 
 ## 2026-05-18 23:50:00
 - `grammar.md` 移除台語對照：刪除 G1「台語對照」表格、G2「台語連結」段落，及〜人註解的台語文言音說明

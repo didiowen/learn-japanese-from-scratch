@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""產生 A5 五十音寫字練習 PDF（平假名＋片假名各一頁，描紅＋空格）。"""
+"""產生 A5 五十音寫字練習 PDF（平假名＋片假名各一頁，第一格純黑範例＋後面灰色虛線臨摹）。"""
 
 from reportlab.lib.pagesizes import A5
 from reportlab.lib.units import mm
@@ -27,8 +27,11 @@ INK = (0, 0, 0)                  # 標題、行標籤
 SOFT = (0.35, 0.35, 0.35)        # 羅馬拼音
 ACCENT = (0, 0, 0)               # 標題底線、行群標籤
 GRID = (0.40, 0.40, 0.40)        # 格線
-GUIDE = (0.78, 0.78, 0.78)       # 田字格虛線
-TRACE = (0.70, 0.70, 0.70)       # 描紅淡字
+GUIDE = (0.80, 0.80, 0.80)       # 田字格虛線
+MODEL = (0, 0, 0)                # 第一格示範字（純黑實心）
+TRACE = (0.62, 0.62, 0.62)       # 練習格臨摹字（灰色虛線空心）
+TRACE_LW = 0.2 * mm              # 臨摹字線寬
+TRACE_DASH = (0.6 * mm, 0.5 * mm)  # 臨摹字虛線
 
 # 平假名 46 音（依行分組）
 HIRAGANA = [
@@ -63,8 +66,9 @@ KATAKANA = [
 COLS = [(0, 3), (3, 6), (6, 11)]  # group index ranges per column
 
 
-def draw_cell(c, x, y, char=None):
-    """在 (x, y) 左下角畫一個田字格；char 有值則描紅淡字。"""
+def draw_cell(c, x, y, char=None, mode=None):
+    """在 (x, y) 左下角畫一個田字格。
+    mode='model' → 純黑實心示範字；mode='trace' → 灰色虛線空心臨摹字。"""
     # 田字格外框
     c.setStrokeColorRGB(*GRID)
     c.setLineWidth(0.5)
@@ -76,24 +80,41 @@ def draw_cell(c, x, y, char=None):
     c.line(x + CELL / 2, y, x + CELL / 2, y + CELL)
     c.line(x, y + CELL / 2, x + CELL, y + CELL / 2)
     c.setDash()
-    if char:
-        c.setFillColorRGB(*TRACE)
-        fs = CELL * 0.74
+    if not char:
+        return
+    fs = CELL * 0.74
+    cx = x + CELL / 2
+    by = y + CELL / 2 - fs * 0.36   # 垂直置中校正
+    if mode == "model":
+        # 純黑實心填色
+        c.setFillColorRGB(*MODEL)
         c.setFont("JP", fs)
-        # 垂直置中：以字高約略校正
-        c.drawCentredString(x + CELL / 2, y + CELL / 2 - fs * 0.36, char)
+        c.drawCentredString(cx, by, char)
+    elif mode == "trace":
+        # 灰色虛線空心字：文字描邊（render mode 1）+ 虛線
+        w = c.stringWidth(char, "JP", fs)
+        c.setStrokeColorRGB(*TRACE)
+        c.setLineWidth(TRACE_LW)
+        c.setDash(*TRACE_DASH)
+        to = c.beginText(cx - w / 2, by)
+        to.setTextRenderMode(1)
+        to.setFont("JP", fs)
+        to.textOut(char)
+        to.setTextRenderMode(0)   # 還原，避免後續文字沿用描邊模式
+        c.drawText(to)
+        c.setDash()
 
 
 def draw_row(c, x, y, char, romaji):
-    """畫一列：羅馬拼音 + 描紅格 + 練習空格。y 為該列底部。"""
+    """畫一列：羅馬拼音 + 純黑示範格 + 灰色虛線臨摹格。y 為該列底部。"""
     c.setFillColorRGB(*SOFT)
     c.setFont("Helvetica", 6.5)
     c.drawRightString(x + ROMAJI_W, y + CELL / 2 - 2.3, romaji)
     cx = x + ROMAJI_W + LABEL_GAP
-    draw_cell(c, cx, y, char)           # 描紅
+    draw_cell(c, cx, y, char, mode="model")     # 第一格：純黑示範
     for i in range(PRACTICE):
         cx += CELL
-        draw_cell(c, cx, y, None)       # 空格
+        draw_cell(c, cx, y, char, mode="trace")  # 後面：灰色虛線臨摹
 
 
 def draw_page(c, title, subtitle, groups):
@@ -102,7 +123,7 @@ def draw_page(c, title, subtitle, groups):
     c.setFont("JP", 15)
     c.drawString(MARGIN, PAGE_H - MARGIN - 12, title)
     c.setFillColorRGB(*SOFT)
-    c.setFont("Helvetica", 8)
+    c.setFont("JP", 7.5)
     c.drawString(MARGIN, PAGE_H - MARGIN - 22, subtitle)
     # 標題底線
     c.setStrokeColorRGB(*ACCENT)
@@ -136,14 +157,14 @@ def main(out_path):
     draw_page(
         c,
         "ひらがな　平假名 五十音 寫字練習",
-        "Trace the light character, then write in the blank squares.",
+        "第一格為純黑範例，後面各格沿灰色虛線臨摹。",
         HIRAGANA,
     )
     c.showPage()
     draw_page(
         c,
         "カタカナ　片假名 五十音 寫字練習",
-        "Trace the light character, then write in the blank squares.",
+        "第一格為純黑範例，後面各格沿灰色虛線臨摹。",
         KATAKANA,
     )
     c.showPage()
