@@ -2,10 +2,14 @@
 title: 學習日誌
 date:
   created: 2026-04-28T18:26:48
-  updated: 2026-05-18T23:30:00
+  updated: 2026-05-18T23:40:00
 alias: log
 ---
 # 學習日誌
+
+## 2026-05-18 23:40:00
+- `kana-writing-practice.pdf` 改為純黑白（灰階）配色：移除紅色/咖啡色，標題與行標籤改黑、描紅字保留淺灰，方便黑白印表機列印
+- `tools/make_kana_practice.py`：更新配色常數
 
 ## 2026-05-18 23:30:00
 - 新增 A5 五十音寫字練習 PDF：`kana-writing-practice.pdf`（平假名＋片假名各一頁）
