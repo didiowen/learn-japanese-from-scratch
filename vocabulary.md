@@ -2,7 +2,7 @@
 title: 單字
 date:
   created: 2026-04-28T15:00:00
-  updated: 2026-05-27T11:15:00
+  updated: 2026-05-27T11:25:00
 alias: vocab
 ---
 # 單字
@@ -104,6 +104,7 @@ alias: vocab
 | 卵焼き    | たまごやき   | tamagoyaki   | 玉子燒          |
 | 蛸       | たこ      | tako         | 章魚           |
 | 蛸焼き    | たこやき    | takoyaki     | 章魚燒          |
+| 鰻       | うなぎ     | unagi        | 鰻魚（訓讀；蒲燒鰻、鰻丼）|
 | 焼き      | やき      | yaki         | 燒烤（料理字尾）    |
 | 焼き肉    | やきにく    | yakiniku     | 烤肉           |
 | 照り焼き   | てりやき    | teriyaki     | 照燒           |
