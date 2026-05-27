@@ -2,10 +2,15 @@
 title: 學習日誌
 date:
   created: 2026-04-28T18:26:48
-  updated: 2026-05-27T11:25:00
+  updated: 2026-05-27T11:35:00
 alias: log
 ---
 # 學習日誌
+
+## 2026-05-27 11:35:00
+- 學到地名 九州（きゅうしゅう）、長崎（ながさき）——兩者已在 `kanji.md` 地名區塊
+- 加入測驗練習（batch 5）：`hiragana-quiz.html` vocabCards 新增兩地名、recentBatch 沿用批次 5
+  - 對比：九州全音讀（台語 kiú-tsiu 對應），長崎全訓讀（和語，台語對不上）
 
 ## 2026-05-27 11:25:00
 - 新增單字（batch 5）：鰻（うなぎ）鰻魚 → `vocabulary.md` 飲食區塊、`hiragana-quiz.html` vocabCards
