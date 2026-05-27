@@ -907,6 +907,8 @@ const vocabCards = [
   // 自我介紹（batch 4）
   { meaning: '台灣', display: 'たいわん', reading: 'taiwan', kanji: '台湾', topic: 'nature', round: 4 },
   { meaning: '台灣人', display: 'たいわんじん', reading: 'taiwanjin', kanji: '台湾人', topic: 'family', round: 4 },
+  // 臺灣漫遊錄（batch 5）
+  { meaning: '羊羹', display: 'ようかん', reading: 'youkan', kanji: '羊羹', topic: 'food', round: 3 },
 ];
 
 // ═══════════════════════════════
@@ -1003,7 +1005,9 @@ const alreadyKnown = new Set([
 // 最近加入的單字批次（數字越大＝越近加入＝越優先出現）
 // 規則：同一天加入的算同一批；新增單字時若該日已有批次直接沿用，否則用最新批次號 + 1
 const recentBatch = {
-  // 批次 4（2026-05-18 最新）
+  // 批次 5（2026-05-27 最新）
+  'ようかん': 5,
+  // 批次 4（2026-05-18）
   'おんな': 4, 'おとこ': 4,
   'しょうせつ': 4, 'じょせい': 4, 'だんせい': 4, 'はなび': 4,
   'つる': 4, 'まつ': 4, 'やま': 4, 'てん': 4,

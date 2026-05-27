@@ -2,10 +2,16 @@
 title: 學習日誌
 date:
   created: 2026-04-28T18:26:48
-  updated: 2026-05-19T00:25:00
+  updated: 2026-05-27T11:15:00
 alias: log
 ---
 # 學習日誌
+
+## 2026-05-27 11:15:00
+- 緣起：閱讀《臺灣漫遊錄》學到 羊羹（ようかん）
+- 新增單字（batch 5）：羊羹（ようかん）→ `vocabulary.md` 飲食區塊
+  - `hiragana-quiz.html`：vocabCards 加入、recentBatch 新增批次 5（新的一天）
+  - 字源趣聞：原指羊肉羹湯，傳日後僧侶改用紅豆寒天做成甜點；羹＝台語「肉羹」bah-kenn
 
 ## 2026-05-19 00:25:00
 - `kana-writing-practice.pdf`：臨摹字由「空心描邊」改為「淡灰實心」
