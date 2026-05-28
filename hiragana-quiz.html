@@ -917,6 +917,15 @@ const vocabCards = [
   { meaning: '緣分（禮貌）', display: 'ごえん', reading: 'goen', kanji: 'ご縁', topic: 'daily', round: 2 },
   { meaning: '吉凶兆頭', display: 'えんぎ', reading: 'engi', kanji: '縁起', topic: 'daily', round: 2 },
   { meaning: '因緣', display: 'いんねん', reading: 'innen', kanji: '因縁', topic: 'daily', round: 2 },
+  // 截圖單字（batch 6）
+  { meaning: '假日', display: 'やすみ', reading: 'yasumi', kanji: '休み', topic: 'time', round: 4 },
+  { meaning: '了解', display: 'りょうかい', reading: 'ryoukai', kanji: '了解', topic: 'daily', round: 3 },
+  { meaning: '片假名', display: 'かたかな', reading: 'katakana', kanji: '片仮名', topic: 'daily', round: 4 },
+  { meaning: '箱子', display: 'はこ', reading: 'hako', kanji: '箱', topic: 'daily', round: 5 },
+  { meaning: '介紹', display: 'しょうかい', reading: 'shoukai', kanji: '紹介', topic: 'daily', round: 3 },
+  { meaning: '兩千', display: 'にせん', reading: 'nisen', kanji: '二千', topic: 'number', round: 3 },
+  { meaning: '四百', display: 'よんひゃく', reading: 'yonhyaku', kanji: '四百', topic: 'number', round: 5 },
+  { meaning: '八百', display: 'はっぴゃく', reading: 'happyaku', kanji: '八百', topic: 'number', round: 5 },
 ];
 
 // ═══════════════════════════════
@@ -1013,7 +1022,10 @@ const alreadyKnown = new Set([
 // 最近加入的單字批次（數字越大＝越近加入＝越優先出現）
 // 規則：同一天加入的算同一批；新增單字時若該日已有批次直接沿用，否則用最新批次號 + 1
 const recentBatch = {
-  // 批次 5（2026-05-27 最新）
+  // 批次 6（2026-05-28）
+  'やすみ': 6, 'りょうかい': 6, 'かたかな': 6, 'はこ': 6, 'しょうかい': 6,
+  'にせん': 6, 'よんひゃく': 6, 'はっぴゃく': 6,
+  // 批次 5（2026-05-27）
   'ようかん': 5, 'うなぎ': 5, 'きゅうしゅう': 5, 'ながさき': 5,
   'えん': 5, 'ごえん': 5, 'えんぎ': 5, 'いんねん': 5,
   // 批次 4（2026-05-18）
