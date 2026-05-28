@@ -455,6 +455,56 @@ h1.title {
   transition: color 0.2s;
 }
 .nav-links a:hover { color: var(--accent); }
+
+/* ── User sync badge ── */
+.nav-links { align-items: center; }
+.user-badge {
+  margin-left: auto;
+  display: flex; align-items: center; gap: 5px;
+  font-size: 0.78rem; color: var(--soft);
+  cursor: pointer; padding: 3px 10px;
+  border-radius: 20px; border: 1px solid #ddd;
+  background: transparent; transition: all 0.2s;
+  white-space: nowrap; font-family: inherit;
+}
+.user-badge:hover { border-color: var(--accent); color: var(--accent); }
+.sync-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: #ccc; flex-shrink: 0;
+}
+.sync-dot.synced { background: #27ae60; }
+.sync-dot.syncing { background: #f39c12; animation: blink 1s infinite; }
+.sync-dot.error { background: var(--accent); }
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+.user-modal-overlay {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.5);
+  display: flex; align-items: center; justify-content: center;
+  z-index: 1000; opacity: 0; pointer-events: none; transition: opacity 0.2s;
+}
+.user-modal-overlay.open { opacity: 1; pointer-events: all; }
+.user-modal {
+  background: var(--paper); border-radius: 12px;
+  padding: 28px; width: min(90vw, 340px);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.25);
+}
+.user-modal h3 { font-size: 1rem; margin-bottom: 8px; }
+.user-modal p { font-size: 0.82rem; color: var(--soft); margin-bottom: 14px; line-height: 1.55; }
+.user-modal input {
+  width: 100%; padding: 9px 12px;
+  border: 1.5px solid #ddd; border-radius: 8px;
+  font-size: 0.95rem; font-family: monospace;
+  background: white; margin-bottom: 4px;
+}
+.user-modal input:focus { outline: none; border-color: var(--accent); }
+.user-modal-err { color: var(--accent); font-size: 0.78rem; min-height: 1.2em; margin-bottom: 10px; }
+.user-modal-btns { display: flex; gap: 8px; }
+.user-modal-btns button {
+  flex: 1; padding: 9px; border-radius: 8px;
+  border: none; font-size: 0.9rem; cursor: pointer; font-family: inherit;
+}
+.btn-confirm { background: var(--accent); color: white; }
+.btn-cancel { background: #eee; color: var(--soft); }
 </style>
 </head>
 <body>
@@ -462,7 +512,25 @@ h1.title {
 <nav class="nav-links">
   <a href="index.html">← 首頁</a>
   <a href="notes/">📖 學習筆記</a>
+  <button class="user-badge" id="userBadge" onclick="openUserModal()" title="切換使用者">
+    <span class="sync-dot" id="syncDot"></span>
+    <span id="userLabel">…</span>
+  </button>
 </nav>
+
+<div class="user-modal-overlay" id="userModalOverlay">
+  <div class="user-modal">
+    <h3>設定使用者 ID</h3>
+    <p>輸入你的專屬 ID（3–20 個英文字母、數字、<code>-</code> 或 <code>_</code>）。不同裝置輸入相同 ID 即可同步進度。</p>
+    <input type="text" id="userIdInput" placeholder="例：didi-2026" maxlength="20"
+      onkeydown="if(event.key==='Enter')confirmUserId()" autocomplete="off" />
+    <div class="user-modal-err" id="userModalErr"></div>
+    <div class="user-modal-btns">
+      <button class="btn-cancel" id="userCancelBtn" onclick="closeUserModal()">取消</button>
+      <button class="btn-confirm" onclick="confirmUserId()">確認</button>
+    </div>
+  </div>
+</div>
 
 <h1 class="title">片假名記憶測驗</h1>
 
@@ -733,16 +801,7 @@ const STORAGE_KANA = 'katakana_kana_progress';
 const STORAGE_VOCAB = 'katakana_vocab_progress';
 let kanaProgress = {};
 let vocabProgress = {};
-function loadProgress() {
-  try {
-    kanaProgress = JSON.parse(localStorage.getItem(STORAGE_KANA) || '{}');
-    vocabProgress = JSON.parse(localStorage.getItem(STORAGE_VOCAB) || '{}');
-  } catch(e) { kanaProgress = {}; vocabProgress = {}; }
-}
-function saveProgress() {
-  localStorage.setItem(STORAGE_KANA, JSON.stringify(kanaProgress));
-  localStorage.setItem(STORAGE_VOCAB, JSON.stringify(vocabProgress));
-}
+// loadProgress / saveProgress → replaced by sync block below
 let currentSection = 'kana';
 let currentRound = 1;
 let currentMode = 'char-to-reading';
@@ -1223,11 +1282,130 @@ function restart() {
 }
 
 // ═══════════════════════════════
+// FIREBASE SYNC CONFIG
+// ═══════════════════════════════
+// 填入你的 Firebase Realtime Database URL（結尾不加 /）
+// 例：'https://your-project-default-rtdb.asia-southeast1.firebasedatabase.app'
+// 留空 = 僅用 localStorage，無跨裝置同步
+const FIREBASE_DB_URL = '';
+const QUIZ_TYPE = 'katakana';
+const USER_ID_KEY = 'nihongo_user_id';
+let currentUserId = localStorage.getItem(USER_ID_KEY) || '';
+let syncTimer = null;
+
+function setSyncStatus(s) {
+  const d = document.getElementById('syncDot');
+  if (d) d.className = 'sync-dot' + (s ? ' ' + s : '');
+}
+function updateUserBadge() {
+  const el = document.getElementById('userLabel');
+  if (!el) return;
+  if (!currentUserId) { el.textContent = '設定 ID'; setSyncStatus(''); return; }
+  el.textContent = FIREBASE_DB_URL ? currentUserId : currentUserId + ' ☁︎✗';
+  if (!FIREBASE_DB_URL) setSyncStatus('');
+}
+function openUserModal() {
+  const overlay = document.getElementById('userModalOverlay');
+  const input = document.getElementById('userIdInput');
+  document.getElementById('userModalErr').textContent = '';
+  input.value = currentUserId;
+  document.getElementById('userCancelBtn').style.display = currentUserId ? '' : 'none';
+  overlay.classList.add('open');
+  setTimeout(() => input.focus(), 80);
+}
+function closeUserModal() {
+  document.getElementById('userModalOverlay').classList.remove('open');
+}
+async function confirmUserId() {
+  const val = document.getElementById('userIdInput').value.trim();
+  const err = document.getElementById('userModalErr');
+  if (!/^[a-zA-Z0-9_-]{3,20}$/.test(val)) {
+    err.textContent = '只能用英文、數字、- 或 _，長度 3–20 字元';
+    return;
+  }
+  const changed = val !== currentUserId;
+  currentUserId = val;
+  localStorage.setItem(USER_ID_KEY, currentUserId);
+  closeUserModal();
+  updateUserBadge();
+  if (changed) {
+    kanaProgress = {}; vocabProgress = {};
+    await initAndStart();
+  }
+}
+
+async function fetchFromFirebase() {
+  if (!FIREBASE_DB_URL || !currentUserId) return false;
+  try {
+    setSyncStatus('syncing');
+    const ctrl = new AbortController();
+    const tid = setTimeout(() => ctrl.abort(), 5000);
+    const res = await fetch(FIREBASE_DB_URL + '/progress/' + currentUserId + '/' + QUIZ_TYPE + '.json',
+      { signal: ctrl.signal });
+    clearTimeout(tid);
+    if (!res.ok) throw new Error(res.status);
+    const data = await res.json();
+    if (data && typeof data === 'object') {
+      if (data.kana)  kanaProgress  = data.kana;
+      if (data.vocab) vocabProgress = data.vocab;
+      localStorage.setItem(STORAGE_KANA,  JSON.stringify(kanaProgress));
+      localStorage.setItem(STORAGE_VOCAB, JSON.stringify(vocabProgress));
+    }
+    setSyncStatus('synced');
+    return true;
+  } catch(e) {
+    setSyncStatus(e.name === 'AbortError' ? '' : 'error');
+    return false;
+  }
+}
+function schedulePushToFirebase() {
+  if (!FIREBASE_DB_URL || !currentUserId) return;
+  clearTimeout(syncTimer);
+  setSyncStatus('syncing');
+  syncTimer = setTimeout(async () => {
+    try {
+      await fetch(FIREBASE_DB_URL + '/progress/' + currentUserId + '/' + QUIZ_TYPE + '.json', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ kana: kanaProgress, vocab: vocabProgress })
+      });
+      setSyncStatus('synced');
+    } catch(e) { setSyncStatus('error'); }
+  }, 3000);
+}
+
+function loadProgress() {
+  try {
+    kanaProgress  = JSON.parse(localStorage.getItem(STORAGE_KANA)  || '{}');
+    vocabProgress = JSON.parse(localStorage.getItem(STORAGE_VOCAB) || '{}');
+  } catch(e) { kanaProgress = {}; vocabProgress = {}; }
+}
+function saveProgress() {
+  localStorage.setItem(STORAGE_KANA,  JSON.stringify(kanaProgress));
+  localStorage.setItem(STORAGE_VOCAB, JSON.stringify(vocabProgress));
+  schedulePushToFirebase();
+}
+
+async function initAndStart() {
+  loadProgress();
+  updateUserBadge();
+  if (FIREBASE_DB_URL && currentUserId) await fetchFromFirebase();
+  queue = buildKanaQueue(currentRound);
+  nextCard();
+}
+
+// ═══════════════════════════════
 // INIT
 // ═══════════════════════════════
-loadProgress();
-queue = buildKanaQueue(currentRound);
-nextCard();
+if (!currentUserId && FIREBASE_DB_URL) {
+  openUserModal();
+  loadProgress(); updateUserBadge();
+  queue = buildKanaQueue(currentRound);
+  nextCard();
+} else {
+  initAndStart();
+}
+
 
 </script>
   <!-- Ko-fi floating widget -->
