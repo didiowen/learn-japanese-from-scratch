@@ -796,7 +796,11 @@ const similarGroups = [
 // STATE
 // ═══════════════════════════════
 const intervals = [0, 3, 8, 20, 40];
-function getSessionLimit() { return currentRound === 0 ? 50 : currentRound * 10; }
+function getSessionLimit() {
+  if (currentRound === 0) return 50;
+  const pool = vocabCards.filter(c => c.round <= currentRound).length;
+  return Math.min(Math.max(Math.round(pool * 0.35), 20), 60);
+}
 const STORAGE_KANA = 'katakana_kana_progress';
 const STORAGE_VOCAB = 'katakana_vocab_progress';
 let kanaProgress = {};
