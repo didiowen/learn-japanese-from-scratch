@@ -7,6 +7,10 @@ alias: log
 ---
 # 學習日誌
 
+## 2026-05-28 22:00:00
+- `vocabulary.md` 新增單字：てんき（天気）、てんごく（天国）、てんさい（天才）、よぞら（夜空）
+- `hiragana-quiz.html` 新增 4 張 vocabCard，加入 batch 6
+
 ## 2026-05-28 21:30:00
 - `katakana.md`、`katakana-quiz.html` ミ 記憶鉤更新：加入三笘（みとま）足球員連結——「三」訓読み み = 三笘の み
 
