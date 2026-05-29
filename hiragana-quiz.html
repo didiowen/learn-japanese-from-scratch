@@ -1347,7 +1347,7 @@ function renderHiraganaInput() {
   document.getElementById('quizContent').innerHTML = `
     <div class="question-type">輸入羅馬字讀音</div>
     <div class="main-char">${currentCard.char}</div>
-    ${isN ? '<div class="input-hint">ん → nn</div>' : ''}
+    ${isN && showHint ? '<div class="input-hint">ん → nn</div>' : ''}
     <div class="hint" id="hintText">${showHint ? hintText(currentCard) : ''}</div>
     <div class="input-wrap">
       <input class="romaji-input" id="romajiInput" type="text" placeholder="輸入羅馬字…"
