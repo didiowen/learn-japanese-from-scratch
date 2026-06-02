@@ -6,7 +6,7 @@ date:
 ---
 # 片假名
 
-![片假名字表](X/attachments/c6aefd8fbf7ef88833cdb6d7e0103683_MD5.jpg)
+![片假名字表](images/katakana-table.jpg)
 
 ## 第一輪（13個）：ア行・ラ行・基本記號
 
