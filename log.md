@@ -7,6 +7,12 @@ alias: log
 ---
 # 學習日誌
 
+## 2026-06-04 00:00:00
+- 新增單字：やばい・やばすぎ（YBSG 俚語，batch 8）
+- 加入 hiragana-quiz.html vocabCards 及 recentBatch 8
+- vocabulary.md 新增至情感與個性區塊
+- 同步說明 すぎる 語法（過ぎる＝太……）
+
 ## 2026-06-02 00:00:01
 - 新增單字（世界盃漢字延伸詞彙，batch 7）：午後・午前・最後・安心・不安・安全・海外・原因・社長
 - 加入 hiragana-quiz.html vocabCards 及 recentBatch 7
