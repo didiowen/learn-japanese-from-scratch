@@ -284,6 +284,8 @@ body {
 }
 .feedback.show-correct { background: rgba(39,174,96,0.08); color: var(--success); }
 .feedback.show-wrong { background: rgba(192,57,43,0.06); color: var(--fail); }
+.speak-btn { background: none; border: none; font-size: 1.1rem; cursor: pointer; padding: 0 4px; vertical-align: middle; opacity: 0.65; line-height: 1; }
+.speak-btn:hover { opacity: 1; }
 
 /* ── Score ── */
 .score-display {
@@ -1369,7 +1371,7 @@ function checkHiraganaMultiple(chosen, btn) {
   if (isCorrect) speakJa(currentCard.char);
   const fb = document.getElementById('feedback');
   fb.className = `feedback ${isCorrect ? 'show-correct' : 'show-wrong'}`;
-  fb.innerHTML = isCorrect ? `✓ 正確！` : `✗ 正確是「${correct}」`;
+  fb.innerHTML = (isCorrect ? `✓ 正確！` : `✗ 正確是「${correct}」`) + ` <button class="speak-btn" onclick="speakJa(currentCard.char)" title="朗讀">🔊</button>`;
   document.getElementById('hintText').textContent = hintText(currentCard);
   document.getElementById('nextBtn').classList.add('visible');
 }
@@ -1413,7 +1415,7 @@ function submitHiraganaInput() {
   if (isCorrect) speakJa(currentCard.char);
   const fb = document.getElementById('feedback');
   fb.className = `feedback ${isCorrect ? 'show-correct' : 'show-wrong'}`;
-  fb.innerHTML = isCorrect ? `✓ 正確！` : `✗ 正確是「${currentCard.reading}」`;
+  fb.innerHTML = (isCorrect ? `✓ 正確！` : `✗ 正確是「${currentCard.reading}」`) + ` <button class="speak-btn" onclick="speakJa(currentCard.char)" title="朗讀">🔊</button>`;
   document.getElementById('hintText').textContent = hintText(currentCard);
   document.getElementById('nextBtn').classList.add('visible');
 }
@@ -1547,7 +1549,7 @@ function checkVocabMultiple(chosen, btn) {
   fb.className = `feedback ${isCorrect ? 'show-correct' : 'show-wrong'}`;
   const kp = currentVocab.kanji ? `${currentVocab.kanji} ` : '';
   const wrongHint = vocabDir === 'jp-to-zh' ? correctAnswers.join('／') : `${kp}${currentVocab.display}`;
-  fb.innerHTML = isCorrect ? `✓ 正確！` : `✗ 正確是「${wrongHint}」`;
+  fb.innerHTML = (isCorrect ? `✓ 正確！` : `✗ 正確是「${wrongHint}」`) + ` <button class="speak-btn" onclick="speakJa(currentVocab.display)" title="朗讀">🔊</button>`;
   document.getElementById('hintText').textContent = `💡 ${kp}${currentVocab.display}（${currentVocab.reading}）`;
   document.getElementById('nextBtn').classList.add('visible');
 }
