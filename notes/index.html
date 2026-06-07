@@ -106,6 +106,14 @@
                 if (!h2.includes('發音規則補充')) addBtn(table, 0);
               });
 
+            } else if (page === 'vocabulary') {
+              eachTable(function(table) {
+                ['平假名', '讀法', '片假名'].forEach(function(header) {
+                  var col = findCol(table, header);
+                  if (col >= 0) addBtn(table, col);
+                });
+              });
+
             } else if (page === 'kanji') {
               eachTable(function(table, h2, h3) {
                 var col;
