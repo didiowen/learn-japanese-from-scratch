@@ -67,13 +67,14 @@
               return -1;
             }
 
-            function addBtn(table, colIdx, extract) {
+            function addBtn(table, colIdx, extract, skip) {
               table.querySelectorAll('tr').forEach(function(row) {
                 var cells = row.querySelectorAll('td');
                 if (cells.length <= colIdx) return;
                 var cell = cells[colIdx];
                 if (cell.querySelector('.speak-btn')) return;
                 var raw = cell.textContent.trim();
+                if (skip && skip(raw)) return;
                 var text = extract ? extract(raw) : raw;
                 if (!text || !/[぀-ヿ一-鿿]/.test(text)) return;
                 var btn = document.createElement('button');
@@ -98,7 +99,7 @@
 
             if (page === 'hiragana') {
               var tables = document.querySelectorAll('.markdown-section table');
-              if (tables.length) addBtn(tables[0], 0);
+              if (tables.length) addBtn(tables[0], 0, null, function(t) { return /行/.test(t); });
 
             } else if (page === 'katakana') {
               eachTable(function(table, h2) {
