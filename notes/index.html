@@ -55,20 +55,74 @@
         },
         function(hook) {
           hook.doneEach(function() {
-            document.querySelectorAll('.markdown-section table tr').forEach(function(row) {
-              const cells = row.querySelectorAll('td');
-              if (cells.length < 2) return;
-              const cell = cells[1];
-              if (cell.querySelector('.speak-btn')) return;
-              const text = cell.textContent.trim();
-              if (!/[぀-ヿ一-鿿]/.test(text)) return;
-              const btn = document.createElement('button');
-              btn.className = 'speak-btn';
-              btn.title = '朗讀';
-              btn.textContent = '🔊';
-              btn.onclick = function() { speakJa(text); };
-              cell.appendChild(btn);
-            });
+            var hash = window.location.hash;
+            var m = hash.match(/#\/([^?#]*)/);
+            var page = (m ? m[1].split('/').pop() : '') || 'hiragana';
+
+            function findCol(table, header) {
+              var ths = table.querySelectorAll('th');
+              for (var i = 0; i < ths.length; i++) {
+                if (ths[i].textContent.trim() === header) return i;
+              }
+              return -1;
+            }
+
+            function addBtn(table, colIdx, extract) {
+              table.querySelectorAll('tr').forEach(function(row) {
+                var cells = row.querySelectorAll('td');
+                if (cells.length <= colIdx) return;
+                var cell = cells[colIdx];
+                if (cell.querySelector('.speak-btn')) return;
+                var raw = cell.textContent.trim();
+                var text = extract ? extract(raw) : raw;
+                if (!text || !/[぀-ヿ一-鿿]/.test(text)) return;
+                var btn = document.createElement('button');
+                btn.className = 'speak-btn';
+                btn.title = '朗讀';
+                btn.textContent = '🔊';
+                btn.onclick = function() { speakJa(text); };
+                cell.appendChild(btn);
+              });
+            }
+
+            function eachTable(fn) {
+              var sec = document.querySelector('.markdown-section');
+              if (!sec) return;
+              var h2 = '', h3 = '';
+              Array.from(sec.children).forEach(function(el) {
+                if (el.tagName === 'H2') { h2 = el.textContent.trim(); h3 = ''; }
+                else if (el.tagName === 'H3') h3 = el.textContent.trim();
+                else if (el.tagName === 'TABLE') fn(el, h2, h3);
+              });
+            }
+
+            if (page === 'hiragana') {
+              var tables = document.querySelectorAll('.markdown-section table');
+              if (tables.length) addBtn(tables[0], 0);
+
+            } else if (page === 'katakana') {
+              eachTable(function(table, h2) {
+                if (!h2.includes('發音規則補充')) addBtn(table, 0);
+              });
+
+            } else if (page === 'kanji') {
+              eachTable(function(table, h2, h3) {
+                var col;
+                if (h2 === '讀音細分') {
+                  col = findCol(table, '讀音');
+                  if (col >= 0) addBtn(table, col);
+                } else if (h3 === '連声（れんじょう）') {
+                  col = findCol(table, '連声後');
+                  if (col >= 0) addBtn(table, col);
+                } else if (h2 === '日本人姓名讀法' && h3 === '本節名字解析') {
+                  col = findCol(table, '讀音');
+                  if (col >= 0) addBtn(table, col);
+                } else if (h3 === '臺灣地名：台語舊名 ↔ 日治改名') {
+                  col = findCol(table, '日語讀音');
+                  if (col >= 0) addBtn(table, col, function(t) { return t.split(/[（\s]/)[0]; });
+                }
+              });
+            }
           });
         }
       ]
