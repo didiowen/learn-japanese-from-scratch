@@ -14,13 +14,21 @@
 <body>
   <div id="app"></div>
   <script>
+    var _speakGen = 0;
     function speakJa(text) {
       if (!window.speechSynthesis) return;
       speechSynthesis.cancel();
-      const u = new SpeechSynthesisUtterance(text);
-      u.lang = 'ja-JP';
-      u.rate = 0.9;
-      speechSynthesis.speak(u);
+      var gen = ++_speakGen;
+      var parts = text.split('/').map(function(p) { return p.trim(); }).filter(Boolean);
+      function next(i) {
+        if (gen !== _speakGen || i >= parts.length) return;
+        var u = new SpeechSynthesisUtterance(parts[i]);
+        u.lang = 'ja-JP';
+        u.rate = 0.9;
+        if (i < parts.length - 1) u.onend = function() { setTimeout(function() { next(i + 1); }, 500); };
+        speechSynthesis.speak(u);
+      }
+      next(0);
     }
 
     window.$docsify = {

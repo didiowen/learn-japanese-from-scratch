@@ -906,13 +906,21 @@ function normalizeRomaji(s) {
   return s.trim().toLowerCase().replace(/\s+/g, '').replace(/oo/g, 'o').replace(/uu/g, 'u').replace(/nn/g, 'n');
 }
 
+let _speakGen = 0;
 function speakJa(text) {
   if (!window.speechSynthesis) return;
   speechSynthesis.cancel();
-  const u = new SpeechSynthesisUtterance(text);
-  u.lang = 'ja-JP';
-  u.rate = 0.9;
-  speechSynthesis.speak(u);
+  const gen = ++_speakGen;
+  const parts = text.split('/').map(p => p.trim()).filter(Boolean);
+  function next(i) {
+    if (gen !== _speakGen || i >= parts.length) return;
+    const u = new SpeechSynthesisUtterance(parts[i]);
+    u.lang = 'ja-JP';
+    u.rate = 0.9;
+    if (i < parts.length - 1) u.onend = () => setTimeout(() => next(i + 1), 500);
+    speechSynthesis.speak(u);
+  }
+  next(0);
 }
 
 // ═══════════════════════════════
