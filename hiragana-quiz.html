@@ -1368,7 +1368,6 @@ function checkHiraganaMultiple(chosen, btn) {
   });
   if (!isCorrect) btn.classList.add('wrong');
   advanceSRS(currentCard, isCorrect);
-  if (isCorrect) speakJa(currentCard.char);
   const fb = document.getElementById('feedback');
   fb.className = `feedback ${isCorrect ? 'show-correct' : 'show-wrong'}`;
   fb.innerHTML = (isCorrect ? `✓ 正確！` : `✗ 正確是「${correct}」`) + ` <button class="speak-btn" onclick="speakJa(currentCard.char)" title="朗讀">🔊</button>`;
@@ -1412,7 +1411,6 @@ function submitHiraganaInput() {
   inp.disabled = true;
   inp.classList.add(isCorrect ? 'correct' : 'wrong');
   advanceSRS(currentCard, isCorrect);
-  if (isCorrect) speakJa(currentCard.char);
   const fb = document.getElementById('feedback');
   fb.className = `feedback ${isCorrect ? 'show-correct' : 'show-wrong'}`;
   fb.innerHTML = (isCorrect ? `✓ 正確！` : `✗ 正確是「${currentCard.reading}」`) + ` <button class="speak-btn" onclick="speakJa(currentCard.char)" title="朗讀">🔊</button>`;
@@ -1544,7 +1542,6 @@ function checkVocabMultiple(chosen, btn) {
   });
   if (!isCorrect) btn.classList.add('wrong');
   advanceSRS(currentVocab, isCorrect);
-  if (isCorrect) speakJa(currentVocab.display);
   const fb = document.getElementById('feedback');
   fb.className = `feedback ${isCorrect ? 'show-correct' : 'show-wrong'}`;
   const kp = currentVocab.kanji ? `${currentVocab.kanji} ` : '';

@@ -1022,7 +1022,6 @@ function checkVocab(chosen, field, btn) {
   });
   if (!isCorrect) btn.classList.add('wrong');
   advanceSRS(currentCard, isCorrect);
-  if (isCorrect) speakJa(currentCard.word);
   const fb = document.getElementById('feedback');
   fb.className = `feedback ${isCorrect ? 'show-correct' : 'show-wrong'}`;
   const isZhToJp = field === 'word';
@@ -1116,7 +1115,6 @@ function checkCharToReading(chosen, btn) {
   });
   if (!isCorrect) btn.classList.add('wrong');
   advanceSRS(currentCard, isCorrect);
-  if (isCorrect) speakJa(currentCard.char);
   const fb = document.getElementById('feedback');
   fb.className = `feedback ${isCorrect ? 'show-correct' : 'show-wrong'}`;
   fb.innerHTML = (isCorrect ? `✓ 正確！` : `✗ 正確是「${correct}」`) + ` <button class="speak-btn" onclick="speakJa(currentCard.char)" title="朗讀">🔊</button>`;
@@ -1154,7 +1152,6 @@ function submitCharToInput() {
   inp.disabled = true;
   inp.classList.add(isCorrect ? 'correct' : 'wrong');
   advanceSRS(currentCard, isCorrect);
-  if (isCorrect) speakJa(currentCard.char);
   const fb = document.getElementById('feedback');
   fb.className = `feedback ${isCorrect ? 'show-correct' : 'show-wrong'}`;
   fb.innerHTML = (isCorrect ? `✓ 正確！` : `✗ 正確是「${currentCard.reading}」`) + ` <button class="speak-btn" onclick="speakJa(currentCard.char)" title="朗讀">🔊</button>`;
@@ -1203,7 +1200,6 @@ function checkReadingToChar(chosen, btn) {
   });
   if (!isCorrect) btn.classList.add('wrong');
   advanceSRS(currentCard, isCorrect);
-  if (isCorrect) speakJa(currentCard.char);
   const fb = document.getElementById('feedback');
   fb.className = `feedback ${isCorrect ? 'show-correct' : 'show-wrong'}`;
   fb.innerHTML = (isCorrect ? `✓ 正確！` : `✗ 正確是「${correct}」`) + ` <button class="speak-btn" onclick="speakJa(currentCard.char)" title="朗讀">🔊</button>`;
@@ -1242,7 +1238,6 @@ function submitReadingToInput() {
   inp.disabled = true;
   inp.classList.add(isCorrect ? 'correct' : 'wrong');
   advanceSRS(currentCard, isCorrect);
-  if (isCorrect) speakJa(currentCard.char);
   const fb = document.getElementById('feedback');
   fb.className = `feedback ${isCorrect ? 'show-correct' : 'show-wrong'}`;
   fb.innerHTML = (isCorrect ? `✓ 正確！` : `✗ 正確是「${currentCard.char}」`) + ` <button class="speak-btn" onclick="speakJa(currentCard.char)" title="朗讀">🔊</button>`;
