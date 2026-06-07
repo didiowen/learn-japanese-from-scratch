@@ -117,19 +117,18 @@
             } else if (page === 'kanji') {
               eachTable(function(table, h2, h3) {
                 var col;
-                if (h2 === '讀音細分') {
-                  col = findCol(table, '讀音');
-                  if (col >= 0) addBtn(table, col);
-                } else if (h3 === '連声（れんじょう）') {
+                if (h3 === '連声（れんじょう）') {
                   col = findCol(table, '連声後');
                   if (col >= 0) addBtn(table, col);
-                } else if (h2 === '日本人姓名讀法' && h3 === '本節名字解析') {
-                  col = findCol(table, '讀音');
-                  if (col >= 0) addBtn(table, col);
-                } else if (h3 === '臺灣地名：台語舊名 ↔ 日治改名') {
+                }
+                if (h3 === '臺灣地名：台語舊名 ↔ 日治改名') {
                   col = findCol(table, '日語讀音');
                   if (col >= 0) addBtn(table, col, function(t) { return t.split(/[（\s]/)[0]; });
                 }
+                ['音読み', '訓読み', '讀音', '讀法'].forEach(function(header) {
+                  col = findCol(table, header);
+                  if (col >= 0) addBtn(table, col, null, function(t) { return t === '—'; });
+                });
               });
             }
           });
