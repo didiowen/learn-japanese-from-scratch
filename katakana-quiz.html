@@ -247,6 +247,8 @@ h1.title {
 }
 .feedback.show-correct { background: rgba(39,174,96,0.08); color: var(--success); }
 .feedback.show-wrong { background: rgba(192,57,43,0.06); color: var(--fail); }
+.speak-btn { background: none; border: none; font-size: 1.1rem; cursor: pointer; padding: 0 4px; vertical-align: middle; opacity: 0.65; line-height: 1; }
+.speak-btn:hover { opacity: 1; }
 
 /* ── Score ── */
 .score-display {
@@ -1020,16 +1022,16 @@ function checkVocab(chosen, field, btn) {
   });
   if (!isCorrect) btn.classList.add('wrong');
   advanceSRS(currentCard, isCorrect);
-  if (isCorrect) speakJa(currentCard.word);
   const fb = document.getElementById('feedback');
   fb.className = `feedback ${isCorrect ? 'show-correct' : 'show-wrong'}`;
   const isZhToJp = field === 'word';
   const kp = currentCard.kanji ? `${currentCard.kanji} ` : '';
+  const speakBtn = ` <button class="speak-btn" onclick="speakJa(currentCard.word)" title="朗讀">🔊</button>`;
   if (isZhToJp) {
     const wordInfo = `${kp}${currentCard.word}（${currentCard.reading}）`;
-    fb.innerHTML = isCorrect ? `✓ 正確！${wordInfo}` : `✗ 正確是「${kp}${correct}」`;
+    fb.innerHTML = (isCorrect ? `✓ 正確！${wordInfo}` : `✗ 正確是「${kp}${correct}」`) + speakBtn;
   } else {
-    fb.innerHTML = isCorrect ? `✓ 正確！` : `✗ 正確是「${correct}」`;
+    fb.innerHTML = (isCorrect ? `✓ 正確！` : `✗ 正確是「${correct}」`) + speakBtn;
   }
   document.getElementById('hintText').textContent = `💡 ${currentCard.reading}　${currentCard.hint}`;
   document.getElementById('nextBtn').classList.add('visible');
@@ -1113,10 +1115,9 @@ function checkCharToReading(chosen, btn) {
   });
   if (!isCorrect) btn.classList.add('wrong');
   advanceSRS(currentCard, isCorrect);
-  if (isCorrect) speakJa(currentCard.char);
   const fb = document.getElementById('feedback');
   fb.className = `feedback ${isCorrect ? 'show-correct' : 'show-wrong'}`;
-  fb.innerHTML = isCorrect ? `✓ 正確！` : `✗ 正確是「${correct}」`;
+  fb.innerHTML = (isCorrect ? `✓ 正確！` : `✗ 正確是「${correct}」`) + ` <button class="speak-btn" onclick="speakJa(currentCard.char)" title="朗讀">🔊</button>`;
   document.getElementById('hintText').textContent = '💡 ' + currentCard.hint;
   document.getElementById('nextBtn').classList.add('visible');
 }
@@ -1151,10 +1152,9 @@ function submitCharToInput() {
   inp.disabled = true;
   inp.classList.add(isCorrect ? 'correct' : 'wrong');
   advanceSRS(currentCard, isCorrect);
-  if (isCorrect) speakJa(currentCard.char);
   const fb = document.getElementById('feedback');
   fb.className = `feedback ${isCorrect ? 'show-correct' : 'show-wrong'}`;
-  fb.innerHTML = isCorrect ? `✓ 正確！` : `✗ 正確是「${currentCard.reading}」`;
+  fb.innerHTML = (isCorrect ? `✓ 正確！` : `✗ 正確是「${currentCard.reading}」`) + ` <button class="speak-btn" onclick="speakJa(currentCard.char)" title="朗讀">🔊</button>`;
   document.getElementById('subInfo').textContent = `平假名：${currentCard.hiragana}　來源：${currentCard.kanji}`;
   document.getElementById('hintText').textContent = '💡 ' + currentCard.hint;
   document.getElementById('nextBtn').classList.add('visible');
@@ -1200,10 +1200,9 @@ function checkReadingToChar(chosen, btn) {
   });
   if (!isCorrect) btn.classList.add('wrong');
   advanceSRS(currentCard, isCorrect);
-  if (isCorrect) speakJa(currentCard.char);
   const fb = document.getElementById('feedback');
   fb.className = `feedback ${isCorrect ? 'show-correct' : 'show-wrong'}`;
-  fb.innerHTML = isCorrect ? `✓ 正確！` : `✗ 正確是「${correct}」`;
+  fb.innerHTML = (isCorrect ? `✓ 正確！` : `✗ 正確是「${correct}」`) + ` <button class="speak-btn" onclick="speakJa(currentCard.char)" title="朗讀">🔊</button>`;
   document.getElementById('subInfo').textContent = `平假名：${currentCard.hiragana}　來源：${currentCard.kanji}`;
   document.getElementById('hintText').textContent = '💡 ' + currentCard.hint;
   document.getElementById('nextBtn').classList.add('visible');
@@ -1239,10 +1238,9 @@ function submitReadingToInput() {
   inp.disabled = true;
   inp.classList.add(isCorrect ? 'correct' : 'wrong');
   advanceSRS(currentCard, isCorrect);
-  if (isCorrect) speakJa(currentCard.char);
   const fb = document.getElementById('feedback');
   fb.className = `feedback ${isCorrect ? 'show-correct' : 'show-wrong'}`;
-  fb.innerHTML = isCorrect ? `✓ 正確！` : `✗ 正確是「${currentCard.char}」`;
+  fb.innerHTML = (isCorrect ? `✓ 正確！` : `✗ 正確是「${currentCard.char}」`) + ` <button class="speak-btn" onclick="speakJa(currentCard.char)" title="朗讀">🔊</button>`;
   document.getElementById('subInfo').textContent = `平假名：${currentCard.hiragana}　來源：${currentCard.kanji}`;
   document.getElementById('hintText').textContent = '💡 ' + currentCard.hint;
   document.getElementById('nextBtn').classList.add('visible');
