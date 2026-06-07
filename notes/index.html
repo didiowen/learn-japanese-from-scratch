@@ -6,10 +6,23 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsify@4/lib/themes/vue.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsify-darkmode@latest/dist/style.min.css"/>
+  <style>
+    .speak-btn { background: none; border: none; font-size: 1rem; cursor: pointer; padding: 0 4px; margin-left: 4px; vertical-align: middle; opacity: 0.55; line-height: 1; }
+    .speak-btn:hover { opacity: 1; }
+  </style>
 </head>
 <body>
   <div id="app"></div>
   <script>
+    function speakJa(text) {
+      if (!window.speechSynthesis) return;
+      speechSynthesis.cancel();
+      const u = new SpeechSynthesisUtterance(text);
+      u.lang = 'ja-JP';
+      u.rate = 0.9;
+      speechSynthesis.speak(u);
+    }
+
     window.$docsify = {
       name: '← 回首頁',
       nameLink: '../',
@@ -38,6 +51,24 @@
               if (m) footer = `\n\n---\n<small>最後更新：${m[1]}</small>`;
             }
             return content.replace(/^---[\s\S]*?---\n/, '') + footer;
+          });
+        },
+        function(hook) {
+          hook.doneEach(function() {
+            document.querySelectorAll('.markdown-section table tr').forEach(function(row) {
+              const cells = row.querySelectorAll('td');
+              if (cells.length < 2) return;
+              const cell = cells[1];
+              if (cell.querySelector('.speak-btn')) return;
+              const text = cell.textContent.trim();
+              if (!/[぀-ヿ一-鿿]/.test(text)) return;
+              const btn = document.createElement('button');
+              btn.className = 'speak-btn';
+              btn.title = '朗讀';
+              btn.textContent = '🔊';
+              btn.onclick = function() { speakJa(text); };
+              cell.appendChild(btn);
+            });
           });
         }
       ]
