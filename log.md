@@ -7,6 +7,11 @@ alias: log
 ---
 # 學習日誌
 
+## 2026-06-04 00:00:01
+- 新增丼物單字（batch 8）：どんぶり・牛丼・親子丼・天丼・カツ丼・鰻丼
+- 加入 hiragana-quiz.html vocabCards 及 recentBatch 8
+- vocabulary.md 新增至飲食區塊
+
 ## 2026-06-04 00:00:00
 - 新增單字：やばい・やばすぎ（YBSG 俚語，batch 8）
 - 加入 hiragana-quiz.html vocabCards 及 recentBatch 8
