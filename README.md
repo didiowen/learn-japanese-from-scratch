@@ -1,5 +1,9 @@
 # 日文學習筆記與測驗
 
+[![Made in Taiwan](https://img.shields.io/badge/Made%20in-Taiwan%20%F0%9F%87%B9%F0%9F%87%BC-red)](https://github.com/htlin222/society-calendar)
+[![Claude Code](https://img.shields.io/badge/Claude%20Code-Skill%20Based-blueviolet?logo=anthropic)](https://claude.ai/claude-code)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+
 **從台語記憶日文・五十音學習系統**
 
 這個 repo 是一套用 Claude AI 輔助建立的日文自學系統，起點是一份「本來就會念的單字片語」清單，透過 Claude Chat 以這些熟悉的詞為跳板教平假名，一邊學一邊把工具建起來。
