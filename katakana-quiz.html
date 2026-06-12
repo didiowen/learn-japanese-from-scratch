@@ -263,6 +263,10 @@ h1.title {
 .result-screen .big-emoji { font-size: 3rem; margin: 8px 0; }
 .result-screen h2 { font-size: 1.2rem; font-weight: 400; margin-bottom: 8px; }
 .result-screen p { font-size: 0.95rem; color: var(--soft); margin-bottom: 18px; line-height: 1.6; }
+.kofi-cta { margin-top: 28px; padding-top: 18px; border-top: 1px solid var(--border); text-align: center; font-size: 0.9rem; }
+.kofi-cta a { color: var(--soft); text-decoration: none; transition: color 0.2s; }
+.kofi-cta a u { text-decoration: underline; text-underline-offset: 3px; }
+.kofi-cta a:hover { color: var(--accent); }
 .restart-btn {
   background: var(--accent);
   color: white;
@@ -1289,6 +1293,11 @@ function showResult() {
       <p>${sub}<br><br>正確 ${totalCorrect} / ${totalAnswered} 題</p>
       <button class="restart-btn" onclick="restart()">再練一次</button>
       ${renderWrongList()}
+      <div class="kofi-cta">
+        <a href="https://ko-fi.com/ines8964" target="_blank" rel="noopener">
+          ☕ 喜歡這個工具？<u>請我喝杯咖啡</u>
+        </a>
+      </div>
     </div>
   `;
 }
@@ -1429,15 +1438,5 @@ if (!currentUserId && FIREBASE_DB_URL) {
 
 
 </script>
-  <!-- Ko-fi floating widget -->
-  <script src='https://storage.ko-fi.com/cdn/scripts/overlay-widget.js'></script>
-  <script>
-    kofiWidgetOverlay.draw('ines8964', {
-      'type': 'floating-chat',
-      'floating-chat.donateButton.text': 'Support Me',
-      'floating-chat.donateButton.background-color': '#c0392b',
-      'floating-chat.donateButton.text-color': '#fff'
-    });
-  </script>
 </body>
 </html>
