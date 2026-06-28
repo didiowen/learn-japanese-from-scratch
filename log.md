@@ -2,10 +2,15 @@
 title: 學習日誌
 date:
   created: 2026-04-28T18:26:48
-  updated: 2026-05-28T21:30:00
+  updated: 2026-06-28T18:22:05
 alias: log
 ---
 # 學習日誌
+
+## 2026-06-28 18:22:05
+- 新增單字（batch 9）：わらびもち（蕨餅，和菓子店招牌看到的）
+- 加入 hiragana-quiz.html vocabCards（round 5）及 recentBatch 9
+- vocabulary.md 飲食區塊新增蕨餅
 
 ## 2026-06-04 00:00:01
 - 新增丼物單字（batch 8）：どんぶり・牛丼・親子丼・天丼・カツ丼・鰻丼

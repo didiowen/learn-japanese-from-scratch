@@ -1015,6 +1015,8 @@ const vocabCards = [
   { meaning: '天婦羅蓋飯', display: 'てんどん', reading: 'tendon', kanji: '天丼', topic: 'food', round: 4 },
   { meaning: '豬排蓋飯', display: 'かつどん', reading: 'katsudon', kanji: 'カツ丼', topic: 'food', round: 4 },
   { meaning: '鰻魚蓋飯', display: 'うなどん', reading: 'unadon', kanji: '鰻丼', topic: 'food', round: 4 },
+  // 和菓子店招牌（batch 9）
+  { meaning: '蕨餅（蕨澱粉做的麻糬）', display: 'わらびもち', reading: 'warabimochi', kanji: '蕨餅', topic: 'food', round: 5 },
 ];
 
 // ═══════════════════════════════
@@ -1106,6 +1108,8 @@ const alreadyKnown = new Set([
 // 最近加入的單字批次（數字越大＝越近加入＝越優先出現）
 // 規則：同一天加入的算同一批；新增單字時若該日已有批次直接沿用，否則用最新批次號 + 1
 const recentBatch = {
+  // 批次 9（2026-06-28）
+  'わらびもち': 9,
   // 批次 6（2026-05-28）
   'やすみ': 6, 'りょうかい': 6, 'かたかな': 6, 'はこ': 6, 'しょうかい': 6,
   'にせん': 6, 'よんひゃく': 6, 'はっぴゃく': 6,
