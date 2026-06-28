@@ -1017,6 +1017,7 @@ const vocabCards = [
   { meaning: '鰻魚蓋飯', display: 'うなどん', reading: 'unadon', kanji: '鰻丼', topic: 'food', round: 4 },
   // 和菓子店招牌（batch 9）
   { meaning: '蕨餅（蕨澱粉做的麻糬）', display: 'わらびもち', reading: 'warabimochi', kanji: '蕨餅', topic: 'food', round: 5 },
+  { meaning: '柳川（福岡水鄉）', display: 'やながわ', reading: 'yanagawa', kanji: '柳川', topic: 'nature', round: 3 },
 ];
 
 // ═══════════════════════════════
@@ -1109,7 +1110,7 @@ const alreadyKnown = new Set([
 // 規則：同一天加入的算同一批；新增單字時若該日已有批次直接沿用，否則用最新批次號 + 1
 const recentBatch = {
   // 批次 9（2026-06-28）
-  'わらびもち': 9,
+  'わらびもち': 9, 'やながわ': 9,
   // 批次 6（2026-05-28）
   'やすみ': 6, 'りょうかい': 6, 'かたかな': 6, 'はこ': 6, 'しょうかい': 6,
   'にせん': 6, 'よんひゃく': 6, 'はっぴゃく': 6,
