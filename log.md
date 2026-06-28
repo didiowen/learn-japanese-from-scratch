@@ -8,9 +8,9 @@ alias: log
 # 學習日誌
 
 ## 2026-06-28 18:22:05
-- 新增單字（batch 9）：わらびもち（蕨餅，和菓子店招牌看到的）
-- 加入 hiragana-quiz.html vocabCards（round 5）及 recentBatch 9
-- vocabulary.md 飲食區塊新增蕨餅
+- 新增單字（batch 9）：わらびもち（蕨餅，和菓子店招牌看到的）、やながわ（柳川，福岡水鄉地名）
+- 加入 hiragana-quiz.html vocabCards（蕨餅 round 5、柳川 round 3）及 recentBatch 9
+- vocabulary.md 飲食區塊新增蕨餅；kanji.md 九州區塊新增柳川
 
 ## 2026-06-04 00:00:01
 - 新增丼物單字（batch 8）：どんぶり・牛丼・親子丼・天丼・カツ丼・鰻丼
