@@ -1018,6 +1018,8 @@ const vocabCards = [
   // 和菓子店招牌（batch 9）
   { meaning: '蕨餅（蕨澱粉做的麻糬）', display: 'わらびもち', reading: 'warabimochi', kanji: '蕨餅', topic: 'food', round: 5 },
   { meaning: '柳川（福岡水鄉）', display: 'やながわ', reading: 'yanagawa', kanji: '柳川', topic: 'nature', round: 3 },
+  { meaning: '簡單／容易', display: 'かんたん', reading: 'kantan', kanji: '簡単', topic: 'daily', round: 4 },
+  { meaning: '誕生／出生', display: 'たんじょう', reading: 'tanjou', kanji: '誕生', topic: 'daily', round: 4 },
 ];
 
 // ═══════════════════════════════
@@ -1110,7 +1112,7 @@ const alreadyKnown = new Set([
 // 規則：同一天加入的算同一批；新增單字時若該日已有批次直接沿用，否則用最新批次號 + 1
 const recentBatch = {
   // 批次 9（2026-06-28）
-  'わらびもち': 9, 'やながわ': 9,
+  'わらびもち': 9, 'やながわ': 9, 'かんたん': 9, 'たんじょう': 9,
   // 批次 6（2026-05-28）
   'やすみ': 6, 'りょうかい': 6, 'かたかな': 6, 'はこ': 6, 'しょうかい': 6,
   'にせん': 6, 'よんひゃく': 6, 'はっぴゃく': 6,
