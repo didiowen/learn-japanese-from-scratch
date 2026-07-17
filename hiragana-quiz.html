@@ -5,29 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>平假名記憶測驗</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Noto+Sans+TC:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="quiz-common.css">
 <style>
-:root {
-  --ink:     oklch(7%  0.012 250);
-  --paper:   #f5f0e8;
-  --accent:  oklch(47% 0.160 25);
-  --soft:    oklch(40% 0.030 250);
-  --card:    oklch(97% 0.008 80);
-  --success: oklch(60% 0.140 145);
-  --fail:    oklch(47% 0.160 25);
-  --neutral: oklch(55% 0.015 250);
-  --border:  oklch(88% 0.006 80);
-}
-* { box-sizing: border-box; margin: 0; padding: 0; }
-body {
-  background: var(--paper);
-  color: var(--ink);
-  font-family: 'Noto Sans JP', 'Noto Sans TC', sans-serif;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 20px 16px 40px;
-}
 
 /* ── Section tabs ── */
 .section-tabs {
@@ -52,12 +31,6 @@ body {
   letter-spacing: 0.04em;
   transition: all 0.2s;
   border-right: 1px solid var(--border);
-}
-.section-tab:last-child { border-right: none; }
-.section-tab.active {
-  background: var(--ink);
-  color: var(--paper);
-  font-weight: 400;
 }
 
 /* ── Mode tabs（四格，五十音用）── */
@@ -85,12 +58,6 @@ body {
   transition: all 0.2s;
   border-right: 1px solid var(--border);
   text-align: center;
-}
-.mode-tab:last-child { border-right: none; }
-.mode-tab.active {
-  background: var(--ink);
-  color: var(--paper);
-  font-weight: 400;
 }
 
 /* ── Vocab mode toggle（單字方向，保留） ── */
@@ -123,57 +90,9 @@ body {
 }
 
 /* ── Progress ── */
-.progress-bar {
-  width: 100%;
-  max-width: 360px;
-  height: 3px;
-  background: rgba(0,0,0,0.08);
-  border-radius: 2px;
-  margin-bottom: 18px;
-  overflow: hidden;
-}
-.progress-fill {
-  height: 100%;
-  background: var(--accent);
-  border-radius: 2px;
-  transition: width 0.4s ease;
-}
 
 /* ── Card ── */
-.card {
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 28px 24px 24px;
-  max-width: 360px;
-  width: 100%;
-  position: relative;
-  overflow: hidden;
-  margin-bottom: 16px;
-}
-.card::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 0; right: 0;
-  height: 2px;
-  background: var(--accent);
-}
-.sr-badge {
-  position: absolute;
-  top: 12px; right: 14px;
-  font-size: 0.75rem;
-  color: var(--soft);
-  opacity: 0.5;
-  letter-spacing: 0.08em;
-}
-.question-type {
-  font-size: 0.85rem;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--soft);
-  margin-bottom: 14px;
-  font-weight: 400;
-}
+
 .main-char {
   font-family: 'Noto Sans JP', 'Noto Sans TC', sans-serif;
   font-size: 4.5rem;
@@ -193,7 +112,7 @@ body {
 .hint { font-size: 0.88rem; color: var(--neutral); text-align: center; margin-bottom: 20px; min-height: 16px; font-style: italic; }
 
 /* ── Options ── */
-.options { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px; }
+
 .option-btn {
   background: white;
   border: 1.5px solid var(--border);
@@ -207,65 +126,14 @@ body {
   text-align: center;
   line-height: 1.3;
 }
-.option-btn:hover:not(:disabled) { border-color: var(--accent); background: rgba(192,57,43,0.04); transform: translateY(-1px); }
-.option-btn.correct { background: rgba(39,174,96,0.1); border-color: var(--success); color: var(--success); font-weight: 400; }
-.option-btn.wrong { background: rgba(192,57,43,0.08); border-color: var(--fail); color: var(--fail); }
-.option-btn:disabled { cursor: default; }
+
 .option-btn.vocab { font-family: 'Noto Sans JP', 'Noto Sans TC', sans-serif; font-size: 1rem; }
 
 /* ── Input ── */
-.input-wrap { margin-bottom: 12px; }
-.romaji-input {
-  width: 100%;
-  padding: 13px 16px;
-  font-size: 1rem;
-  font-family: 'Noto Sans JP', 'Noto Sans TC', sans-serif;
-  border: 1.5px solid var(--border);
-  border-radius: 10px;
-  background: white;
-  color: var(--ink);
-  outline: none;
-  transition: border-color 0.2s;
-  text-align: center;
-  letter-spacing: 0.08em;
-}
-.romaji-input:focus { border-color: var(--accent); }
-.romaji-input.correct { border-color: var(--success); background: rgba(39,174,96,0.06); color: var(--success); }
-.romaji-input.wrong { border-color: var(--fail); background: rgba(192,57,43,0.06); }
+
 .input-hint { font-size: 0.85rem; color: var(--neutral); text-align: center; margin-bottom: 10px; font-style: italic; }
 
 /* ── Buttons ── */
-.submit-btn {
-  width: 100%;
-  background: var(--soft);
-  color: white;
-  border: none;
-  border-radius: 10px;
-  padding: 12px;
-  font-size: 1rem;
-  font-family: 'Noto Sans JP', 'Noto Sans TC', sans-serif;
-  cursor: pointer;
-  letter-spacing: 0.06em;
-  transition: all 0.2s;
-  margin-bottom: 10px;
-}
-.submit-btn:hover { background: var(--accent); }
-.next-btn {
-  width: 100%;
-  background: var(--ink);
-  color: var(--paper);
-  border: none;
-  border-radius: 10px;
-  padding: 13px;
-  font-size: 1rem;
-  font-family: 'Noto Sans JP', 'Noto Sans TC', sans-serif;
-  cursor: pointer;
-  letter-spacing: 0.06em;
-  transition: all 0.2s;
-  display: none;
-}
-.next-btn:hover { background: var(--accent); transform: translateY(-1px); }
-.next-btn.visible { display: block; }
 
 /* ── Feedback ── */
 .feedback {
@@ -278,79 +146,12 @@ body {
   transition: all 0.2s;
   margin-bottom: 10px;
 }
-.feedback.show-correct { background: rgba(39,174,96,0.08); color: var(--success); }
-.feedback.show-wrong { background: rgba(192,57,43,0.06); color: var(--fail); }
-.speak-btn { background: none; border: none; font-size: 1.1rem; cursor: pointer; padding: 0 4px; vertical-align: middle; opacity: 0.65; line-height: 1; }
-.speak-btn:hover { opacity: 1; }
 
 /* ── Score ── */
-.score-display {
-  display: flex;
-  justify-content: space-between;
-  max-width: 360px;
-  width: 100%;
-  padding: 0 4px;
-}
-.score-item { text-align: center; font-size: 0.85rem; color: var(--neutral); letter-spacing: 0.05em; }
-.score-num { display: block; font-size: 1.5rem; font-weight: 400; color: var(--ink); font-family: 'Noto Sans JP', 'Noto Sans TC', sans-serif; }
 
 /* ── Result ── */
-.result-screen { text-align: center; padding: 16px 8px; }
-.result-screen .big-emoji { font-size: 3rem; margin: 8px 0; }
-.result-screen h2 { font-size: 1.2rem; font-weight: 400; margin-bottom: 8px; }
-.result-screen p { font-size: 0.95rem; color: var(--soft); margin-bottom: 18px; line-height: 1.6; }
-.kofi-cta { margin-top: 28px; padding-top: 18px; border-top: 1px solid var(--border); text-align: center; font-size: 0.9rem; }
-.kofi-cta a { color: var(--soft); text-decoration: none; transition: color 0.2s; }
-.kofi-cta a u { text-decoration: underline; text-underline-offset: 3px; }
-.kofi-cta a:hover { color: var(--accent); }
-.restart-btn {
-  background: var(--accent);
-  color: white;
-  border: none;
-  border-radius: 10px;
-  padding: 12px 28px;
-  font-size: 1rem;
-  font-family: 'Noto Sans JP', 'Noto Sans TC', sans-serif;
-  cursor: pointer;
-  letter-spacing: 0.06em;
-  transition: all 0.2s;
-}
-.restart-btn:hover { opacity: 0.88; transform: translateY(-1px); }
 
 /* ── Wrong-answer review ── */
-.wrong-list {
-  margin-top: 20px;
-  text-align: left;
-  border-top: 1px solid var(--border);
-  padding-top: 14px;
-}
-.wrong-title {
-  font-size: 0.9rem;
-  color: var(--accent);
-  letter-spacing: 0.08em;
-  margin-bottom: 10px;
-  text-align: center;
-}
-.wrong-item {
-  padding: 9px 6px;
-  border-bottom: 1px dashed var(--border);
-  font-size: 0.88rem;
-  display: flex;
-  flex-direction: column;
-  gap: 3px;
-}
-.wrong-item:last-child { border-bottom: none; }
-.wrong-front {
-  font-family: 'Noto Sans JP', 'Noto Sans TC', sans-serif;
-  color: var(--ink);
-  font-size: 1.05rem;
-  font-weight: 500;
-  letter-spacing: 0.03em;
-}
-.wrong-back {
-  color: var(--soft);
-  line-height: 1.5;
-}
 
 /* ── Topic filter ── */
 .topic-filter {
@@ -372,131 +173,15 @@ body {
   color: var(--soft);
   transition: all 0.15s;
 }
-.topic-btn.active {
-  background: var(--ink);
-  color: var(--paper);
-  border-color: var(--ink);
-  font-weight: 400;
-}
 
 /* ── Hint toggle ── */
-.hint-toggle-wrap {
-  max-width: 360px;
-  width: 100%;
-  margin-bottom: 10px;
-  display: flex;
-  justify-content: flex-end;
-}
-.hint-toggle-btn {
-  padding: 5px 12px;
-  border: 1.5px solid var(--border);
-  border-radius: 20px;
-  font-size: 0.88rem;
-  font-family: 'Noto Sans JP', 'Noto Sans TC', sans-serif;
-  cursor: pointer;
-  background: white;
-  color: var(--soft);
-  transition: all 0.15s;
-}
-.hint-toggle-btn.active {
-  background: var(--ink);
-  color: var(--paper);
-  border-color: var(--ink);
-  font-weight: 400;
-}
 
 /* ── Round filter ── */
-.round-filter {
-  display: flex;
-  max-width: 360px;
-  width: 100%;
-  margin-bottom: 10px;
-  border: 1.5px solid var(--border);
-  border-radius: 10px;
-  overflow: hidden;
-}
-.round-btn {
-  flex: 1;
-  padding: 9px 2px;
-  border: none;
-  background: white;
-  color: var(--neutral);
-  font-family: 'Noto Sans JP', 'Noto Sans TC', sans-serif;
-  font-size: 0.88rem;
-  cursor: pointer;
-  transition: all 0.2s;
-  border-right: 1px solid var(--border);
-  letter-spacing: 0.02em;
-}
-.round-btn:last-child { border-right: none; }
-.round-btn.active { background: var(--accent); color: white; font-weight: 400; }
 
 /* ── Nav links ── */
-.nav-links {
-  display: flex;
-  gap: 20px;
-  width: 100%;
-  max-width: 360px;
-  margin-bottom: 12px;
-}
-.nav-links a {
-  color: var(--soft);
-  text-decoration: none;
-  font-size: 0.85rem;
-  letter-spacing: 0.03em;
-  transition: color 0.2s;
-}
-.nav-links a:hover { color: var(--accent); }
 
 /* ── User sync badge ── */
-.nav-links { align-items: center; }
-.user-badge {
-  margin-left: auto;
-  display: flex; align-items: center; gap: 5px;
-  font-size: 0.78rem; color: var(--soft);
-  cursor: pointer; padding: 3px 10px;
-  border-radius: 20px; border: 1px solid #ddd;
-  background: transparent; transition: all 0.2s;
-  white-space: nowrap; font-family: inherit;
-}
-.user-badge:hover { border-color: var(--accent); color: var(--accent); }
-.sync-dot {
-  width: 6px; height: 6px; border-radius: 50%;
-  background: #ccc; flex-shrink: 0;
-}
-.sync-dot.synced { background: #27ae60; }
-.sync-dot.syncing { background: #f39c12; animation: blink 1s infinite; }
-.sync-dot.error { background: var(--accent); }
-@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
-.user-modal-overlay {
-  position: fixed; inset: 0;
-  background: rgba(0,0,0,0.5);
-  display: flex; align-items: center; justify-content: center;
-  z-index: 1000; opacity: 0; pointer-events: none; transition: opacity 0.2s;
-}
-.user-modal-overlay.open { opacity: 1; pointer-events: all; }
-.user-modal {
-  background: var(--paper); border-radius: 12px;
-  padding: 28px; width: min(90vw, 340px);
-  box-shadow: 0 8px 32px rgba(0,0,0,0.25);
-}
-.user-modal h3 { font-size: 1rem; margin-bottom: 8px; }
-.user-modal p { font-size: 0.82rem; color: var(--soft); margin-bottom: 14px; line-height: 1.55; }
-.user-modal input {
-  width: 100%; padding: 9px 12px;
-  border: 1.5px solid #ddd; border-radius: 8px;
-  font-size: 0.95rem; font-family: monospace;
-  background: white; margin-bottom: 4px;
-}
-.user-modal input:focus { outline: none; border-color: var(--accent); }
-.user-modal-err { color: var(--accent); font-size: 0.78rem; min-height: 1.2em; margin-bottom: 10px; }
-.user-modal-btns { display: flex; gap: 8px; }
-.user-modal-btns button {
-  flex: 1; padding: 9px; border-radius: 8px;
-  border: none; font-size: 0.9rem; cursor: pointer; font-family: inherit;
-}
-.btn-confirm { background: var(--accent); color: white; }
-.btn-cancel { background: #eee; color: var(--soft); }
+
 </style>
 </head>
 <body>
@@ -529,7 +214,6 @@ body {
   <button class="section-tab active" id="tabHiragana" onclick="switchSection('hiragana')">五十音</button>
   <button class="section-tab" id="tabVocab" onclick="switchSection('vocab')">單字</button>
 </div>
-
 
 <!-- 輪次選擇 -->
 <div class="round-filter" id="roundFilter">
@@ -1034,6 +718,71 @@ const vocabCards = [
   { meaning: '說話', display: 'はなす', reading: 'hanasu', kanji: '話す', topic: 'daily', round: 5 },
   { meaning: '說', display: 'いう', reading: 'iu', kanji: '言う', topic: 'daily', round: 1 },
   { meaning: '不含肉', display: 'にくなし', reading: 'niku nashi', kanji: '肉なし', topic: 'food', round: 3 },
+  // 筆記補齊：vocabulary.md 既有單字（batch 12）
+  { meaning: '哪個', display: 'どれ', reading: 'dore', topic: 'question', round: 4 },
+  { meaning: '這裡', display: 'ここ', reading: 'koko', topic: 'daily', round: 2 },
+  { meaning: '那裡（靠對方）', display: 'そこ', reading: 'soko', topic: 'daily', round: 3 },
+  { meaning: '那裡（兩人都遠）', display: 'あそこ', reading: 'asoko', topic: 'daily', round: 3 },
+  { meaning: '這邊／這位', display: 'こちら', reading: 'kochira', topic: 'daily', round: 4 },
+  { meaning: '那邊／您那邊', display: 'そちら', reading: 'sochira', topic: 'daily', round: 4 },
+  { meaning: '那邊（較遠）', display: 'あちら', reading: 'achira', topic: 'daily', round: 4 },
+  { meaning: '哪邊／哪位', display: 'どちら', reading: 'dochira', topic: 'question', round: 4 },
+  { meaning: '我', display: 'わたし', reading: 'watashi', kanji: '私', topic: 'family', round: 4 },
+  { meaning: '我（非常正式）', display: 'わたくし', reading: 'watakushi', kanji: '私', topic: 'family', round: 4 },
+  { meaning: '我（男性）', display: 'ぼく', reading: 'boku', kanji: '僕', topic: 'family', round: 5 },
+  { meaning: '我（女性口語）', display: 'あたし', reading: 'atashi', topic: 'family', round: 4 },
+  { meaning: '他／男朋友', display: 'かれ', reading: 'kare', kanji: '彼', topic: 'family', round: 2 },
+  { meaning: '她／女朋友', display: 'かのじょ', reading: 'kanojo', kanji: '彼女', topic: 'family', round: 3 },
+  { meaning: '他們', display: 'かれら', reading: 'karera', kanji: '彼ら', topic: 'family', round: 2 },
+  { meaning: '大家', display: 'みんな', reading: 'minna', kanji: '皆', topic: 'family', round: 4 },
+  { meaning: '日本人', display: 'にほんじん', reading: 'nihonjin', kanji: '日本人', topic: 'family', round: 5 },
+  { meaning: '外國人', display: 'がいこくじん', reading: 'gaikokujin', kanji: '外国人', topic: 'family', round: 3 },
+  { meaning: '雞蛋', display: 'たまご', reading: 'tamago', kanji: '卵', topic: 'food', round: 4 },
+  { meaning: '玉子燒', display: 'たまごやき', reading: 'tamagoyaki', kanji: '卵焼き', topic: 'food', round: 4 },
+  { meaning: '章魚', display: 'たこ', reading: 'tako', kanji: '蛸', topic: 'food', round: 4 },
+  { meaning: '章魚燒', display: 'たこやき', reading: 'takoyaki', kanji: '蛸焼き', topic: 'food', round: 4 },
+  { meaning: '雞肉', display: 'とり', reading: 'tori', kanji: '鶏', topic: 'food', round: 4 },
+  { meaning: '雞腿', display: 'とりのもも', reading: 'tori no momo', kanji: '鶏のもも', topic: 'food', round: 4 },
+  { meaning: '豬肉', display: 'ぶた', reading: 'buta', kanji: '豚', topic: 'food', round: 5 },
+  { meaning: '牛肉', display: 'ぎゅう', reading: 'gyuu', kanji: '牛', topic: 'food', round: 3 },
+  { meaning: '魚', display: 'さかな', reading: 'sakana', kanji: '魚', topic: 'food', round: 3 },
+  { meaning: '蝦子', display: 'えび', reading: 'ebi', kanji: '海老', topic: 'food', round: 5 },
+  { meaning: '蔬菜', display: 'やさい', reading: 'yasai', kanji: '野菜', topic: 'food', round: 3 },
+  { meaning: '洋蔥', display: 'たまねぎ', reading: 'tamanegi', kanji: '玉ねぎ', topic: 'food', round: 4 },
+  { meaning: '大蒜', display: 'にんにく', reading: 'ninniku', topic: 'food', round: 2 },
+  { meaning: '飯／一餐', display: 'ごはん', reading: 'gohan', kanji: 'ご飯', topic: 'food', round: 5 },
+  { meaning: '豬肉味噌湯', display: 'とんじる', reading: 'tonjiru', kanji: '豚汁', topic: 'food', round: 4 },
+  { meaning: '日本料理', display: 'わしょく', reading: 'washoku', kanji: '和食', topic: 'food', round: 3 },
+  { meaning: '西式料理', display: 'ようしょく', reading: 'youshoku', kanji: '洋食', topic: 'food', round: 3 },
+  { meaning: '用餐', display: 'しょくじ', reading: 'shokuji', kanji: '食事', topic: 'food', round: 3 },
+  { meaning: '食堂', display: 'しょくどう', reading: 'shokudou', kanji: '食堂', topic: 'food', round: 4 },
+  { meaning: '生魚片', display: 'さしみ', reading: 'sashimi', kanji: '刺身', topic: 'food', round: 4 },
+  { meaning: '套餐', display: 'ていしょく', reading: 'teishoku', kanji: '定食', topic: 'food', round: 4 },
+  { meaning: '拼盤', display: 'もりあわせ', reading: 'moriawase', kanji: '盛り合わせ', topic: 'food', round: 4 },
+  { meaning: '大份', display: 'おおもり', reading: 'oomori', kanji: '大盛り', topic: 'food', round: 4 },
+  { meaning: '辣的', display: 'からい', reading: 'karai', kanji: '辛い', topic: 'food', round: 2 },
+  { meaning: '甜的', display: 'あまい', reading: 'amai', kanji: '甘い', topic: 'food', round: 4 },
+  { meaning: '生的', display: 'なま', reading: 'nama', kanji: '生', topic: 'food', round: 4 },
+  { meaning: '蒸', display: 'むし', reading: 'mushi', kanji: '蒸し', topic: 'food', round: 4 },
+  { meaning: '今日（正式用語）', display: 'ほんじつ', reading: 'honjitsu', kanji: '本日', topic: 'time', round: 5 },
+  { meaning: '灰色', display: 'はいいろ', reading: 'haiiro', kanji: '灰色', topic: 'color', round: 5 },
+  { meaning: '兩百', display: 'にひゃく', reading: 'nihyaku', kanji: '二百', topic: 'number', round: 5 },
+  { meaning: '三百', display: 'さんびゃく', reading: 'sanbyaku', kanji: '三百', topic: 'number', round: 5 },
+  { meaning: '五百', display: 'ごひゃく', reading: 'gohyaku', kanji: '五百', topic: 'number', round: 5 },
+  { meaning: '六百', display: 'ろっぴゃく', reading: 'roppyaku', kanji: '六百', topic: 'number', round: 5 },
+  { meaning: '七百', display: 'ななひゃく', reading: 'nanahyaku', kanji: '七百', topic: 'number', round: 5 },
+  { meaning: '九百', display: 'きゅうひゃく', reading: 'kyuuhyaku', kanji: '九百', topic: 'number', round: 5 },
+  { meaning: '三千', display: 'さんぜん', reading: 'sanzen', kanji: '三千', topic: 'number', round: 3 },
+  { meaning: '四千', display: 'よんせん', reading: 'yonsen', kanji: '四千', topic: 'number', round: 3 },
+  { meaning: '五千', display: 'ごせん', reading: 'gosen', kanji: '五千', topic: 'number', round: 3 },
+  { meaning: '六千', display: 'ろくせん', reading: 'rokusen', kanji: '六千', topic: 'number', round: 3 },
+  { meaning: '七千', display: 'ななせん', reading: 'nanasen', kanji: '七千', topic: 'number', round: 3 },
+  { meaning: '八千', display: 'はっせん', reading: 'hassen', kanji: '八千', topic: 'number', round: 5 },
+  { meaning: '九千', display: 'きゅうせん', reading: 'kyuusen', kanji: '九千', topic: 'number', round: 3 },
+  { meaning: '運動', display: 'うんどうする', reading: 'undou suru', kanji: '運動する', topic: 'daily', round: 4 },
+  { meaning: '旅行', display: 'りょこうする', reading: 'ryokou suru', kanji: '旅行する', topic: 'daily', round: 3 },
+  { meaning: '演奏會', display: 'えんそうかい', reading: 'ensoukai', kanji: '演奏会', topic: 'daily', round: 3 },
+  { meaning: '有緣', display: 'えんがある', reading: 'en ga aru', kanji: '縁がある', topic: 'daily', round: 2 },
 ];
 
 // ═══════════════════════════════
@@ -1119,6 +868,7 @@ const alreadyKnown = new Set([
   'いち','に','さん','し','ご',
   'あたま','せんぱい','きもち','おでん','わさび',
   'そっか','いちばん',
+  'わたし','ぼく','みんな','たこ','さしみ',
   'あい','いいえ','いま','うちゅう','うんてんしゅ','えき',
   'おみやげ','かもめ','ください','くま','くろ','げんき',
   'さくら','さけ','しゃぶしゃぶ','じんせい','すきやき','すし',
@@ -1131,6 +881,17 @@ const alreadyKnown = new Set([
 // 最近加入的單字批次（數字越大＝越近加入＝越優先出現）
 // 規則：同一天加入的算同一批；新增單字時若該日已有批次直接沿用，否則用最新批次號 + 1
 const recentBatch = {
+  // 批次 12（2026-07-17，筆記補齊）
+  'どれ': 12, 'ここ': 12, 'そこ': 12, 'あそこ': 12, 'こちら': 12, 'そちら': 12,
+  'あちら': 12, 'どちら': 12, 'わたくし': 12, 'あたし': 12, 'かれ': 12, 'かのじょ': 12,
+  'かれら': 12, 'にほんじん': 12, 'がいこくじん': 12, 'たまご': 12, 'たまごやき': 12, 'たこやき': 12,
+  'とり': 12, 'とりのもも': 12, 'ぶた': 12, 'ぎゅう': 12, 'さかな': 12, 'えび': 12,
+  'やさい': 12, 'たまねぎ': 12, 'にんにく': 12, 'ごはん': 12, 'とんじる': 12, 'わしょく': 12,
+  'ようしょく': 12, 'しょくじ': 12, 'しょくどう': 12, 'ていしょく': 12, 'もりあわせ': 12, 'おおもり': 12,
+  'からい': 12, 'あまい': 12, 'なま': 12, 'むし': 12, 'ほんじつ': 12, 'はいいろ': 12,
+  'にひゃく': 12, 'さんびゃく': 12, 'ごひゃく': 12, 'ろっぴゃく': 12, 'ななひゃく': 12, 'きゅうひゃく': 12,
+  'さんぜん': 12, 'よんせん': 12, 'ごせん': 12, 'ろくせん': 12, 'ななせん': 12, 'はっせん': 12,
+  'きゅうせん': 12, 'うんどうする': 12, 'りょこうする': 12, 'えんそうかい': 12, 'えんがある': 12,
   // 批次 11（2026-07-15）
   'たすけて': 11, 'まいご': 11, 'えいご': 11, 'もういちど': 11,
   'おかいけい': 11, 'ふたり': 11, 'はなす': 11, 'いう': 11, 'にくなし': 11,

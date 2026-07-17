@@ -1,3 +1,5 @@
 .obsidian/
 .Rhistory
 .env
+.claude/CLAUDE.md
+__pycache__/
