@@ -682,7 +682,7 @@ const vocabCards = [
   { word: 'アイコン',   reading: 'aikon',     meaning: '圖示',     hint: 'icon → アイコン，ア+イ+コ+ン',              topic: 'daily', round: 2 },
   { word: 'カラー',     reading: 'karā',      meaning: '顏色',     hint: 'color → カラー，カ+ラ+ー',                  topic: 'daily', round: 2 },
   { word: 'ランナー',   reading: 'rannā',     meaning: '跑者',     hint: 'runner → ランナー，ラ+ン+ナ+ー',            topic: 'daily', round: 2 },
-  { word: 'ガーリック', reading: 'gārikku',   meaning: '大蒜',     hint: 'garlic → ガーリック，ガ+ー+リ+ッ+ク',       topic: 'food',  round: 2 },
+  { word: 'ガーリック', reading: 'gārikku',   meaning: '大蒜',     hint: 'garlic → ガーリック，ガ+ー+リ+ッ+ク',       topic: 'food',  round: 5 },
   { word: 'ルーキー',   reading: 'rūkī',      meaning: '新人',     hint: 'rookie → ルーキー，ル+ー+キ+ー',            topic: 'daily', round: 2 },
   // ── 第3輪 ──
   { word: 'アイス',     reading: 'aisu',      meaning: '冰淇淋',   hint: '唸出來就是 ice',                            topic: 'food',  round: 3 },
@@ -709,7 +709,7 @@ const vocabCards = [
   { word: 'マスク',     reading: 'masuku',    meaning: '口罩',     hint: 'mask → マスク，マ+ス+ク',                   topic: 'daily', round: 4 },
   { word: 'レシート',   reading: 'reshīto',   meaning: '收據',     hint: '唸出來就是 receipt',                        topic: 'daily', round: 4 },
   { word: 'ライター',   reading: 'raitā',     meaning: '打火機',   hint: '台語「來打」← 日語 ライター ← 英語 lighter', topic: 'daily', round: 4 },
-  { word: 'チケット',   reading: 'chiketto',  meaning: '票',       hint: 'ッ 促音——停頓一拍再爆發，唸出來是 ticket',  topic: 'daily', round: 4 },
+  { word: 'チケット',   reading: 'chiketto',  meaning: '票',       hint: 'ッ 促音——停頓一拍再爆發，唸出來是 ticket',  topic: 'daily', round: 5 },
   { word: 'レストラン', reading: 'resutoran', meaning: '餐廳',     hint: '唸出來就是 restaurant',                     topic: 'daily', round: 4 },
   { word: 'ギター',     reading: 'gitā',      meaning: '吉他',     hint: 'guitar → ギター，台語「吉他」同一來源',     topic: 'daily', round: 4 },
   // ── 第5輪 ──
@@ -741,6 +741,8 @@ const vocabCards = [
   // 旅遊交通（batch 2）
   { word: 'チェックイン',   reading: 'chekku-in',   meaning: '辦理入住', hint: 'check-in 音譯，チェ是拗音（チ+小ェ），ッ促音停拍', topic: 'daily', round: 5 },
   { word: 'チェックアウト', reading: 'chekku-auto', meaning: '退房',     hint: 'check-out 音譯，ッ促音後爆ク，アウト=out', topic: 'daily', round: 5 },
+  // 日本實用單字（batch 4）
+  { word: 'メニュー', reading: 'menyū', meaning: '菜單', hint: 'menu 音譯；メ+ニュ（拗音）+ー長音', topic: 'food', round: 4 },
   // 咖哩家族（batch 3）
   { word: 'カレー',         reading: 'karē',        meaning: '咖哩',     hint: 'curry → カレー；台語「咖哩」ka-lí 同源借詞', topic: 'food',  round: 2 },
   { word: 'カレーライス',   reading: 'karē raisu',  meaning: '咖哩飯',   hint: 'curry + rice 和製英語；ライス＝rice', topic: 'food',  round: 3 },
@@ -756,7 +758,9 @@ const alreadyKnown = new Set([
 // 最近加入的單字批次（數字越大＝越近加入＝越優先出現）
 // 規則：同一天加入的算同一批
 const recentBatch = {
-  // 批次 3（2026-05-18 最新）
+  // 批次 4（2026-07-15）
+  'メニュー': 4,
+  // 批次 3（2026-05-18）
   'カレー': 3, 'カレーライス': 3, 'チキンカレー': 3, 'ビーフカレー': 3,
   // 批次 2（2026-05-03）
   'チェックイン': 2, 'チェックアウト': 2,
@@ -775,7 +779,7 @@ const similarGroups = [
   ['ロ', 'ヨ'],
   ['リ', 'ソ', 'ン'],
   ['ノ', 'ソ'],
-  ['ニ', 'ニ'],
+  ['ニ', 'ミ'],
   ['フ', 'ウ'],
   ['ヘ', 'へ'],
   ['カ', 'ガ'],
@@ -798,17 +802,16 @@ const similarGroups = [
 // ═══════════════════════════════
 // STATE
 // ═══════════════════════════════
-const intervals = [0, 3, 8, 20, 40];
 function getSessionLimit() {
   if (currentRound === 0) return 50;
-  const pool = vocabCards.filter(c => c.round <= currentRound).length;
+  const src = currentSection === 'kana' ? katakanaCards : vocabCards;
+  const pool = src.filter(c => c.round <= currentRound).length;
   return Math.min(Math.max(Math.round(pool * 0.35), 20), 60);
 }
 const STORAGE_KANA = 'katakana_kana_progress';
 const STORAGE_VOCAB = 'katakana_vocab_progress';
 let kanaProgress = {};
 let vocabProgress = {};
-// loadProgress / saveProgress → replaced by sync block below
 let currentSection = 'kana';
 let currentRound = 1;
 let currentMode = 'char-to-reading';
@@ -827,35 +830,6 @@ let wrongAnswers = new Map();
 // ═══════════════════════════════
 // UTILS
 // ═══════════════════════════════
-function shuffle(arr) {
-  const a = [...arr];
-  for (let i = a.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [a[i], a[j]] = [a[j], a[i]];
-  }
-  return a;
-}
-
-function resetScore() {
-  totalAnswered = 0; totalCorrect = 0; streak = 0; sessionCount = 0;
-  wrongAnswers = new Map();
-  document.getElementById('scoreCorrect').textContent = 0;
-  document.getElementById('scoreTotal').textContent = 0;
-  document.getElementById('scoreStreak').textContent = 0;
-  document.getElementById('progressFill').style.width = '0%';
-}
-
-function updateScore() {
-  document.getElementById('scoreCorrect').textContent = totalCorrect;
-  document.getElementById('scoreTotal').textContent = totalAnswered;
-  document.getElementById('scoreStreak').textContent = streak;
-}
-
-function updateProgress() {
-  const lim = getSessionLimit();
-  document.getElementById('progressFill').style.width = (Math.min(sessionCount / lim, 1) * 100) + '%';
-}
-
 function buildKanaQueue(round) {
   const cards = round === 0 ? katakanaCards : katakanaCards.filter(c => c.round <= round);
   return cards.map(c => {
@@ -876,52 +850,6 @@ function setRound(n) {
   }
   resetScore();
   nextCard();
-}
-
-function pickFromQueue() {
-  const due = queue.filter(c => c.nextReview <= sessionCount);
-  if (!due.length) return null;
-  const sorted = [...due].sort((a, b) => a.level !== b.level ? a.level - b.level : a.nextReview - b.nextReview);
-  const pool = sorted.slice(0, Math.min(3, sorted.length));
-  return pool[Math.floor(Math.random() * pool.length)];
-}
-
-function advanceSRS(item, correct) {
-  if (correct) {
-    item.level = Math.min((item.level || 0) + 1, intervals.length - 1);
-    streak++; totalCorrect++;
-  } else {
-    item.level = 0; streak = 0;
-    const key = item.char || item.word;
-    if (key) wrongAnswers.set(key, item);
-  }
-  item.nextReview = sessionCount + intervals[item.level];
-  if (item.char) kanaProgress[item.char] = item.level;
-  if (item.word) vocabProgress[item.word] = item.level;
-  saveProgress();
-  totalAnswered++; sessionCount++;
-  updateScore();
-}
-
-function normalizeRomaji(s) {
-  return s.trim().toLowerCase().replace(/\s+/g, '').replace(/oo/g, 'o').replace(/uu/g, 'u').replace(/nn/g, 'n');
-}
-
-let _speakGen = 0;
-function speakJa(text) {
-  if (!window.speechSynthesis) return;
-  speechSynthesis.cancel();
-  const gen = ++_speakGen;
-  const parts = text.split('/').map(p => p.trim()).filter(Boolean);
-  function next(i) {
-    if (gen !== _speakGen || i >= parts.length) return;
-    const u = new SpeechSynthesisUtterance(parts[i]);
-    u.lang = 'ja-JP';
-    u.rate = 0.9;
-    if (i < parts.length - 1) u.onend = () => setTimeout(() => next(i + 1), 500);
-    speechSynthesis.speak(u);
-  }
-  next(0);
 }
 
 // ═══════════════════════════════
@@ -1065,7 +993,7 @@ function nextCard() {
   answered = false;
   const lim = getSessionLimit();
   if (sessionCount >= lim) { showResult(); return; }
-  currentCard = pickFromQueue();
+  currentCard = pickFromQueue(queue);
   if (!currentCard) { showResult(); return; }
 
   if (currentSection === 'vocab') {
@@ -1258,59 +1186,6 @@ function submitReadingToInput() {
 // ═══════════════════════════════
 // RESULT
 // ═══════════════════════════════
-function escapeHtml(s) {
-  return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-}
-
-function renderWrongList() {
-  if (wrongAnswers.size === 0) return '';
-  const items = [...wrongAnswers.values()].map(c => {
-    if (c.char) {
-      const front = escapeHtml(c.char);
-      const back = `${escapeHtml(c.reading)}　來源：${escapeHtml(c.kanji)}<br>${escapeHtml(c.hint)}`;
-      return `<div class="wrong-item"><span class="wrong-front">${front}</span><span class="wrong-back">${back}</span></div>`;
-    } else {
-      const kp = c.kanji ? `${escapeHtml(c.kanji)} ` : '';
-      const front = `${kp}${escapeHtml(c.word)}`;
-      const back = `${escapeHtml(c.reading)}　${escapeHtml(c.meaning)}<br>${escapeHtml(c.hint)}`;
-      return `<div class="wrong-item"><span class="wrong-front">${front}</span><span class="wrong-back">${back}</span></div>`;
-    }
-  }).join('');
-  return `<div class="wrong-list"><div class="wrong-title">答錯回顧（${wrongAnswers.size}）</div>${items}</div>`;
-}
-
-function showResult() {
-  updateProgress();
-  const pct = totalAnswered ? Math.round((totalCorrect / totalAnswered) * 100) : 0;
-  let emoji, msg, sub;
-  if (pct >= 90) { emoji = '🎌'; msg = '完美！'; sub = `正確率 ${pct}%，繼續保持！`; }
-  else if (pct >= 70) { emoji = '👏'; msg = '很好！'; sub = `正確率 ${pct}%，再練幾次就能鞏固。`; }
-  else { emoji = '📖'; msg = '繼續練習！'; sub = `正確率 ${pct}%，間隔重複就是要反覆來。`; }
-  document.getElementById('quizContent').innerHTML = `
-    <div class="result-screen">
-      <div class="big-emoji">${emoji}</div>
-      <h2>${msg}</h2>
-      <p>${sub}<br><br>正確 ${totalCorrect} / ${totalAnswered} 題</p>
-      <button class="restart-btn" onclick="restart()">再練一次</button>
-      ${renderWrongList()}
-      <div class="kofi-cta">
-        <a href="https://ko-fi.com/ines8964" target="_blank" rel="noopener">
-          ☕ 喜歡這個工具？<u>請我喝杯咖啡</u>
-        </a>
-      </div>
-    </div>
-  `;
-}
-
-function restart() {
-  if (currentSection === 'kana') {
-    queue = buildKanaQueue(currentRound);
-  } else {
-    buildVocabQueue();
-  }
-  resetScore(); nextCard();
-}
-
 // ═══════════════════════════════
 // FIREBASE SYNC CONFIG
 // ═══════════════════════════════
@@ -1319,124 +1194,22 @@ function restart() {
 // 留空 = 僅用 localStorage，無跨裝置同步
 const FIREBASE_DB_URL = 'https://nihongo-2ad36-default-rtdb.asia-southeast1.firebasedatabase.app';
 const QUIZ_TYPE = 'katakana';
-const USER_ID_KEY = 'nihongo_user_id';
-let currentUserId = localStorage.getItem(USER_ID_KEY) || '';
-let syncTimer = null;
-
-function setSyncStatus(s) {
-  const d = document.getElementById('syncDot');
-  if (d) d.className = 'sync-dot' + (s ? ' ' + s : '');
-}
-function updateUserBadge() {
-  const el = document.getElementById('userLabel');
-  if (!el) return;
-  if (!currentUserId) { el.textContent = '設定 ID'; setSyncStatus(''); return; }
-  el.textContent = FIREBASE_DB_URL ? currentUserId : currentUserId + ' ☁︎✗';
-  if (!FIREBASE_DB_URL) setSyncStatus('');
-}
-function openUserModal() {
-  const overlay = document.getElementById('userModalOverlay');
-  const input = document.getElementById('userIdInput');
-  document.getElementById('userModalErr').textContent = '';
-  input.value = currentUserId;
-  document.getElementById('userCancelBtn').style.display = currentUserId ? '' : 'none';
-  overlay.classList.add('open');
-  setTimeout(() => input.focus(), 80);
-}
-function closeUserModal() {
-  document.getElementById('userModalOverlay').classList.remove('open');
-}
-async function confirmUserId() {
-  const val = document.getElementById('userIdInput').value.trim();
-  const err = document.getElementById('userModalErr');
-  if (!/^[a-zA-Z0-9_-]{3,20}$/.test(val)) {
-    err.textContent = '只能用英文、數字、- 或 _，長度 3–20 字元';
-    return;
-  }
-  const changed = val !== currentUserId;
-  currentUserId = val;
-  localStorage.setItem(USER_ID_KEY, currentUserId);
-  closeUserModal();
-  updateUserBadge();
-  if (changed) {
-    kanaProgress = {}; vocabProgress = {};
-    await initAndStart();
-  }
-}
-
-async function fetchFromFirebase() {
-  if (!FIREBASE_DB_URL || !currentUserId) return false;
-  try {
-    setSyncStatus('syncing');
-    const ctrl = new AbortController();
-    const tid = setTimeout(() => ctrl.abort(), 5000);
-    const res = await fetch(FIREBASE_DB_URL + '/progress/' + currentUserId + '/' + QUIZ_TYPE + '.json',
-      { signal: ctrl.signal });
-    clearTimeout(tid);
-    if (!res.ok) throw new Error(res.status);
-    const data = await res.json();
-    if (data && typeof data === 'object') {
-      if (data.kana)  kanaProgress  = data.kana;
-      if (data.vocab) vocabProgress = data.vocab;
-      localStorage.setItem(STORAGE_KANA,  JSON.stringify(kanaProgress));
-      localStorage.setItem(STORAGE_VOCAB, JSON.stringify(vocabProgress));
-    }
-    setSyncStatus('synced');
-    return true;
-  } catch(e) {
-    setSyncStatus(e.name === 'AbortError' ? '' : 'error');
-    return false;
-  }
-}
-function schedulePushToFirebase() {
-  if (!FIREBASE_DB_URL || !currentUserId) return;
-  clearTimeout(syncTimer);
-  setSyncStatus('syncing');
-  syncTimer = setTimeout(async () => {
-    try {
-      await fetch(FIREBASE_DB_URL + '/progress/' + currentUserId + '/' + QUIZ_TYPE + '.json', {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ kana: kanaProgress, vocab: vocabProgress })
-      });
-      setSyncStatus('synced');
-    } catch(e) { setSyncStatus('error'); }
-  }, 3000);
-}
-
-function loadProgress() {
-  try {
-    kanaProgress  = JSON.parse(localStorage.getItem(STORAGE_KANA)  || '{}');
-    vocabProgress = JSON.parse(localStorage.getItem(STORAGE_VOCAB) || '{}');
-  } catch(e) { kanaProgress = {}; vocabProgress = {}; }
-}
-function saveProgress() {
-  localStorage.setItem(STORAGE_KANA,  JSON.stringify(kanaProgress));
-  localStorage.setItem(STORAGE_VOCAB, JSON.stringify(vocabProgress));
-  schedulePushToFirebase();
-}
-
-async function initAndStart() {
-  loadProgress();
-  updateUserBadge();
-  if (FIREBASE_DB_URL && currentUserId) await fetchFromFirebase();
-  queue = buildKanaQueue(currentRound);
-  nextCard();
-}
 
 // ═══════════════════════════════
-// INIT
+// PAGE HOOK（quiz-common.js 呼叫）
 // ═══════════════════════════════
-if (!currentUserId && FIREBASE_DB_URL) {
-  openUserModal();
-  loadProgress(); updateUserBadge();
-  queue = buildKanaQueue(currentRound);
-  nextCard();
-} else {
-  initAndStart();
+function rebuildQueues() {
+  if (currentSection === 'kana') queue = buildKanaQueue(currentRound);
+  else buildVocabQueue();
+}
+
+function restartCurrent() {
+  rebuildQueues();
+  resetScore(); nextCard();
 }
 
 
 </script>
+<script src="quiz-common.js"></script>
 </body>
 </html>
