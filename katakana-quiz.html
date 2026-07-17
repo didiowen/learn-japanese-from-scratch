@@ -439,6 +439,14 @@ const vocabCards = [
   { word: 'オーロラ', reading: 'ōrora', meaning: '極光', hint: 'aurora → オーロラ，オ+ー+ロ+ラ', topic: 'nature', round: 1 },
   { word: 'コーナー', reading: 'kōnā', meaning: '角落／專區', hint: 'corner → コーナー，コ+ー+ナ+ー', topic: 'daily', round: 2 },
   { word: 'コーラス', reading: 'kōrasu', meaning: '合唱', hint: 'chorus → コーラス，コ+ー+ラ+ス', topic: 'daily', round: 3 },
+  // 批次 6（2026-07-17，旅遊會話）
+  { word: 'タオル',       reading: 'taoru',        meaning: '毛巾',   hint: 'towel 音譯；タ+オ+ル，注意沒有長音', topic: 'daily', round: 4 },
+  { word: 'カード',       reading: 'kādo',         meaning: '卡片',   hint: 'card → カード；カ+ー+ド', topic: 'daily', round: 4 },
+  { word: 'パスワード',   reading: 'pasuwaādo',    meaning: '密碼',   hint: 'password 音譯；パ+ス+ワ+ー+ド，ワ是特殊假名', topic: 'daily', round: 5 },
+  { word: 'アレルギー',   reading: 'arerugī',      meaning: '過敏',   hint: 'Allergie（德語）音譯；ア+レ+ル+ギ+ー，日文醫學詞多借自德語', topic: 'daily', round: 2 },
+  { word: 'ベジタリアン', reading: 'bejitarian',   meaning: '素食者', hint: 'vegetarian 音譯；ベ+ジ+タ+リ+ア+ン', topic: 'food',  round: 5 },
+  { word: 'ホーム',       reading: 'hōmu',         meaning: '月台',   hint: 'platform → home（英式縮略）；ホ+ー+ム', topic: 'daily', round: 5 },
+  { word: 'コート',       reading: 'kōto',         meaning: '外套',   hint: 'coat → コート；コ+ー+ト', topic: 'daily', round: 4 },
 ];
 
 // 本來就會的單字（降低頻率）
@@ -449,6 +457,8 @@ const alreadyKnown = new Set([
 // 最近加入的單字批次（數字越大＝越近加入＝越優先出現）
 // 規則：同一天加入的算同一批
 const recentBatch = {
+  // 批次 6（2026-07-17，旅遊會話）
+  'タオル': 6, 'カード': 6, 'パスワード': 6, 'アレルギー': 6, 'ベジタリアン': 6, 'ホーム': 6, 'コート': 6,
   // 批次 5（2026-07-17，筆記補齊）
   'オーロラ': 5, 'コーナー': 5, 'コーラス': 5,
   // 批次 4（2026-07-15）
