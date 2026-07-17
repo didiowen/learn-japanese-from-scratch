@@ -2,5 +2,19 @@
   "$schema": "https://json.schemastore.org/claude-code-settings.json",
   "permissions": {
     "allow": []
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 tools/precommit_validate_hook.py",
+            "timeout": 30
+          }
+        ]
+      }
+    ]
   }
 }
