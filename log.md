@@ -2,10 +2,25 @@
 title: 學習日誌
 date:
   created: 2026-04-28T18:26:48
-  updated: 2026-07-15T23:10:00
+  updated: 2026-07-17T10:23:06
 alias: log
 ---
 # 學習日誌
+
+## 2026-07-17 10:23:06
+
+Repo 整體審查與整修（無新學習內容，工具與資料品質）：
+
+- **修正 27 個單字的 round 值**（平假名 24、片假名 3）：batch 11 的 9 個裡有 8 個算錯（例：ふたり 3→5、おかいけい 4→2）；16 個含促音っ的舊單字依「っ→R5」規則改為 R5（ゆっくり、よかった、いっしょに 等）；ガーリック 2→5、チケット 4→5、メニュー 3→4
+- **移除重複的やばい**條目，並解決它同時在 alreadyKnown 與 recentBatch 的矛盾（保留 alreadyKnown）
+- **alreadyKnown Set 補齊 37 個字**（すし、さくら、くろ 等 already-known.md 有但 Set 漏掉的）
+- **katakana.md 補 6 個只在測驗、沒進筆記的單字**：ミルク、メニュー、コンサート（第四輪）；エプロン、シャンプー、メンバー（第五輪）
+- **新增 `tools/validate_quiz_data.py`**：自動重算 round、查重複、比對 alreadyKnown——以後每次更新測驗資料都要跑
+- **修 getSessionLimit bug**：五十音模式的題數改用假名卡池計算（原本誤用單字卡池）
+- **Firebase 同步改 merge-by-max**：雲端資料不再直接蓋掉本機進度，逐卡取較高 level 合併；level 讀回加防呆 clamp
+- **重構**：兩個測驗 HTML 的共用邏輯（SRS、計分、朗讀、結果頁、Firebase 同步）抽出到 `quiz-common.js`，消除約六成重複程式碼
+- similarGroups 修正無效組 ['ニ','ニ'] → ['ニ','ミ']
+- CLAUDE.md：批次號改為「以 HTML 實際值為準」；加入驗證腳本必跑規則
 
 ## 2026-07-15 23:10:00
 

@@ -103,7 +103,7 @@ const recentBatch = {
 ```
 
 - **批次規則：同一天加入的算同一批**——當天若已有批次號就沿用，否則用目前最大批次號 + 1
-- 平假名目前最大批次號：**4**（2026-05-18）；片假名目前最大批次號：**3**（2026-05-18）
+- 目前最大批次號**以該測驗 HTML 內 recentBatch 的實際最大值為準**（新增前先查，不在此記死數字）
 - 批次號轉換為 `nextReview = -(批次號 × 5)`，確保新字在 `pickFromQueue` 排序中優先
 - 已被 SRS 記錄過的字不受影響
 
@@ -122,6 +122,8 @@ const recentBatch = {
 
 ### 更新測驗 HTML
 詳見 `.claude/skills/japanese-learning/references/quiz-structure.md`。更新時用 Python 處理中文字串避免編碼問題，覆寫前先確認。
+
+**每次更新 vocabCards／alreadyKnown／recentBatch 後，必須跑 `python3 tools/validate_quiz_data.py`**——它會重算所有 round、查重複條目、比對 already-known.md 與 alreadyKnown Set，全部通過才能 commit。
 
 **單字輪次（round）計算規則**（嚴格字符規則）：
 - `word_round = max(所有字符的輪次)`
