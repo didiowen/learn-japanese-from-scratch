@@ -799,6 +799,7 @@ const vocabCards = [
   { meaning: '收到／請給', display: 'もらう', reading: 'morau', topic: 'daily', round: 4 },
   // 批次 13（2026-07-18，日中同形異義詞）
   { meaning: '紅蘿蔔（非中藥人參）', display: 'にんじん', reading: 'ninjin', kanji: '人参', topic: 'food', round: 3 },
+  { meaning: '紅豆', display: 'あずき', reading: 'azuki', kanji: '小豆', topic: 'food', round: 3 },
   { meaning: '火車（非汽車）', display: 'きしゃ', reading: 'kisha', kanji: '汽車', topic: 'daily', round: 3 },
   { meaning: '天花板', display: 'てんじょう', reading: 'tenjou', kanji: '天井', topic: 'daily', round: 4 },
   { meaning: '覺悟／心理準備', display: 'かくご', reading: 'kakugo', kanji: '覚悟', topic: 'daily', round: 2 },
@@ -806,6 +807,10 @@ const vocabCards = [
   { meaning: '和服（英文借去變輕便晨袍）', display: 'きもの', reading: 'kimono', kanji: '着物', topic: 'daily', round: 4 },
   { meaning: '盆栽', display: 'ぼんさい', reading: 'bonsai', kanji: '盆栽', topic: 'nature', round: 5 },
   { meaning: '萬歲（歡呼語）', display: 'ばんざい', reading: 'banzai', kanji: '万歳', topic: 'greeting', round: 5 },
+  { meaning: '綠燈（青＝不帶綠字的綠）', display: 'あおしんごう', reading: 'aoshingou', kanji: '青信号', topic: 'color', round: 3 },
+  { meaning: '嫩芽黃綠色', display: 'もえぎいろ', reading: 'moegiiro', kanji: '萌黄色', topic: 'color', round: 4 },
+  { meaning: '新竹淺綠色', display: 'わかたけいろ', reading: 'wakatakeiro', kanji: '若竹色', topic: 'color', round: 4 },
+  { meaning: '青蛙', display: 'かえる', reading: 'kaeru', kanji: '蛙', topic: 'nature', round: 2 },
 ];
 
 // ═══════════════════════════════
@@ -905,8 +910,9 @@ const alreadyKnown = new Set([
 // 規則：同一天加入的算同一批；新增單字時若該日已有批次直接沿用，否則用最新批次號 + 1
 const recentBatch = {
   // 批次 13（2026-07-18，日中同形異義詞＋英語借詞語意漂移）
-  'にんじん': 13, 'きしゃ': 13, 'てんじょう': 13, 'かくご': 13,
+  'にんじん': 13, 'きしゃ': 13, 'てんじょう': 13, 'かくご': 13, 'あずき': 13,
   'ふとん': 13, 'きもの': 13, 'ぼんさい': 13, 'ばんざい': 13,
+  'あおしんごう': 13, 'もえぎいろ': 13, 'わかたけいろ': 13, 'かえる': 13,
   // 批次 12（2026-07-17，筆記補齊）
   'どれ': 12, 'ここ': 12, 'そこ': 12, 'あそこ': 12, 'こちら': 12, 'そちら': 12,
   'あちら': 12, 'どちら': 12, 'わたくし': 12, 'あたし': 12, 'かれ': 12, 'かのじょ': 12,
