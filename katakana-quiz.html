@@ -447,6 +447,8 @@ const vocabCards = [
   { word: 'ベジタリアン', reading: 'bejitarian',   meaning: '素食者', hint: 'vegetarian 音譯；ベ+ジ+タ+リ+ア+ン', topic: 'food',  round: 5 },
   { word: 'ホーム',       reading: 'hōmu',         meaning: '月台',   hint: 'platform → home（英式縮略）；ホ+ー+ム', topic: 'daily', round: 5 },
   { word: 'コート',       reading: 'kōto',         meaning: '外套',   hint: 'coat → コート；コ+ー+ト', topic: 'daily', round: 4 },
+  { word: 'ペパーミント', reading: 'pepāminto',    meaning: '薄荷',   hint: 'peppermint 音譯；ペ+パ+ー+ミ+ン+ト，兩個半濁音', topic: 'food', round: 5 },
+  { word: 'タブレット',   reading: 'taburetto',    meaning: '錠劑／平板', hint: 'tablet 音譯；タ+ブ+レ+ッ+ト，ッ促音', topic: 'daily', round: 5 },
 ];
 
 // 本來就會的單字（降低頻率）
@@ -457,6 +459,8 @@ const alreadyKnown = new Set([
 // 最近加入的單字批次（數字越大＝越近加入＝越優先出現）
 // 規則：同一天加入的算同一批
 const recentBatch = {
+  // 批次 7（2026-07-20）
+  'ペパーミント': 7, 'タブレット': 7,
   // 批次 6（2026-07-17，旅遊會話）
   'タオル': 6, 'カード': 6, 'パスワード': 6, 'アレルギー': 6, 'ベジタリアン': 6, 'ホーム': 6, 'コート': 6,
   // 批次 5（2026-07-17，筆記補齊）

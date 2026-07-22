@@ -2,10 +2,17 @@
 title: 學習日誌
 date:
   created: 2026-04-28T18:26:48
-  updated: 2026-07-18T19:45:00
+  updated: 2026-07-20T22:20:00
 alias: log
 ---
 # 學習日誌
+
+## 2026-07-20 22:20:00
+
+新增片假名外來語「ペパーミント」（薄荷／peppermint）與「タブレット」（錠劑／tablet）至 katakana-quiz.html（批次 7，round 5）與 katakana.md 單字表，來源為使用者上傳的京都車站薄荷錠商品照片。ペパーミント含兩個半濁音（ペ・パ），タブレット含促音ッ；假名皆已學過，無新假名。
+`python3 tools/validate_quiz_data.py` 全部通過 ✓
+
+---
 
 ## 2026-07-18 19:45:00
 
