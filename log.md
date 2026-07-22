@@ -2,10 +2,17 @@
 title: 學習日誌
 date:
   created: 2026-04-28T18:26:48
-  updated: 2026-07-22T18:47:00
+  updated: 2026-07-22T19:10:00
 alias: log
 ---
 # 學習日誌
+
+## 2026-07-22 19:10:00
+
+新增單字「致死量（ちしりょう）」「摂取（せっしゅ）」「帰国（きこく）」「無事（ぶじ）」「大満足（だいまんぞく）」至 hiragana-quiz.html（批次 15 續）與 vocabulary.md；「マンゴー」至 katakana-quiz.html（批次 8）與 katakana.md。源自 Threads 貼文「台湾で致死量のマンゴー摂取してきて大満足…無事帰国しました」的單字提問。假名皆已學過，無新假名。
+`python3 tools/validate_quiz_data.py` 全部通過 ✓
+
+---
 
 ## 2026-07-22 18:47:00
 

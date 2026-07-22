@@ -453,6 +453,7 @@ const vocabCards = [
   { word: 'ボックス',     reading: 'bokkusu',      meaning: '盒子', hint: 'box 音譯；ボ+ッ+ク+ス，ッ促音', topic: 'daily', round: 5 },
   { word: 'ドリップコーヒー', reading: 'dorippu kōhī', meaning: '濾掛咖啡', hint: 'drip coffee 音譯；ド+リ+ッ+プ+コ+ー+ヒ+ー', topic: 'food', round: 5 },
   { word: 'ノートブック', reading: 'nōtobukku', meaning: '筆記本', hint: 'notebook 音譯；ノ+ー+ト+ブ+ッ+ク，ッ促音', topic: 'daily', round: 5 },
+  { word: 'マンゴー', reading: 'mangō', meaning: '芒果', hint: 'mango 音譯；マ+ン+ゴ+ー，マ第四輪', topic: 'food', round: 4 },
 ];
 
 // 本來就會的單字（降低頻率）
@@ -463,6 +464,8 @@ const alreadyKnown = new Set([
 // 最近加入的單字批次（數字越大＝越近加入＝越優先出現）
 // 規則：同一天加入的算同一批
 const recentBatch = {
+  // 批次 8（2026-07-22）
+  'マンゴー': 8,
   // 批次 7（2026-07-20）
   'ペパーミント': 7, 'タブレット': 7, 'セット': 7, 'ボックス': 7, 'ドリップコーヒー': 7, 'ノートブック': 7,
   // 批次 6（2026-07-17，旅遊會話）

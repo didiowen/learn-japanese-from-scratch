@@ -830,6 +830,11 @@ const vocabCards = [
   { meaning: '昆布', display: 'こんぶ', reading: 'konbu', kanji: '昆布', topic: 'food', round: 5 },
   { meaning: '醬汁', display: 'たれ', reading: 'tare', kanji: '垂れ', topic: 'food', round: 4 },
   { meaning: '七味唐辛子', display: 'しちみ', reading: 'shichimi', kanji: '七味', topic: 'food', round: 4 },
+  { meaning: '致死量', display: 'ちしりょう', reading: 'chishiryou', kanji: '致死量', topic: 'daily', round: 4 },
+  { meaning: '攝取', display: 'せっしゅ', reading: 'sesshu', kanji: '摂取', topic: 'daily', round: 5 },
+  { meaning: '回國', display: 'きこく', reading: 'kikoku', kanji: '帰国', topic: 'daily', round: 2 },
+  { meaning: '平安無事', display: 'ぶじ', reading: 'buji', kanji: '無事', topic: 'daily', round: 5 },
+  { meaning: '非常滿足', display: 'だいまんぞく', reading: 'daimanzoku', kanji: '大満足', topic: 'daily', round: 4 },
 ];
 
 // ═══════════════════════════════
@@ -929,7 +934,7 @@ const alreadyKnown = new Set([
 // 規則：同一天加入的算同一批；新增單字時若該日已有批次直接沿用，否則用最新批次號 + 1
 const recentBatch = {
   // 批次 15（2026-07-22）
-  'しちみ': 15,
+  'しちみ': 15, 'ちしりょう': 15, 'せっしゅ': 15, 'きこく': 15, 'ぶじ': 15, 'だいまんぞく': 15,
   // 批次 14（2026-07-20）
   'えはがき': 14, 'ひらく': 14, 'ちゃづけ': 14, 'さば': 14, 'たい': 14, 'のり': 14, 'ごま': 14, 'しいたけ': 14,
   'きざみ': 14, 'ほぐし': 14, 'わぎゅう': 14, 'かつおぶし': 14, 'こんぶ': 14, 'たれ': 14,
