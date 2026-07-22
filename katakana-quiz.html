@@ -449,6 +449,9 @@ const vocabCards = [
   { word: 'コート',       reading: 'kōto',         meaning: '外套',   hint: 'coat → コート；コ+ー+ト', topic: 'daily', round: 4 },
   { word: 'ペパーミント', reading: 'pepāminto',    meaning: '薄荷',   hint: 'peppermint 音譯；ペ+パ+ー+ミ+ン+ト，兩個半濁音', topic: 'food', round: 5 },
   { word: 'タブレット',   reading: 'taburetto',    meaning: '錠劑／平板', hint: 'tablet 音譯；タ+ブ+レ+ッ+ト，ッ促音', topic: 'daily', round: 5 },
+  { word: 'セット',       reading: 'setto',        meaning: '一組／套組', hint: 'set 音譯；セ+ッ+ト，ッ促音', topic: 'daily', round: 5 },
+  { word: 'ボックス',     reading: 'bokkusu',      meaning: '盒子', hint: 'box 音譯；ボ+ッ+ク+ス，ッ促音', topic: 'daily', round: 5 },
+  { word: 'ドリップコーヒー', reading: 'dorippu kōhī', meaning: '濾掛咖啡', hint: 'drip coffee 音譯；ド+リ+ッ+プ+コ+ー+ヒ+ー', topic: 'food', round: 5 },
 ];
 
 // 本來就會的單字（降低頻率）
@@ -460,7 +463,7 @@ const alreadyKnown = new Set([
 // 規則：同一天加入的算同一批
 const recentBatch = {
   // 批次 7（2026-07-20）
-  'ペパーミント': 7, 'タブレット': 7,
+  'ペパーミント': 7, 'タブレット': 7, 'セット': 7, 'ボックス': 7, 'ドリップコーヒー': 7,
   // 批次 6（2026-07-17，旅遊會話）
   'タオル': 6, 'カード': 6, 'パスワード': 6, 'アレルギー': 6, 'ベジタリアン': 6, 'ホーム': 6, 'コート': 6,
   // 批次 5（2026-07-17，筆記補齊）

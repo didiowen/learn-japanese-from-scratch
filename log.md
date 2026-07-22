@@ -2,10 +2,17 @@
 title: 學習日誌
 date:
   created: 2026-04-28T18:26:48
-  updated: 2026-07-20T22:35:00
+  updated: 2026-07-20T22:45:00
 alias: log
 ---
 # 學習日誌
+
+## 2026-07-20 22:45:00
+
+新增片假名外來語「セット」（一組／set）、「ボックス」（盒子／box）、「ドリップコーヒー」（濾掛咖啡／drip coffee）至 katakana-quiz.html（批次 7 續，round 5）與 katakana.md 單字表，來自東京車站飯店商品照片延伸提問。皆含促音ッ；假名皆已學過，無新假名。
+`python3 tools/validate_quiz_data.py` 全部通過 ✓
+
+---
 
 ## 2026-07-20 22:35:00
 
