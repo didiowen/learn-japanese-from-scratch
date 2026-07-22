@@ -2,10 +2,17 @@
 title: 學習日誌
 date:
   created: 2026-04-28T18:26:48
-  updated: 2026-07-20T23:15:00
+  updated: 2026-07-20T23:25:00
 alias: log
 ---
 # 學習日誌
+
+## 2026-07-20 23:25:00
+
+新增單字「椎茸（しいたけ）」香菇至 hiragana-quiz.html（批次 14 續，round 4）與 vocabulary.md 🍱飲食區塊，回應使用者提問。椎＝椎樹＋茸＝菇類；假名し・い・た・け皆已學過，無新假名。
+`python3 tools/validate_quiz_data.py` 全部通過 ✓
+
+---
 
 ## 2026-07-20 23:15:00
 
