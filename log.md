@@ -2,10 +2,17 @@
 title: 學習日誌
 date:
   created: 2026-04-28T18:26:48
-  updated: 2026-07-20T22:50:00
+  updated: 2026-07-20T23:00:00
 alias: log
 ---
 # 學習日誌
+
+## 2026-07-20 23:00:00
+
+新增單字「開く（ひらく）」打開／開啟至 hiragana-quiz.html（批次 14 續，round 5）與 vocabulary.md 🧑‍💼動作與狀態區塊，回應使用者提問。音読み「かい」對應台語文言音 khai，但ひらく本身是訓読み無直接台語音對應；假名ひ・ら・く皆已學過，無新假名。確認花（はな）已在 already-known 名單中。
+`python3 tools/validate_quiz_data.py` 全部通過 ✓
+
+---
 
 ## 2026-07-20 22:50:00
 

@@ -816,6 +816,7 @@ const vocabCards = [
   { meaning: '太陽', display: 'たいよう', reading: 'taiyou', kanji: '太陽', topic: 'nature', round: 4 },
   { meaning: '月亮', display: 'つき', reading: 'tsuki', kanji: '月', topic: 'nature', round: 4 },
   { meaning: '明信片', display: 'えはがき', reading: 'ehagaki', kanji: '絵はがき', topic: 'daily', round: 5 },
+  { meaning: '打開／開啟', display: 'ひらく', reading: 'hiraku', kanji: '開く', topic: 'daily', round: 5 },
 ];
 
 // ═══════════════════════════════
@@ -915,7 +916,7 @@ const alreadyKnown = new Set([
 // 規則：同一天加入的算同一批；新增單字時若該日已有批次直接沿用，否則用最新批次號 + 1
 const recentBatch = {
   // 批次 14（2026-07-20）
-  'えはがき': 14,
+  'えはがき': 14, 'ひらく': 14,
   // 批次 13（2026-07-18，日中同形異義詞＋英語借詞語意漂移）
   'にんじん': 13, 'きしゃ': 13, 'てんじょう': 13, 'かくご': 13, 'あずき': 13,
   'ふとん': 13, 'きもの': 13, 'ぼんさい': 13, 'ばんざい': 13,
