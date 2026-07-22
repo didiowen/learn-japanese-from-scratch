@@ -2,10 +2,17 @@
 title: 學習日誌
 date:
   created: 2026-04-28T18:26:48
-  updated: 2026-07-20T23:35:00
+  updated: 2026-07-22T18:47:00
 alias: log
 ---
 # 學習日誌
+
+## 2026-07-22 18:47:00
+
+新增單字「七味（しちみ）」至 hiragana-quiz.html（批次 15，round 4）與 vocabulary.md 🍱飲食區塊，源自「生七味」提問（生＝なま已學過，七味為新字）。假名皆已學過，無新假名。
+`python3 tools/validate_quiz_data.py` 全部通過 ✓
+
+---
 
 ## 2026-07-20 23:35:00
 
