@@ -2,7 +2,7 @@
 title: 單字
 date:
   created: 2026-04-28T15:00:00
-  updated: 2026-07-23T12:20:00
+  updated: 2026-07-23T12:40:00
 alias: vocab
 ---
 # 單字
@@ -497,6 +497,15 @@ alias: vocab
 | 異なる  | ことなる     | kotonaru     | 不同、相異                          |
 | 日常   | にちじょう    | nichijou     | 日常                                |
 | 消費   | しょうひ     | shouhi       | 消費                                |
+| 公演   | こうえん     | kouen        | 公演、演出（同音字：公園）          |
+| 役割   | やくわり     | yakuwari     | 角色、任務                          |
+| 話題   | わだい      | wadai        | 話題                                |
+| 企画   | きかく      | kikaku       | 企劃                                |
+| 成功   | せいこう     | seikou       | 成功                                |
+| 代表   | だいひょう    | daihyou      | 代表                                |
+| 進展   | しんてん     | shinten      | 進展                                |
+| 制作   | せいさく     | seisaku      | 製作（作品）                        |
+| 創刊   | そうかん     | soukan       | 創刊                                |
 
 ## 💭 情感與個性
 
