@@ -2,7 +2,7 @@
 title: 單字
 date:
   created: 2026-04-28T15:00:00
-  updated: 2026-07-23T13:20:00
+  updated: 2026-07-23T13:40:00
 alias: vocab
 ---
 # 單字
@@ -423,6 +423,9 @@ alias: vocab
 | 小説    | しょうせつ  | shousetsu | 小說（しょ拗音；台語「小説」siáu-soat）|
 | 花火    | はなび     | hanabi   | 煙火（花＋火，連濁 ひ→び；夏天花火大會） |
 | 箱     | はこ      | hako     | 箱子                    |
+| 新聞    | しんぶん    | shinbun  | 報紙                    |
+| 隣     | となり     | tonari   | 隔壁、旁邊                |
+| 壁     | かべ      | kabe     | 牆壁                    |
 | 美術館   | びじゅつかん | bijutsukan | 美術館                  |
 | 国立    | こくりつ    | kokuritsu | 國立                    |
 | 西洋    | せいよう    | seiyou    | 西洋／西方                |
@@ -521,6 +524,16 @@ alias: vocab
 | 孤独   | こどく      | kodoku       | 孤獨                                |
 | 近代   | きんだい     | kindai       | 近代                                |
 | 感性   | かんせい     | kansei       | 感性                                |
+| 存在   | そんざい     | sonzai       | 存在                                |
+| 展覧会  | てんらんかい   | tenrankai    | 展覽會                              |
+| 遊び   | あそび      | asobi        | 玩、遊戲                            |
+| 共同体  | きょうどうたい  | kyoudoutai   | 共同體                              |
+| 展開   | てんかい     | tenkai       | 展開、發展                          |
+| 対比   | たいひ      | taihi        | 對比                                |
+| 態度   | たいど      | taido        | 態度                                |
+| 展示   | てんじ      | tenji        | 展示                                |
+| 肖像   | しょうぞう    | shouzou      | 肖像                                |
+| 架空   | かくう      | kakuu        | 虛構                                |
 
 ## 💭 情感與個性
 
