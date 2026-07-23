@@ -2,7 +2,7 @@
 title: 單字
 date:
   created: 2026-04-28T15:00:00
-  updated: 2026-07-23T12:50:00
+  updated: 2026-07-23T13:00:00
 alias: vocab
 ---
 # 單字
@@ -375,6 +375,7 @@ alias: vocab
 | 山    | やま    | yama     | 山（音讀 さん ← 台語「山」san）|
 | 天    | てん    | ten      | 天空／天（台語文言「天」thian 對應）|
 | 天気   | てんき   | tenki    | 天氣                    |
+| 季節   | きせつ   | kisetsu  | 季節                    |
 | 天国   | てんごく  | tengoku  | 天堂                    |
 | 天才   | てんさい  | tensai   | 天才                    |
 | 夜空   | よぞら   | yozora   | 夜空                    |
@@ -507,6 +508,7 @@ alias: vocab
 | 制作   | せいさく     | seisaku      | 製作（作品）                        |
 | 創刊   | そうかん     | soukan       | 創刊                                |
 | 芝居   | しばい      | shibai       | 戲劇、演戲                          |
+| 生涯   | しょうがい    | shougai      | 一生、生涯                          |
 
 ## 💭 情感與個性
 
