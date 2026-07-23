@@ -2,7 +2,7 @@
 title: 單字
 date:
   created: 2026-04-28T15:00:00
-  updated: 2026-07-23T14:00:00
+  updated: 2026-07-23T14:10:00
 alias: vocab
 ---
 # 單字
@@ -450,6 +450,9 @@ alias: vocab
 | 身体    | からだ     | karada    | 身體                    |
 | 衣装    | いしょう    | ishou     | 服裝、戲服                |
 | 彫刻    | ちょうこく   | choukoku  | 雕刻、雕塑                |
+| 薬     | くすり     | kusuri    | 藥                     |
+| 薬局    | やっきょく   | yakkyoku  | 藥局                    |
+| 処方箋   | しょほうせん  | shohousen | 處方箋                   |
 
 ## 🧑‍💼 動作與狀態
 
@@ -539,6 +542,8 @@ alias: vocab
 | 関係   | かんけい     | kankei       | 關係                                |
 | 物語   | ものがたり    | monogatari   | 故事                                |
 | 空間   | くうかん     | kuukan       | 空間                                |
+| 受付   | うけつけ     | uketsuke     | 櫃檯、受理                          |
+| 処方   | しょほう     | shohou       | 開處方                              |
 
 ## 💭 情感與個性
 
