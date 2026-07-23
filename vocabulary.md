@@ -2,7 +2,7 @@
 title: 單字
 date:
   created: 2026-04-28T15:00:00
-  updated: 2026-07-22T19:10:00
+  updated: 2026-07-23T10:00:00
 alias: vocab
 ---
 # 單字
@@ -419,6 +419,13 @@ alias: vocab
 | 小説    | しょうせつ  | shousetsu | 小說（しょ拗音；台語「小説」siáu-soat）|
 | 花火    | はなび     | hanabi   | 煙火（花＋火，連濁 ひ→び；夏天花火大會） |
 | 箱     | はこ      | hako     | 箱子                    |
+| 美術館   | びじゅつかん | bijutsukan | 美術館                  |
+| 国立    | こくりつ    | kokuritsu | 國立                    |
+| 西洋    | せいよう    | seiyou    | 西洋／西方                |
+| 広場    | ひろば     | hiroba    | 廣場                    |
+| 教会    | きょうかい   | kyoukai   | 教會                    |
+| 市民    | しみん     | shimin    | 市民                    |
+| 馬車    | ばしゃ     | basha     | 馬車                    |
 
 ## 🧑‍💼 動作與狀態
 

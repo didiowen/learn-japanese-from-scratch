@@ -835,6 +835,13 @@ const vocabCards = [
   { meaning: '回國', display: 'きこく', reading: 'kikoku', kanji: '帰国', topic: 'daily', round: 2 },
   { meaning: '平安無事', display: 'ぶじ', reading: 'buji', kanji: '無事', topic: 'daily', round: 5 },
   { meaning: '非常滿足', display: 'だいまんぞく', reading: 'daimanzoku', kanji: '大満足', topic: 'daily', round: 4 },
+  { meaning: '美術館', display: 'びじゅつかん', reading: 'bijutsukan', kanji: '美術館', topic: 'daily', round: 5 },
+  { meaning: '國立', display: 'こくりつ', reading: 'kokuritsu', kanji: '国立', topic: 'daily', round: 4 },
+  { meaning: '西洋／西方', display: 'せいよう', reading: 'seiyou', kanji: '西洋', topic: 'daily', round: 3 },
+  { meaning: '廣場', display: 'ひろば', reading: 'hiroba', kanji: '広場', topic: 'daily', round: 5 },
+  { meaning: '教會', display: 'きょうかい', reading: 'kyoukai', kanji: '教会', topic: 'daily', round: 3 },
+  { meaning: '市民', display: 'しみん', reading: 'shimin', kanji: '市民', topic: 'daily', round: 4 },
+  { meaning: '馬車', display: 'ばしゃ', reading: 'basha', kanji: '馬車', topic: 'daily', round: 5 },
 ];
 
 // ═══════════════════════════════
@@ -933,6 +940,8 @@ const alreadyKnown = new Set([
 // 最近加入的單字批次（數字越大＝越近加入＝越優先出現）
 // 規則：同一天加入的算同一批；新增單字時若該日已有批次直接沿用，否則用最新批次號 + 1
 const recentBatch = {
+  // 批次 16（2026-07-23）
+  'びじゅつかん': 16, 'こくりつ': 16, 'せいよう': 16, 'ひろば': 16, 'きょうかい': 16, 'しみん': 16, 'ばしゃ': 16,
   // 批次 15（2026-07-22）
   'しちみ': 15, 'ちしりょう': 15, 'せっしゅ': 15, 'きこく': 15, 'ぶじ': 15, 'だいまんぞく': 15,
   // 批次 14（2026-07-20）
