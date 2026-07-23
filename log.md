@@ -2,10 +2,17 @@
 title: 學習日誌
 date:
   created: 2026-04-28T18:26:48
-  updated: 2026-07-23T14:20:00
+  updated: 2026-07-23T14:30:00
 alias: log
 ---
 # 學習日誌
+
+## 2026-07-23 14:30:00
+
+vocabulary.md 新增「💊 醫藥與健康」區塊（插於 🚆交通・旅遊 與 🌸自然與事物 之間），將原本分散在 🌸自然與事物（薬、薬局、処方箋）與 🧑‍💼動作與狀態（受付、処方）的藥局招牌 5 字整併移入。僅為 vocabulary.md 分類整理，未變動 hiragana-quiz.html 任何單字內容。
+`python3 tools/validate_quiz_data.py` 全部通過 ✓
+
+---
 
 ## 2026-07-23 14:20:00
 
