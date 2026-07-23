@@ -2,7 +2,7 @@
 title: 單字
 date:
   created: 2026-04-28T15:00:00
-  updated: 2026-07-23T13:00:00
+  updated: 2026-07-23T13:20:00
 alias: vocab
 ---
 # 單字
@@ -429,6 +429,8 @@ alias: vocab
 | 広場    | ひろば     | hiroba    | 廣場                    |
 | 教会    | きょうかい   | kyoukai   | 教會                    |
 | 市民    | しみん     | shimin    | 市民                    |
+| 中央    | ちゅうおう   | chuuou    | 中央                    |
+| 都市    | とし      | toshi     | 都市、城市                |
 | 馬車    | ばしゃ     | basha     | 馬車                    |
 | 観劇    | かんげき    | kangeki   | 看戲、觀劇                |
 | 建物    | たてもの    | tatemono  | 建築物                  |
@@ -509,6 +511,16 @@ alias: vocab
 | 創刊   | そうかん     | soukan       | 創刊                                |
 | 芝居   | しばい      | shibai       | 戲劇、演戲                          |
 | 生涯   | しょうがい    | shougai      | 一生、生涯                          |
+| 登場   | とうじょう    | toujou       | 登場、出現                          |
+| 文化   | ぶんか      | bunka        | 文化                                |
+| 姿勢   | しせい      | shisei       | 姿勢                                |
+| 象徴   | しょうちょう   | shouchou     | 象徵                                |
+| 主題   | しゅだい     | shudai       | 主題                                |
+| 公共   | こうきょう    | koukyou      | 公共                                |
+| 曖昧   | あいまい     | aimai        | 曖昧、模糊                          |
+| 孤独   | こどく      | kodoku       | 孤獨                                |
+| 近代   | きんだい     | kindai       | 近代                                |
+| 感性   | かんせい     | kansei       | 感性                                |
 
 ## 💭 情感與個性
 
