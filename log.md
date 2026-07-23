@@ -2,10 +2,17 @@
 title: 學習日誌
 date:
   created: 2026-04-28T18:26:48
-  updated: 2026-07-23T10:22:00
+  updated: 2026-07-23T10:35:00
 alias: log
 ---
 # 學習日誌
+
+## 2026-07-23 10:35:00
+
+新增單字「観劇（かんげき）」「議論（ぎろん）」至 hiragana-quiz.html（批次 16 續）與 vocabulary.md，補齊美術館展品說明牌照片中先前跳過的兩個詞。假名皆已學過，無新假名。
+`python3 tools/validate_quiz_data.py` 全部通過 ✓
+
+---
 
 ## 2026-07-23 10:22:00
 
