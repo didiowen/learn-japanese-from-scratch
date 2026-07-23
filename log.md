@@ -2,10 +2,17 @@
 title: 學習日誌
 date:
   created: 2026-04-28T18:26:48
-  updated: 2026-07-23T12:40:00
+  updated: 2026-07-23T12:50:00
 alias: log
 ---
 # 學習日誌
+
+## 2026-07-23 12:50:00
+
+新增單字「芝居（しばい）」至 hiragana-quiz.html（批次 16 續）與 vocabulary.md（🧑‍💼動作與狀態）。補充 Steinlen「シャ・ノワール巡業公演」候選詞中原本較少用的一個。假名皆已學過，無新假名。
+`python3 tools/validate_quiz_data.py` 全部通過 ✓
+
+---
 
 ## 2026-07-23 12:40:00
 

@@ -2,7 +2,7 @@
 title: 單字
 date:
   created: 2026-04-28T15:00:00
-  updated: 2026-07-23T12:40:00
+  updated: 2026-07-23T12:50:00
 alias: vocab
 ---
 # 單字
@@ -506,6 +506,7 @@ alias: vocab
 | 進展   | しんてん     | shinten      | 進展                                |
 | 制作   | せいさく     | seisaku      | 製作（作品）                        |
 | 創刊   | そうかん     | soukan       | 創刊                                |
+| 芝居   | しばい      | shibai       | 戲劇、演戲                          |
 
 ## 💭 情感與個性
 
