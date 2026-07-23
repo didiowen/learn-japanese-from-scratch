@@ -2,7 +2,7 @@
 title: 單字
 date:
   created: 2026-04-28T15:00:00
-  updated: 2026-07-23T13:40:00
+  updated: 2026-07-23T14:00:00
 alias: vocab
 ---
 # 單字
@@ -430,6 +430,7 @@ alias: vocab
 | 国立    | こくりつ    | kokuritsu | 國立                    |
 | 西洋    | せいよう    | seiyou    | 西洋／西方                |
 | 広場    | ひろば     | hiroba    | 廣場                    |
+| 酒場    | さかば     | sakaba    | 酒館、酒場                |
 | 教会    | きょうかい   | kyoukai   | 教會                    |
 | 市民    | しみん     | shimin    | 市民                    |
 | 中央    | ちゅうおう   | chuuou    | 中央                    |
@@ -535,6 +536,9 @@ alias: vocab
 | 展示   | てんじ      | tenji        | 展示                                |
 | 肖像   | しょうぞう    | shouzou      | 肖像                                |
 | 架空   | かくう      | kakuu        | 虛構                                |
+| 関係   | かんけい     | kankei       | 關係                                |
+| 物語   | ものがたり    | monogatari   | 故事                                |
+| 空間   | くうかん     | kuukan       | 空間                                |
 
 ## 💭 情感與個性
 
