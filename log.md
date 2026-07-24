@@ -2,10 +2,17 @@
 title: 學習日誌
 date:
   created: 2026-04-28T18:26:48
-  updated: 2026-07-24T18:30:00
+  updated: 2026-07-24T18:40:00
 alias: log
 ---
 # 學習日誌
+
+## 2026-07-24 18:40:00
+
+新增單字「台風（たいふう，round 5）」至 vocabulary.md 🌸自然與事物（緊接在風之後）、「神社（じんじゃ，round 3）」至 🚆交通・旅遊。兩字皆源自先前解說「神風」漢字時延伸的追問。同步加入 hiragana-quiz.html vocabCards＋recentBatch（批次 17 續）。
+`python3 tools/validate_quiz_data.py` 全部通過 ✓
+
+---
 
 ## 2026-07-24 18:30:00
 
