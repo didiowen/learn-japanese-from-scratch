@@ -2,7 +2,7 @@
 title: 單字
 date:
   created: 2026-04-28T15:00:00
-  updated: 2026-07-23T15:00:00
+  updated: 2026-07-24T18:20:00
 alias: vocab
 ---
 # 單字
@@ -186,6 +186,7 @@ alias: vocab
 | 定食 | ていしょく | teishoku | 套餐 |
 | 盛り合わせ | もりあわせ | moriawase | 拼盤 |
 | 大盛り | おおもり | oomori | 大份 |
+| 合い掛け | あいがけ | aigake | 兩種醬汁／配料混搭一份（合う＋掛ける；咖哩店常見，一份吃兩種口味）|
 | 辛い | からい | karai | 辣的 |
 | 甘い | あまい | amai | 甜的 |
 | 生 | なま | nama | 生的／新鮮 |
@@ -633,6 +634,11 @@ alias: vocab
 | フルーツ | furūtsu | 水果 | fruits |
 | グリル | guriru | 烤架 | grill |
 | ミルク | miruku | 牛奶／奶精 | milk |
+| チキン | chikin | 雞肉 | chicken |
+| ライス | raisu | 白飯 | rice |
+| ナッツ | nattsu | 堅果 | nuts |
+| カカオ | kakao | 可可 | cacao |
+| チャイ | chai | 印度香料奶茶 | chai |
 | メニュー | menyū | 菜單 | menu |
 
 ### 交通・場所

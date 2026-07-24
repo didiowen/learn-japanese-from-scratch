@@ -454,6 +454,11 @@ const vocabCards = [
   { word: 'ドリップコーヒー', reading: 'dorippu kōhī', meaning: '濾掛咖啡', hint: 'drip coffee 音譯；ド+リ+ッ+プ+コ+ー+ヒ+ー', topic: 'food', round: 5 },
   { word: 'ノートブック', reading: 'nōtobukku', meaning: '筆記本', hint: 'notebook 音譯；ノ+ー+ト+ブ+ッ+ク，ッ促音', topic: 'daily', round: 5 },
   { word: 'マンゴー', reading: 'mangō', meaning: '芒果', hint: 'mango 音譯；マ+ン+ゴ+ー，マ第四輪', topic: 'food', round: 4 },
+  { word: 'チキン', reading: 'chikin', meaning: '雞肉', hint: 'chicken 音譯；チ+キ+ン', topic: 'food', round: 4 },
+  { word: 'ライス', reading: 'raisu', meaning: '白飯', hint: 'rice 音譯；ラ+イ+ス', topic: 'food', round: 3 },
+  { word: 'ナッツ', reading: 'nattsu', meaning: '堅果', hint: 'nuts 音譯；ナ+ッ+ツ，ッ促音', topic: 'food', round: 5 },
+  { word: 'カカオ', reading: 'kakao', meaning: '可可', hint: 'cacao 音譯；カ+カ+オ', topic: 'food', round: 2 },
+  { word: 'チャイ', reading: 'chai', meaning: '印度香料奶茶', hint: 'chai 音譯；チャ拗音（チ+小ャ）+イ', topic: 'food', round: 4 },
 ];
 
 // 本來就會的單字（降低頻率）
@@ -464,6 +469,8 @@ const alreadyKnown = new Set([
 // 最近加入的單字批次（數字越大＝越近加入＝越優先出現）
 // 規則：同一天加入的算同一批
 const recentBatch = {
+  // 批次 9（2026-07-24）
+  'チキン': 9, 'ライス': 9, 'ナッツ': 9, 'カカオ': 9, 'チャイ': 9,
   // 批次 8（2026-07-22）
   'マンゴー': 8,
   // 批次 7（2026-07-20）

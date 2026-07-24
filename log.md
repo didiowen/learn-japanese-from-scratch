@@ -2,10 +2,17 @@
 title: 學習日誌
 date:
   created: 2026-04-28T18:26:48
-  updated: 2026-07-23T15:00:00
+  updated: 2026-07-24T18:20:00
 alias: log
 ---
 # 學習日誌
+
+## 2026-07-24 18:20:00
+
+源自咖哩店菜單（チキンキーマ・ジャークチキン）與咖啡廳菜單（オーツミルクコーヒー・青森りんごジュース）兩張照片。新增至 vocabulary.md／katakana.md／katakana-quiz.html（批次 9）：チキン（雞肉，round 4）、ライス（白飯，round 3）、ナッツ（堅果，round 5）、カカオ（可可，round 2）、チャイ（印度香料奶茶，round 4）。另新增和語「合い掛け（あいがけ，兩種配料混搭）」至 vocabulary.md 🍽️點餐與餐廳／hiragana-quiz.html（批次 17，round 2）。りんご（蘋果）使用者表示本來就會，改列入 already-known.md 與 hiragana-quiz.html alreadyKnown。
+`python3 tools/validate_quiz_data.py` 全部通過 ✓
+
+---
 
 ## 2026-07-23 15:00:00
 
