@@ -2,10 +2,17 @@
 title: 學習日誌
 date:
   created: 2026-04-28T18:26:48
-  updated: 2026-07-23T14:50:00
+  updated: 2026-07-23T15:00:00
 alias: log
 ---
 # 學習日誌
+
+## 2026-07-23 15:00:00
+
+新增單字「温泉（おんせん）」至 vocabulary.md 🌸自然與事物與 hiragana-quiz.html（批次 16 續，round 3）。源自越後湯澤駅照片，先前僅提供候選字未確認，經使用者詢問「溫泉也加了嗎」後確認補加。
+`python3 tools/validate_quiz_data.py` 全部通過 ✓
+
+---
 
 ## 2026-07-23 14:50:00
 
