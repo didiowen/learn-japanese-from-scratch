@@ -2,10 +2,16 @@
 title: 學習日誌
 date:
   created: 2026-04-28T18:26:48
-  updated: 2026-07-24T19:55:00
+  updated: 2026-07-24T20:00:00
 alias: log
 ---
 # 學習日誌
+
+## 2026-07-24 20:00:00
+
+補上 BLUE MOON 海報中先前擱置的三個單字：米国（べいこく，美國；音譯漢字用「米」非「美」，源自「亜米利加」簡稱）、小麦（こむぎ，小麥）、クラフト（kurafuto，工藝／クラフトビール＝精釀啤酒）。新增至 vocabulary.md（米国→自然與事物、小麦→飲食、クラフト→外來語飲食飲料）、katakana.md（クラフト，第五輪單字表）、hiragana-quiz.html（べいこく round5、こむぎ round4，批次17）、katakana-quiz.html（クラフト round5，批次9）。跑 validate_quiz_data.py 全部通過。
+
+---
 
 ## 2026-07-24 19:55:00
 
