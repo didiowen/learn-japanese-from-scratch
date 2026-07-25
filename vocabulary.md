@@ -2,7 +2,7 @@
 title: 單字
 date:
   created: 2026-04-28T15:00:00
-  updated: 2026-07-24T18:40:00
+  updated: 2026-07-24T19:30:00
 alias: vocab
 ---
 # 單字
@@ -174,6 +174,10 @@ alias: vocab
 | 昆布      | こんぶ    | konbu        | 昆布                                    |
 | 垂れ      | たれ     | tare         | 醬汁（沾醬、淋醬）                        |
 | 七味      | しちみ    | shichimi     | 七味唐辛子的簡稱（七種辛香料調味粉）；生七味（なましちみ）是膏狀濕潤版 |
+| 紅茶      | こうちゃ   | koucha       | 紅茶 |
+|          | なす     | nasu         | 茄子 |
+|          | おつまみ   | otsumami     | 下酒菜／小菜 |
+| 海藻／海そう | かいそう   | kaisou       | 海藻 |
 
 ## 🍽️ 點餐與餐廳
 
@@ -194,6 +198,9 @@ alias: vocab
 | 和風 | わふう | wafuu | 日式風格（和＋風；對比洋風；台語「風」hong→ふう）|
 | 洋風 | ようふう | youfuu | 西式風格（洋＋風；洋＝外來的）|
 | 専門店 | せんもんてん | senmonten | 專賣店（専門＋店；台語「専門」tsuan-mn̂g 高度對應）|
+| 単品 | たんぴん | tanpin | 單點（不含套餐；単＝單一，品＝品項）|
+| 料理 | りょうり | ryouri | 料理／菜餚 |
+|  | または | mata wa | 或者（また＋は；書面／選單常見，口語多用か）|
 
 ### 點餐會話
 
@@ -642,6 +649,17 @@ alias: vocab
 | カカオ | kakao | 可可 | cacao |
 | チャイ | chai | 印度香料奶茶 | chai |
 | メニュー | menyū | 菜單 | menu |
+| サラダ | sarada | 沙拉 | salad |
+| ミニ | mini | 迷你 | mini |
+| メイン | mein | 主餐／主要 | main |
+| プラス | purasu | 加購／加點 | plus |
+| シーフード | shiifūdo | 海鮮 | seafood |
+| グラタン | guratan | 焗烤 | gratin |
+| ドリア | doria | 焗飯 | doria（義大利語）|
+| スパゲティ | supagetii | 義大利麵 | spaghetti |
+| トマト | tomato | 番茄 | tomato |
+| プレート | purēto | 拼盤／餐盤 | plate |
+| ヘルシー | herushii | 健康的 | healthy |
 
 ### 交通・場所
 

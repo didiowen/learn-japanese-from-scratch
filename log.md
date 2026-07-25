@@ -2,10 +2,16 @@
 title: 學習日誌
 date:
   created: 2026-04-28T18:26:48
-  updated: 2026-07-24T19:10:00
+  updated: 2026-07-24T19:30:00
 alias: log
 ---
 # 學習日誌
+
+## 2026-07-24 19:30:00
+
+從兩張 Hinoya 午間套餐菜單照片萃取 18 個新單字，使用者確認新增（含另問または字源後追加確認）。片假名 11 個（サラダ、ミニ、メイン、プラス、シーフード、グラタン、ドリア、スパゲティ、トマト、プレート、ヘルシー）加入 katakana.md（第四／五輪單字表）、vocabulary.md（🔤外來語→飲食飲料）、katakana-quiz.html（vocabCards＋recentBatch 批次9）。平假名／漢字詞 7 個（料理、または、紅茶、単品、なす、おつまみ、海藻）加入 vocabulary.md（🍽️點餐與餐廳→菜單用語、🍱飲食）、hiragana-quiz.html（vocabCards＋recentBatch 批次17）。全部依 tools/validate_quiz_data.py 重算 round 並通過驗證。
+
+---
 
 ## 2026-07-24 19:10:00
 
