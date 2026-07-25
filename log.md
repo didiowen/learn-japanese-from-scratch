@@ -2,10 +2,14 @@
 title: 學習日誌
 date:
   created: 2026-04-28T18:26:48
-  updated: 2026-07-24T20:50:00
+  updated: 2026-07-24T21:00:00
 alias: log
 ---
 # 學習日誌
+
+## 2026-07-24 21:00:00
+
+使用者提供輕井沢鐵板燒限定調酒單照片，翻譯 Alcohol／Non-Alcohol 兩區四款調酒（Muscat Fizz、Coconut & Matcha、Cranberry Apple、Vienna Coffee）。牛乳、コーヒー、林檎、ワイン已學過；使用者核准新增 カクテル（雞尾酒）、ウイスキー（威士忌）、ブランデー（白蘭地）、ぶどう（葡萄）4個候選（未選用ご用意／用意）。加入 katakana.md（單字（全字表皆可用））、vocabulary.md（🔤外來語→飲食飲料、🍱飲食）、katakana-quiz.html（vocabCards＋recentBatch 批次9）、hiragana-quiz.html（ぶどう vocabCards＋recentBatch 批次17），跑過 tools/validate_quiz_data.py 全部通過。
 
 ## 2026-07-24 20:50:00
 
