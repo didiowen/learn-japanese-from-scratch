@@ -2,7 +2,7 @@
 title: 會話
 date:
   created: 2026-04-28T10:18:31
-  updated: 2026-07-24T19:00:00
+  updated: 2026-07-24T20:50:00
 ---
 # 會話
 
@@ -196,6 +196,8 @@ date:
 | 有素食菜單嗎？  | ベジタリアンメニューはありますか？             | bejitarian menyuu wa arimasu ka      | 有素食菜單嗎？          |
 
 **離開時**：ごちそうさまでした（gochisousama deshita，多謝款待）
+
+**感謝招待**：お招きいただきありがとうございました（o-maneki itadaki arigatou gozaimashita，謝謝您的招待，較正式）／招待してくれてありがとう（shoutai shite kurete arigatou，口語）
 
 ---
 

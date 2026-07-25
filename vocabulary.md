@@ -2,7 +2,7 @@
 title: 單字
 date:
   created: 2026-04-28T15:00:00
-  updated: 2026-07-24T20:30:00
+  updated: 2026-07-24T20:50:00
 alias: vocab
 ---
 # 單字
@@ -504,6 +504,7 @@ alias: vocab
 | 演奏会  | えんそうかい  | ensoukai     | 演奏會（正式音樂會）                    |
 | 一緒に  | いっしょに   | issho ni     | 一起                                |
 | 行く    | いく        | iku          | 去                                  |
+| 招待   | しょうたい   | shoutai      | 招待／邀請（招待する＝招待、邀請）|
 | 飛ぶ    | とぶ        | tobu         | 飛                                  |
 | 叶える   | かなえる     | kanaeru      | 實現（願望）                          |
 | 試験    | しけん       | shiken       | 考試                                |
