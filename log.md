@@ -2,10 +2,14 @@
 title: 學習日誌
 date:
   created: 2026-04-28T18:26:48
-  updated: 2026-07-24T21:20:00
+  updated: 2026-07-24T21:25:00
 alias: log
 ---
 # 學習日誌
+
+## 2026-07-24 21:25:00
+
+使用者補充忘記了朝食「繭箱の御馳走」裡的あさり（蛤蜊，あさりの生姜煮）。加入 vocabulary.md（🍱飲食）、hiragana-quiz.html（vocabCards＋recentBatch 批次17），跑過 tools/validate_quiz_data.py 全部通過。
 
 ## 2026-07-24 21:20:00
 
