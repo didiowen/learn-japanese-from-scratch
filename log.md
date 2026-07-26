@@ -2,10 +2,14 @@
 title: 學習日誌
 date:
   created: 2026-04-28T18:26:48
-  updated: 2026-07-24T21:15:00
+  updated: 2026-07-24T21:20:00
 alias: log
 ---
 # 學習日誌
+
+## 2026-07-24 21:20:00
+
+使用者補充忘記了朝食沙拉裡的ズッキーニ（櫛瓜）。加入 katakana.md（單字）、vocabulary.md（🔤外來語→飲食飲料）、katakana-quiz.html（vocabCards＋recentBatch 批次9），跑過 tools/validate_quiz_data.py 全部通過。
 
 ## 2026-07-24 21:15:00
 

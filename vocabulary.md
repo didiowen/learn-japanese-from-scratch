@@ -2,7 +2,7 @@
 title: 單字
 date:
   created: 2026-04-28T15:00:00
-  updated: 2026-07-24T21:15:00
+  updated: 2026-07-24T21:20:00
 alias: vocab
 ---
 # 單字
@@ -684,6 +684,7 @@ alias: vocab
 | ブランデー | burandē | 白蘭地 | brandy |
 | ピーマン | piiman | 青椒／甜椒 | piment（法文）|
 | ローストビーフ | roosutobiifu | 烤牛肉 | roast beef |
+| ズッキーニ | zukkīni | 櫛瓜／西葫蘆 | zucchini |
 
 ### 交通・場所
 
