@@ -2,7 +2,7 @@
 title: 單字
 date:
   created: 2026-04-28T15:00:00
-  updated: 2026-07-24T21:00:00
+  updated: 2026-07-24T21:15:00
 alias: vocab
 ---
 # 單字
@@ -182,6 +182,10 @@ alias: vocab
 | 半熟卵    | はんじゅくたまご | hanjuku tamago | 溏心蛋／半熟蛋（卵已學過）|
 | 香の物    | こうのもの  | kounomono    | 醃漬小菜（較正式的「漬物」說法）|
 |          | ぶどう    | budou        | 葡萄（漢字「葡萄」很少用，日常都寫假名；ワイン＝葡萄酒已學過，這是水果本身）|
+| 舞茸      | まいたけ   | maitake      | 舞菇 |
+|          | しめじ    | shimeji      | 鴻喜菇（無常用漢字，日常寫假名）|
+| 朝食      | ちょうしょく | choushoku    | 早餐（書面語／菜單用語，口語較常用「朝ごはん」）|
+| 果物      | くだもの   | kudamono     | 水果（比フルーツ更正式的日常說法）|
 
 ## 🍽️ 點餐與餐廳
 
@@ -506,6 +510,7 @@ alias: vocab
 | 一緒に  | いっしょに   | issho ni     | 一起                                |
 | 行く    | いく        | iku          | 去                                  |
 | 招待   | しょうたい   | shoutai      | 招待／邀請（招待する＝招待、邀請）|
+| 静養   | せいよう   | seiyou       | 靜養／休養（與「西洋」せいよう同音異義，注意分辨）|
 | 飛ぶ    | とぶ        | tobu         | 飛                                  |
 | 叶える   | かなえる     | kanaeru      | 實現（願望）                          |
 | 試験    | しけん       | shiken       | 考試                                |
@@ -677,6 +682,8 @@ alias: vocab
 | カクテル | kakuteru | 雞尾酒 | cocktail |
 | ウイスキー | uisukī | 威士忌 | whiskey |
 | ブランデー | burandē | 白蘭地 | brandy |
+| ピーマン | piiman | 青椒／甜椒 | piment（法文）|
+| ローストビーフ | roosutobiifu | 烤牛肉 | roast beef |
 
 ### 交通・場所
 
