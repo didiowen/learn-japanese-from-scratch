@@ -2,10 +2,14 @@
 title: 學習日誌
 date:
   created: 2026-04-28T18:26:48
-  updated: 2026-07-24T22:00:00
+  updated: 2026-07-24T22:05:00
 alias: log
 ---
 # 學習日誌
+
+## 2026-07-24 22:05:00
+
+使用者確認要學紫蘇跟大葉。紫蘇（しそ）＝植物統稱（分青紫蘇／赤紫蘇兩種）；大葉（おおば）＝青紫蘇葉子的料理／商品名稱，生魚片常見配菜（長音例外用お非う，跟大きい・遠い同類）。兩字皆加入 vocabulary.md（🍱飲食，接在洋菓子之後）與 hiragana-quiz.html（vocabCards＋recentBatch 批次17），跑過 tools/validate_quiz_data.py 全部通過。
 
 ## 2026-07-24 22:00:00
 
