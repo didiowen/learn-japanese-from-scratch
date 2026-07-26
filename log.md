@@ -2,10 +2,14 @@
 title: 學習日誌
 date:
   created: 2026-04-28T18:26:48
-  updated: 2026-07-24T21:45:00
+  updated: 2026-07-24T21:50:00
 alias: log
 ---
 # 學習日誌
+
+## 2026-07-24 21:50:00
+
+使用者詢問懷石菜單裡「水菓子（みずがし）」的意思，說明為餐後甜點／水果收尾（懷石料理古用法，水＋菓子連濁），使用者要求單字跟漢字都加。加入 vocabulary.md（🍱飲食）；新增「菓」字到 kanji.md（其他常用表，か／點心糕點，同「果」異體字）；加入 hiragana-quiz.html（vocabCards＋recentBatch 批次17），跑過 tools/validate_quiz_data.py 全部通過。
 
 ## 2026-07-24 21:45:00
 
