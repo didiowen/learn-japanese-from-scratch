@@ -2,10 +2,14 @@
 title: 學習日誌
 date:
   created: 2026-04-28T18:26:48
-  updated: 2026-07-24T22:05:00
+  updated: 2026-07-24T22:10:00
 alias: log
 ---
 # 學習日誌
+
+## 2026-07-24 22:10:00
+
+使用者要求把すだち（酢橘）拆成酢、橘兩個漢字學。酢（さく／す，醋/酸，音読み與「作」「昨」同聲符「乍」）、橘（きつ／たちばな，柑橘，たちばな為固有詞無台語對應，日本古代四大貴族「源平藤橘」之一），新增到 kanji.md（其他常用表）。すだち（酢橘）本身加入 vocabulary.md（🍱飲食）。同步加入 hiragana-quiz.html（vocabCards＋recentBatch 批次17），跑過 tools/validate_quiz_data.py 全部通過。另回答使用者「帆立貝／干貝之前學過嗎」：查證後皆未學過（vocabulary.md／already-known.md／quiz 檔皆無紀錄），本次未加入詞彙。
 
 ## 2026-07-24 22:05:00
 
