@@ -2,10 +2,14 @@
 title: 學習日誌
 date:
   created: 2026-04-28T18:26:48
-  updated: 2026-07-24T22:10:00
+  updated: 2026-07-24T22:15:00
 alias: log
 ---
 # 學習日誌
+
+## 2026-07-24 22:15:00
+
+使用者確認先學帆立貝（ほたてがい）就好。帆立貝＝扇貝（生鮮，也常簡稱片假名ホタテ；乾燥扇貝柱另有詞「貝柱」かいばしら，對應中文「干貝」，本次未加入）。加入 vocabulary.md（🍱飲食，接在酢橘之後）與 hiragana-quiz.html（vocabCards＋recentBatch 批次17），跑過 tools/validate_quiz_data.py 全部通過。
 
 ## 2026-07-24 22:10:00
 
