@@ -2,10 +2,18 @@
 title: 學習日誌
 date:
   created: 2026-04-28T18:26:48
-  updated: 2026-07-27T08:40:00
+  updated: 2026-07-27T09:21:00
 alias: log
 ---
 # 學習日誌
+
+## 2026-07-27 09:21:00
+
+使用者從菜單照片問「紅茶ジュレ」的ジュレ是什麼，確認加入ジュレ（法文gelée音譯，果凍，質地較軟嫩滑順，多見高級甜點；⚠️與ゼリー同義但語感不同——ゼリー是日常/超商用語）至 katakana.md（單字表）與 katakana-quiz.html（vocabCards＋新開recentBatch批次10）。另確認加入杏仁豆腐相關單字，依使用者要求拆成杏仁（あんにん，特殊複合詞讀音，非あんず）與豆腐（とうふ）兩個獨立詞條，加入 vocabulary.md（🍱飲食）與 hiragana-quiz.html（vocabCards＋recentBatch批次17）。跑過 tools/validate_quiz_data.py 全部通過。
+
+## 2026-07-27 09:10:00
+
+使用者確認きゅう的第三個同音字「旧」（舊/以前的，旧友・旧姓・旧正月），加入 kanji.md（形容・狀態表），台語 kiū ✅ 文言音對應。另回答杏仁（あんにん）、果凍（ゼリー）的日文說法，待使用者確認是否加入 vocabulary.md／katakana.md。
 
 ## 2026-07-27 08:40:00
 

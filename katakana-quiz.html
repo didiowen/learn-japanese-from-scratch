@@ -478,6 +478,7 @@ const vocabCards = [
   { word: 'ピーマン', reading: 'piiman', meaning: '青椒／甜椒', hint: 'piment 音譯（法文）；ピ+ー+マ+ン', topic: 'food', round: 5 },
   { word: 'ローストビーフ', reading: 'roosutobiifu', meaning: '烤牛肉', hint: 'roast beef 音譯；ロ+ー+ス+ト+ビ+ー+フ', topic: 'food', round: 5 },
   { word: 'ズッキーニ', reading: 'zukkīni', meaning: '櫛瓜／西葫蘆', hint: 'zucchini 音譯；ズ+ッ+キ+ー+ニ', topic: 'food', round: 5 },
+  { word: 'ジュレ', reading: 'jure', meaning: '果凍（法式，質地更軟嫩滑順）', hint: '法文gelée音譯；⚠️與ゼリー（英文jelly）語感不同，ジュレ多見高級甜點', topic: 'food', round: 3 },
 ];
 
 // 本來就會的單字（降低頻率）
@@ -488,6 +489,8 @@ const alreadyKnown = new Set([
 // 最近加入的單字批次（數字越大＝越近加入＝越優先出現）
 // 規則：同一天加入的算同一批
 const recentBatch = {
+  // 批次 10（2026-07-27）
+  'ジュレ': 10,
   // 批次 9（2026-07-24）
   'チキン': 9, 'ライス': 9, 'ナッツ': 9, 'カカオ': 9, 'チャイ': 9,
   'サラダ': 9, 'ミニ': 9, 'メイン': 9, 'プラス': 9, 'シーフード': 9, 'グラタン': 9, 'ドリア': 9, 'スパゲティ': 9, 'トマト': 9, 'プレート': 9, 'ヘルシー': 9, 'クラフト': 9, 'カクテル': 9, 'ウイスキー': 9, 'ブランデー': 9, 'ピーマン': 9, 'ローストビーフ': 9, 'ズッキーニ': 9,
