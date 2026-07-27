@@ -2,10 +2,14 @@
 title: 學習日誌
 date:
   created: 2026-04-28T18:26:48
-  updated: 2026-07-27T08:20:00
+  updated: 2026-07-27T08:25:00
 alias: log
 ---
 # 學習日誌
+
+## 2026-07-27 08:25:00
+
+使用者確認加入お浸し（おひたし，涼拌燙青菜；壬生菜のお浸し為菜單原詞）以及其動詞原形「浸す」（ひたす，浸泡）。兩者皆加入 vocabulary.md（お浸し→🍱飲食、浸す→🧑‍💼動作與狀態）與 hiragana-quiz.html（vocabCards＋recentBatch 批次17），跑過 tools/validate_quiz_data.py 全部通過。
 
 ## 2026-07-27 08:20:00
 
