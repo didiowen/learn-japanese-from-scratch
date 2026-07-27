@@ -140,6 +140,14 @@ const recentBatch = {
 - **無障礙**：最小字體 18px，WCAG AA，互動目標 ≥ 44×44px，尊重 prefers-reduced-motion
 - **禁止**：gradient text、glassmorphism、等高卡片格、side-stripe border
 
+### commit／push 節奏
+
+新增假名或單字時，**不要每加一個新字（或一個小批次）就馬上 commit＋push**。
+
+- 檔案修改（`vocabulary.md`／`kanji.md`／`hiragana-quiz.html`／`katakana-quiz.html`／`log.md`）、驗證（`validate_quiz_data.py`）、frontmatter 更新，每次新增仍照常執行
+- 但 commit／push 延後：累積同一次對話中的**多筆新增**後，主動詢問使用者是否要 commit＋push，取得明確回覆才動作
+- 使用者若單次訊息就明確要求「commit」「push」，直接照做，不需再問
+
 ### Push 後立即建 PR 並合併
 每次 `git push` 後，若該分支**尚無開啟的 PR**，立即用 GitHub MCP 工具建立並**直接合併**，不需詢問使用者。smoke test 通過即視為可合併。
 
