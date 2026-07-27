@@ -2,10 +2,14 @@
 title: 學習日誌
 date:
   created: 2026-04-28T18:26:48
-  updated: 2026-07-27T08:10:00
+  updated: 2026-07-27T08:15:00
 alias: log
 ---
 # 學習日誌
+
+## 2026-07-27 08:15:00
+
+使用者確認新增牛蒡（ごぼう，熟字訓）、胡椒（こしょう）、黒胡椒（くろこしょう）、山芋（やまいも，通用詞，另有長芋・自然薯品種區分）至 vocabulary.md（🍱飲食）與 hiragana-quiz.html（vocabCards＋recentBatch 批次17），跑過 tools/validate_quiz_data.py 全部通過。另新增「芋」漢字到 kanji.md（自然・植物表）：音読み う（罕用）、訓読み いも，台語 ōo ✅ 對應罕用音読み。
 
 ## 2026-07-27 08:10:00
 
