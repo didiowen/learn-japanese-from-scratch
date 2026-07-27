@@ -2,10 +2,14 @@
 title: 學習日誌
 date:
   created: 2026-04-28T18:26:48
-  updated: 2026-07-27T08:25:00
+  updated: 2026-07-27T08:35:00
 alias: log
 ---
 # 學習日誌
+
+## 2026-07-27 08:35:00
+
+使用者確認加入おから（豆渣，菜單雅稱「卯の花」うのはな）與飛竜頭（ひろうす，蔬菜豆腐炸餅，源自葡萄牙文filhós借音，關東稱がんもどき）至 vocabulary.md（🍱飲食）與 hiragana-quiz.html（vocabCards＋recentBatch 批次17），跑過 tools/validate_quiz_data.py 全部通過。有馬煮（ありまに）／山椒（さんしょう）與ちりめんじゃこ／しらす仍待使用者確認是否加入。
 
 ## 2026-07-27 08:25:00
 
