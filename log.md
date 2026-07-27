@@ -2,10 +2,14 @@
 title: 學習日誌
 date:
   created: 2026-04-28T18:26:48
-  updated: 2026-07-27T08:35:00
+  updated: 2026-07-27T08:40:00
 alias: log
 ---
 # 學習日誌
+
+## 2026-07-27 08:40:00
+
+使用者確認加入山椒（さんしょう，日本花椒，有馬温泉特產聞名，有馬煮的關鍵材料），其餘（有馬煮本身、ちりめんじゃこ／しらす）不需要。加入 vocabulary.md（🍱飲食）與 hiragana-quiz.html（vocabCards＋recentBatch 批次17），跑過 tools/validate_quiz_data.py 全部通過。
 
 ## 2026-07-27 08:35:00
 
