@@ -676,6 +676,18 @@ const vocabCards = [
   { meaning: '了解', display: 'りょうかい', reading: 'ryoukai', kanji: '了解', topic: 'daily', round: 3 },
   { meaning: '片假名', display: 'かたかな', reading: 'katakana', kanji: '片仮名', topic: 'daily', round: 4 },
   { meaning: '箱子', display: 'はこ', reading: 'hako', kanji: '箱', topic: 'daily', round: 5 },
+  { meaning: '筷子', display: 'はし', reading: 'hashi', kanji: '箸', topic: 'daily', round: 5 },
+  { meaning: '罐、罐頭', display: 'かん', reading: 'kan', kanji: '缶', topic: 'daily', round: 2 },
+  { meaning: '手提袋', display: 'てさげぶくろ', reading: 'tesagebukuro', kanji: '手提げ袋', topic: 'daily', round: 5 },
+  { meaning: '音樂', display: 'おんがく', reading: 'ongaku', kanji: '音楽', topic: 'daily', round: 2 },
+  { meaning: '快樂、開心', display: 'たのしい', reading: 'tanoshii', kanji: '楽しい', topic: 'daily', round: 4 },
+  { meaning: '重要', display: 'じゅうよう', reading: 'juuyou', kanji: '重要', topic: 'daily', round: 3 },
+  { meaning: '體重', display: 'たいじゅう', reading: 'taijuu', kanji: '体重', topic: 'daily', round: 4 },
+  { meaning: '書房、書齋', display: 'しょさい', reading: 'shosai', kanji: '書斎', topic: 'daily', round: 3 },
+  { meaning: '芳香、香氣', display: 'ほうこう', reading: 'houkou', kanji: '芳香', topic: 'daily', round: 5 },
+  { meaning: '祖母、奶奶', display: 'そぼ', reading: 'sobo', kanji: '祖母', topic: 'family', round: 5 },
+  { meaning: '家人、家族', display: 'かぞく', reading: 'kazoku', kanji: '家族', topic: 'family', round: 3 },
+  { meaning: '腳', display: 'あし', reading: 'ashi', kanji: '足', topic: 'daily', round: 3 },
   { meaning: '介紹', display: 'しょうかい', reading: 'shoukai', kanji: '紹介', topic: 'daily', round: 3 },
   { meaning: '兩千', display: 'にせん', reading: 'nisen', kanji: '二千', topic: 'number', round: 3 },
   { meaning: '四百', display: 'よんひゃく', reading: 'yonhyaku', kanji: '四百', topic: 'number', round: 5 },
@@ -1100,6 +1112,10 @@ const alreadyKnown = new Set([
 // 最近加入的單字批次（數字越大＝越近加入＝越優先出現）
 // 規則：同一天加入的算同一批；新增單字時若該日已有批次直接沿用，否則用最新批次號 + 1
 const recentBatch = {
+  // 批次 19（2026-07-28）
+  'はし': 19, 'かん': 19, 'てさげぶくろ': 19, 'おんがく': 19, 'たのしい': 19,
+  'じゅうよう': 19, 'たいじゅう': 19, 'しょさい': 19, 'ほうこう': 19,
+  'そぼ': 19, 'かぞく': 19, 'あし': 19,
   // 批次 18（2026-07-27）
   'ひがし': 18, 'にし': 18, 'みなみ': 18, 'きた': 18,
   // 批次 17（2026-07-24）
