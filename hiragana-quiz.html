@@ -1014,6 +1014,7 @@ const vocabCards = [
   { meaning: '杏仁', display: 'あんにん', reading: 'annin', kanji: '杏仁', topic: 'food', round: 2 },
   { meaning: '豆腐', display: 'とうふ', reading: 'toufu', kanji: '豆腐', topic: 'food', round: 5 },
   { meaning: '腳踏車', display: 'じてんしゃ', reading: 'jitensha', kanji: '自転車', topic: 'daily', round: 4 },
+  { meaning: '牽絆、羈絆', display: 'きずな', reading: 'kizuna', kanji: '絆', topic: 'daily', round: 3 },
 ];
 
 // ═══════════════════════════════
@@ -1112,6 +1113,8 @@ const alreadyKnown = new Set([
 // 最近加入的單字批次（數字越大＝越近加入＝越優先出現）
 // 規則：同一天加入的算同一批；新增單字時若該日已有批次直接沿用，否則用最新批次號 + 1
 const recentBatch = {
+  // 批次 20（2026-08-08）
+  'きずな': 20,
   // 批次 19（2026-07-28）
   'はし': 19, 'かん': 19, 'てさげぶくろ': 19, 'おんがく': 19, 'たのしい': 19,
   'じゅうよう': 19, 'たいじゅう': 19, 'しょさい': 19, 'ほうこう': 19,
