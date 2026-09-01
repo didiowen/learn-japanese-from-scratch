@@ -140,11 +140,11 @@ const recentBatch = {
 - **無障礙**：最小字體 18px，WCAG AA，互動目標 ≥ 44×44px，尊重 prefers-reduced-motion
 - **禁止**：gradient text、glassmorphism、等高卡片格、side-stripe border
 
-### 每日文法教學（17:30 排程）
+### 每日教學排程（17:30，文法＋單字兩軌）
 
-每天 17:30，vault 的 `com.didiowen.nihongo-grammar-daily` 排程（`~/LFCxBVB/X/scripts/nihongo-grammar-notify.sh`）會另起一個 headless session，依 `grammar-daily-progress.md` 的「給生成端的規則」教一項 N5 文法並出 3–5 題，用 @ines_jpy_bot 發到「學日文」群，同時把當天的教學＋題目寫進 `grammar-daily-latest.md`。
+每天 17:30，vault 的 `com.didiowen.nihongo-grammar-daily` 排程（`~/LFCxBVB/X/scripts/nihongo-grammar-notify.sh`）會為**文法**與**單字**各起一個獨立的 headless session，依 `grammar-daily-progress.md`／`vocab-daily-progress.md` 的「給生成端的規則」各教一項並出 3–5 題，用 @ines_jpy_bot 發到「學日文」群（兩軌各一則訊息），同時把當天的教學＋題目寫進 `grammar-daily-latest.md`／`vocab-daily-latest.md`。單字軌會依規則第 4 條一併完成收錄（`vocabulary.md`／`kanji.md`／quiz HTML）並跑 `tools/validate_quiz_data.py`。
 
-**使用者回覆每日文法的答案時，先讀 `grammar-daily-latest.md` 對題再批改**——題目是排程 session 出的，bot 這邊的對話歷史裡沒有那則訊息（Telegram Bot API 查不到歷史）。批改完在 `log.md` 記一筆即可；進度表的 ✅ 與完成日期排程已經填好，不要重複標。
+**使用者回覆每日題目的答案時，先讀對應的 `*-daily-latest.md` 對題再批改**——題目是排程 session 出的，bot 這邊的對話歷史裡沒有那則訊息（Telegram Bot API 查不到歷史）。批改完在 `log.md` 記一筆、把錯題狀況補進進度表備註欄即可；狀態 ✅ 與完成日期排程已經填好，不要重複標。
 
 ### commit／push 節奏
 
