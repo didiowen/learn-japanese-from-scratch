@@ -142,20 +142,26 @@ const recentBatch = {
 
 ### 每日教學排程（17:30，文法＋單字兩軌）
 
-每天 17:30，vault 的 `com.didiowen.nihongo-grammar-daily` 排程（`~/LFCxBVB/X/scripts/nihongo-grammar-notify.sh`）會為**文法**與**單字**各起一個獨立的 headless session，依 `grammar-daily-progress.md`／`vocab-daily-progress.md` 的「給生成端的規則」各教一項並出 3–5 題，用 @ines_jpy_bot 發到「學日文」群（兩軌各一則訊息），同時把當天的教學＋題目寫進 `grammar-daily-latest.md`／`vocab-daily-latest.md`。單字軌會依規則第 4 條一併完成收錄（`vocabulary.md`／`kanji.md`／quiz HTML）並跑 `tools/validate_quiz_data.py`。
+每天 17:30，vault 的 `com.didiowen.nihongo-grammar-daily` 排程（`~/LFCxBVB/X/scripts/nihongo-grammar-notify.sh`）會為**文法**與**單字**各起一個獨立的 headless session，依 `grammar-daily-progress.md`／`vocab-daily-progress.md` 的「給生成端的規則」各教一項並出 3–5 題，用 @ines_jpy_bot 發到「學日文」群（兩軌各一則訊息），同時把當天的教學＋題目寫進 `grammar-daily-latest.md`／`vocab-daily-latest.md`。每則訊息**開頭還會先出 2–3 題「上次複習」**——題目取自上一次的 `*-daily-latest.md`，並優先針對進度表備註欄記下的錯處，所以批改後把錯題狀況寫進備註欄會直接影響隔天的複習內容。單字軌會依規則第 4 條一併完成收錄（`vocabulary.md`／`kanji.md`／quiz HTML）並跑 `tools/validate_quiz_data.py`。
 
 **使用者回覆每日題目的答案時，先讀對應的 `*-daily-latest.md` 對題再批改**——題目是排程 session 出的，bot 這邊的對話歷史裡沒有那則訊息（Telegram Bot API 查不到歷史）。批改完在 `log.md` 記一筆、把錯題狀況補進進度表備註欄即可；狀態 ✅ 與完成日期排程已經填好，不要重複標。
 
 ### commit／push 節奏
 
-新增假名或單字時，**不要每加一個新字（或一個小批次）就馬上 commit＋push**。
+**每完成一次更動就 commit ＋ push，不要累積在工作區。** 未 commit 的改動是最脆弱的狀態——並行的 session、排程、或下一輪操作都可能把它掃掉。
 
-- 檔案修改（`vocabulary.md`／`kanji.md`／`hiragana-quiz.html`／`katakana-quiz.html`／`log.md`）、驗證（`validate_quiz_data.py`）、frontmatter 更新，每次新增仍照常執行
-- 但 commit／push 延後：累積同一次對話中的**多筆新增**後，主動詢問使用者是否要 commit＋push，取得明確回覆才動作
-- 使用者若單次訊息就明確要求「commit」「push」，直接照做，不需再問
+- 一次更動＝一個 concern：新增一批假名／單字、修一個筆記錯誤、更新一次測驗資料，各自成一個 commit，不要把不相關的改動綁在一起
+- 照原有流程做完再提交：檔案修改（`vocabulary.md`／`kanji.md`／`hiragana-quiz.html`／`katakana-quiz.html`／`log.md`）、`validate_quiz_data.py` 驗證、frontmatter 的 `updated` 更新，全部通過才 commit
+- commit ＋ push **不必先問使用者**，那是預設動作；要問的是下面的 PR
 
-### Push 後立即建 PR 並合併
-每次 `git push` 後，若該分支**尚無開啟的 PR**，立即用 GitHub MCP 工具建立並**直接合併**，不需詢問使用者。smoke test 通過即視為可合併。
+### PR／merge 節奏
+
+**不要每次 push 都開 PR。** 讓 commit 在分支上累積，等到一段工作告一段落、或使用者開口時，再一次開 PR 並合併。GitHub Actions 額度是共用且有限的，一個小改動開一個 PR 純粹浪費。
+
+- 使用者明確說「開 PR」「merge」「cpprm」時直接照做，不需再問
+- 一段工作結束時可以主動問一句「要開 PR 嗎」，但不要停在那裡等——commit ＋ push 該做的照做
+- 同一批的多個 commit 合併在同一個 PR；建立後把 PR 網址回報給使用者
+- smoke test 通過即視為可合併；**PR 建立後不需要主動檢查 CI 狀態或 review 意見**，等使用者通知再處理
 
 PR 描述格式：
 ```
@@ -165,10 +171,6 @@ PR 描述格式：
 ## 修改摘要
 （每個 commit 對應做了什麼改動）
 ```
-
-- 同一次作業的多個 commit 合併在同一個 PR
-- 建立後將 PR 網址回報給使用者
-- **PR 建立後不需要主動檢查 CI 狀態或 review 意見**，等使用者通知再處理
 
 ## 互動風格
 
