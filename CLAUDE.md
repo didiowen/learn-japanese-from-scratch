@@ -150,6 +150,7 @@ const recentBatch = {
 
 **每完成一次更動就 commit ＋ push，不要累積在工作區。** 未 commit 的改動是最脆弱的狀態——並行的 session、排程、或下一輪操作都可能把它掃掉。
 
+- **push 一律推 `claude-playground`，不要推 `main`。** `main` 有分支保護（Changes must be made through a pull request），直推只是靠管理者權限 bypass 掉自己設的規則；本機的 branch guard 也會擋下在 `main` 上的 commit。工作樹平常就停在 `claude-playground`
 - 一次更動＝一個 concern：新增一批假名／單字、修一個筆記錯誤、更新一次測驗資料，各自成一個 commit，不要把不相關的改動綁在一起
 - 照原有流程做完再提交：檔案修改（`vocabulary.md`／`kanji.md`／`hiragana-quiz.html`／`katakana-quiz.html`／`log.md`）、`validate_quiz_data.py` 驗證、frontmatter 的 `updated` 更新，全部通過才 commit
 - commit ＋ push **不必先問使用者**，那是預設動作；要問的是下面的 PR
@@ -158,6 +159,9 @@ const recentBatch = {
 
 **不要每次 push 都開 PR。** 讓 commit 在分支上累積，等到一段工作告一段落、或使用者開口時，再一次開 PR 並合併。GitHub Actions 額度是共用且有限的，一個小改動開一個 PR 純粹浪費。
 
+- PR 一律 `claude-playground` → `main`
+- **GitHub Pages 從 `main` 根目錄發佈**，所以測驗網站（`hiragana-quiz.html` 等）的更新要等 PR merge 後才會上線。使用者若在意某個改動何時可見，就是該開 PR 的時機
+- merge 之後把 `claude-playground` 快轉回 `main`（`git fetch origin && git push origin origin/main:claude-playground`），否則它會越拖越舊，下次 PR 開始出現無謂的衝突
 - 使用者明確說「開 PR」「merge」「cpprm」時直接照做，不需再問
 - 一段工作結束時可以主動問一句「要開 PR 嗎」，但不要停在那裡等——commit ＋ push 該做的照做
 - 同一批的多個 commit 合併在同一個 PR；建立後把 PR 網址回報給使用者
