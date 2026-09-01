@@ -140,6 +140,12 @@ const recentBatch = {
 - **無障礙**：最小字體 18px，WCAG AA，互動目標 ≥ 44×44px，尊重 prefers-reduced-motion
 - **禁止**：gradient text、glassmorphism、等高卡片格、side-stripe border
 
+### 每日文法教學（17:30 排程）
+
+每天 17:30，vault 的 `com.didiowen.nihongo-grammar-daily` 排程（`~/LFCxBVB/X/scripts/nihongo-grammar-notify.sh`）會另起一個 headless session，依 `grammar-daily-progress.md` 的「給生成端的規則」教一項 N5 文法並出 3–5 題，用 @ines_jpy_bot 發到「學日文」群，同時把當天的教學＋題目寫進 `grammar-daily-latest.md`。
+
+**使用者回覆每日文法的答案時，先讀 `grammar-daily-latest.md` 對題再批改**——題目是排程 session 出的，bot 這邊的對話歷史裡沒有那則訊息（Telegram Bot API 查不到歷史）。批改完在 `log.md` 記一筆即可；進度表的 ✅ 與完成日期排程已經填好，不要重複標。
+
 ### commit／push 節奏
 
 新增假名或單字時，**不要每加一個新字（或一個小批次）就馬上 commit＋push**。

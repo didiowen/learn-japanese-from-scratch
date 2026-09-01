@@ -1015,6 +1015,14 @@ const vocabCards = [
   { meaning: '豆腐', display: 'とうふ', reading: 'toufu', kanji: '豆腐', topic: 'food', round: 5 },
   { meaning: '腳踏車', display: 'じてんしゃ', reading: 'jitensha', kanji: '自転車', topic: 'daily', round: 4 },
   { meaning: '牽絆、羈絆', display: 'きずな', reading: 'kizuna', kanji: '絆', topic: 'daily', round: 3 },
+  { meaning: '星期一', display: 'げつようび', reading: 'getsuyoubi', kanji: '月曜日', topic: 'time', round: 5 },
+  { meaning: '星期二', display: 'かようび', reading: 'kayoubi', kanji: '火曜日', topic: 'time', round: 5 },
+  { meaning: '星期三', display: 'すいようび', reading: 'suiyoubi', kanji: '水曜日', topic: 'time', round: 5 },
+  { meaning: '星期四', display: 'もくようび', reading: 'mokuyoubi', kanji: '木曜日', topic: 'time', round: 5 },
+  { meaning: '星期五', display: 'きんようび', reading: 'kinyoubi', kanji: '金曜日', topic: 'time', round: 5 },
+  { meaning: '星期六', display: 'どようび', reading: 'doyoubi', kanji: '土曜日', topic: 'time', round: 5 },
+  { meaning: '星期日', display: 'にちようび', reading: 'nichiyoubi', kanji: '日曜日', topic: 'time', round: 5 },
+  { meaning: '星期幾', display: 'なんようび', reading: 'nan youbi', kanji: '何曜日', topic: 'question', round: 5 },
 ];
 
 // ═══════════════════════════════
@@ -1113,6 +1121,9 @@ const alreadyKnown = new Set([
 // 最近加入的單字批次（數字越大＝越近加入＝越優先出現）
 // 規則：同一天加入的算同一批；新增單字時若該日已有批次直接沿用，否則用最新批次號 + 1
 const recentBatch = {
+  // 批次 21（2026-09-01）
+  'げつようび': 21, 'かようび': 21, 'すいようび': 21, 'もくようび': 21,
+  'きんようび': 21, 'どようび': 21, 'にちようび': 21, 'なんようび': 21,
   // 批次 20（2026-08-08）
   'きずな': 20,
   // 批次 19（2026-07-28）

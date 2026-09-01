@@ -2,7 +2,7 @@
 title: 單字
 date:
   created: 2026-04-28T15:00:00
-  updated: 2026-08-08T22:38:00
+  updated: 2026-09-01T00:20:00
 alias: vocab
 ---
 # 單字
@@ -293,6 +293,14 @@ alias: vocab
 | 午前  | ごぜん   | gozen   | 上午（午＝正午；前＝之前）       |
 | 午後  | ごご    | gogo    | 下午（午＝正午；後＝之後）       |
 | 最後  | さいご   | saigo   | 最後／最終                 |
+| 月曜日 | げつようび | getsuyoubi | 星期一                  |
+| 火曜日 | かようび  | kayoubi | 星期二                    |
+| 水曜日 | すいようび | suiyoubi | 星期三                   |
+| 木曜日 | もくようび | mokuyoubi | 星期四                  |
+| 金曜日 | きんようび | kinyoubi | 星期五                   |
+| 土曜日 | どようび  | doyoubi | 星期六                    |
+| 日曜日 | にちようび | nichiyoubi | 星期日                  |
+| 何曜日 | なんようび | nan youbi | 星期幾（疑問）             |
 
 ## 🎨 顏色
 
