@@ -1038,6 +1038,12 @@ const vocabCards = [
   { meaning: '小孩', display: 'こども', reading: 'kodomo', kanji: '子供', topic: 'family', round: 4 },
   { meaning: '雙親、父母', display: 'りょうしん', reading: 'ryoushin', kanji: '両親', topic: 'family', round: 3 },
   { meaning: '兄弟姊妹', display: 'きょうだい', reading: 'kyoudai', kanji: '兄弟', topic: 'family', round: 4 },
+  { meaning: '誰', display: 'だれ', reading: 'dare', kanji: '誰', topic: 'question', round: 4 },
+  { meaning: '怎麼樣', display: 'どう', reading: 'dou', topic: 'question', round: 4 },
+  { meaning: '多少、多久', display: 'どのくらい', reading: 'donokurai', topic: 'question', round: 4 },
+  { meaning: '幾歲', display: 'なんさい', reading: 'nansai', kanji: '何歳', topic: 'question', round: 3 },
+  { meaning: '幾月', display: 'なんがつ', reading: 'nangatsu', kanji: '何月', topic: 'question', round: 4 },
+  { meaning: '幾號', display: 'なんにち', reading: 'nannichi', kanji: '何日', topic: 'question', round: 4 },
 ];
 
 // ═══════════════════════════════
@@ -1136,6 +1142,9 @@ const alreadyKnown = new Set([
 // 最近加入的單字批次（數字越大＝越近加入＝越優先出現）
 // 規則：同一天加入的算同一批；新增單字時若該日已有批次直接沿用，否則用最新批次號 + 1
 const recentBatch = {
+  // 批次 22（2026-09-02）
+  'だれ': 22, 'どう': 22, 'どのくらい': 22,
+  'なんさい': 22, 'なんがつ': 22, 'なんにち': 22,
   // 批次 21（2026-09-01）
   'げつようび': 21, 'かようび': 21, 'すいようび': 21, 'もくようび': 21,
   'きんようび': 21, 'どようび': 21, 'にちようび': 21, 'なんようび': 21,
