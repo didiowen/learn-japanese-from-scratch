@@ -160,9 +160,9 @@ const recentBatch = {
 **不要每次 push 都開 PR。** 讓 commit 在分支上累積，等到一段工作告一段落、或使用者開口時，再一次開 PR 並合併。GitHub Actions 額度是共用且有限的，一個小改動開一個 PR 純粹浪費。
 
 - PR 一律 `claude-playground` → `main`
-- **每日 23:00 會自動開 PR 並合併**（vault 排程 `com.didiowen.nihongo-daily-merge` → `~/LFCxBVB/X/scripts/nihongo-daily-merge.sh`）：`claude-playground` 有領先 `main` 的 commit 就開 PR、合併、把分支快轉回 main；沒有就靜默結束。所以**平常不需要手動開 PR**，push 完就交給它
-- **GitHub Pages 從 `main` 根目錄發佈**，所以測驗網站（`hiragana-quiz.html` 等）的更新要等合併後才上線——正常情況就是當晚 23:00。使用者若急著看到某個改動，才需要立刻手動開 PR
-- 手動 merge 之後記得把 `claude-playground` 快轉回 `main`（`git fetch origin && git push origin origin/main:claude-playground`），否則它會越拖越舊，下次 PR 開始出現無謂的衝突；23:00 那支排程自己會做這一步
+- **每日 23:30 會自動開 PR 並合併**（vault 排程 `com.didiowen.nihongo-daily-merge` → `~/LFCxBVB/X/scripts/nihongo-daily-merge.sh`）：`claude-playground` 有領先 `main` 的 commit 就開 PR、合併、把分支快轉回 main；沒有就靜默結束。所以**平常不需要手動開 PR**，push 完就交給它
+- **GitHub Pages 從 `main` 根目錄發佈**，所以測驗網站（`hiragana-quiz.html` 等）的更新要等合併後才上線——正常情況就是當晚 23:30。使用者若急著看到某個改動，才需要立刻手動開 PR
+- 手動 merge 之後記得把 `claude-playground` 快轉回 `main`（`git fetch origin && git push origin origin/main:claude-playground`），否則它會越拖越舊，下次 PR 開始出現無謂的衝突；23:30 那支排程自己會做這一步
 - 使用者明確說「開 PR」「merge」「cpprm」時直接照做，不需再問
 - 一段工作結束時可以主動問一句「要開 PR 嗎」，但不要停在那裡等——commit ＋ push 該做的照做
 - 同一批的多個 commit 合併在同一個 PR；建立後把 PR 網址回報給使用者
