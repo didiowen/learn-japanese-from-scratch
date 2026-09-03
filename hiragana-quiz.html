@@ -1044,6 +1044,13 @@ const vocabCards = [
   { meaning: '幾歲', display: 'なんさい', reading: 'nansai', kanji: '何歳', topic: 'question', round: 3 },
   { meaning: '幾月', display: 'なんがつ', reading: 'nangatsu', kanji: '何月', topic: 'question', round: 4 },
   { meaning: '幾號', display: 'なんにち', reading: 'nannichi', kanji: '何日', topic: 'question', round: 4 },
+  { meaning: '三個人', display: 'さんにん', reading: 'sannin', kanji: '三人', topic: 'number', round: 3 },
+  { meaning: '一根（長條物）', display: 'いっぽん', reading: 'ippon', kanji: '一本', topic: 'number', round: 5 },
+  { meaning: '兩根（長條物）', display: 'にほん', reading: 'nihon', kanji: '二本', topic: 'number', round: 5 },
+  { meaning: '一隻（小動物）', display: 'いっぴき', reading: 'ippiki', kanji: '一匹', topic: 'number', round: 5 },
+  { meaning: '一張（平面物）', display: 'いちまい', reading: 'ichimai', kanji: '一枚', topic: 'number', round: 4 },
+  { meaning: '一個（小物）', display: 'いっこ', reading: 'ikko', kanji: '一個', topic: 'number', round: 5 },
+  { meaning: '一本（書）', display: 'いっさつ', reading: 'issatsu', kanji: '一冊', topic: 'number', round: 5 },
 ];
 
 // ═══════════════════════════════
@@ -1142,6 +1149,9 @@ const alreadyKnown = new Set([
 // 最近加入的單字批次（數字越大＝越近加入＝越優先出現）
 // 規則：同一天加入的算同一批；新增單字時若該日已有批次直接沿用，否則用最新批次號 + 1
 const recentBatch = {
+  // 批次 23（2026-09-03）
+  'さんにん': 23, 'いっぽん': 23, 'にほん': 23, 'いっぴき': 23,
+  'いちまい': 23, 'いっこ': 23, 'いっさつ': 23,
   // 批次 22（2026-09-02）
   'だれ': 22, 'どう': 22, 'どのくらい': 22,
   'なんさい': 22, 'なんがつ': 22, 'なんにち': 22,
