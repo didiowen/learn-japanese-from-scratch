@@ -1051,6 +1051,14 @@ const vocabCards = [
   { meaning: '一張（平面物）', display: 'いちまい', reading: 'ichimai', kanji: '一枚', topic: 'number', round: 4 },
   { meaning: '一個（小物）', display: 'いっこ', reading: 'ikko', kanji: '一個', topic: 'number', round: 5 },
   { meaning: '一本（書）', display: 'いっさつ', reading: 'issatsu', kanji: '一冊', topic: 'number', round: 5 },
+  { meaning: '傍晚', display: 'ゆうがた', reading: 'yuugata', kanji: '夕方', topic: 'time', round: 4 },
+  { meaning: '時候', display: 'とき', reading: 'toki', kanji: '時', topic: 'time', round: 4 },
+  { meaning: '上週', display: 'せんしゅう', reading: 'senshuu', kanji: '先週', topic: 'time', round: 3 },
+  { meaning: '下週', display: 'らいしゅう', reading: 'raishuu', kanji: '来週', topic: 'time', round: 3 },
+  { meaning: '上個月', display: 'せんげつ', reading: 'sengetsu', kanji: '先月', topic: 'time', round: 4 },
+  { meaning: '下個月', display: 'らいげつ', reading: 'raigetsu', kanji: '来月', topic: 'time', round: 4 },
+  { meaning: '去年', display: 'きょねん', reading: 'kyonen', kanji: '去年', topic: 'time', round: 3 },
+  { meaning: '明年', display: 'らいねん', reading: 'rainen', kanji: '来年', topic: 'time', round: 2 },
 ];
 
 // ═══════════════════════════════
@@ -1149,6 +1157,9 @@ const alreadyKnown = new Set([
 // 最近加入的單字批次（數字越大＝越近加入＝越優先出現）
 // 規則：同一天加入的算同一批；新增單字時若該日已有批次直接沿用，否則用最新批次號 + 1
 const recentBatch = {
+  // 批次 24（2026-09-04）
+  'ゆうがた': 24, 'とき': 24, 'せんしゅう': 24, 'らいしゅう': 24,
+  'せんげつ': 24, 'らいげつ': 24, 'きょねん': 24, 'らいねん': 24,
   // 批次 23（2026-09-03）
   'さんにん': 23, 'いっぽん': 23, 'にほん': 23, 'いっぴき': 23,
   'いちまい': 23, 'いっこ': 23, 'いっさつ': 23,
