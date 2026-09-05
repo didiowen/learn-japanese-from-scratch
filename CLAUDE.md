@@ -45,7 +45,10 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 | `language-notes.md` | 台語／粵語／注音記憶鉤對照表 |
 | `already-known.md` | 已知單字片語，在測驗中減少出現頻率 |
 | `kanji.md` | 漢字筆記（字表、發音規則、單字分類） |
-| `grammar.md` | N5 語法筆記（G1–G12，句型、活用、例句） |
+| `grammar.md` | N5 語法筆記（G1–G12，句型、活用、例句）——**文法內容的唯一正本**，章節頁由它生成 |
+| `grammar/` | 文法章節 HTML（`NN.html`＋`index.html`，由 `tools/build_grammar_pages.py` 從 grammar.md 產生，**不要手改**；`chapters.json` 是「進度項編號→grammar.md 標題」登錄表、`chapter.css` 是手寫樣式） |
+| `grammar-quiz.html` | 文法 SRS 測驗（填空輸入＋語感選擇；題庫 `grammarCards` 內嵌，SRS 走 quiz-common.js） |
+| `tools/build_grammar_pages.py` | 章節頁產生器（`--check` 供驗證器比對是否過期） |
 | `PRODUCT.md` | 設計策略文件（受眾、品牌個性、設計原則，impeccable skill 使用） |
 
 參考文件（`.claude/skills/japanese-learning/references/` 目錄）：
@@ -136,15 +139,25 @@ const recentBatch = {
 `index.html` 採現代日式風格，設計原則詳見 `PRODUCT.md`。UI 設計任務使用 `/impeccable` skill。
 
 - **配色**：OKLCH，禁用純 `#000`/`#fff`；底色微暖白、墨色深靛、強調磚紅
-- **字型**：Noto Serif JP（標題）+ Noto Sans TC（內文）
+- **字型**：Klee One（標題，與 index.html 一致）+ Noto Sans TC（內文）
 - **無障礙**：最小字體 18px，WCAG AA，互動目標 ≥ 44×44px，尊重 prefers-reduced-motion
 - **禁止**：gradient text、glassmorphism、等高卡片格、side-stripe border
 
+### 文法章節頁與文法測驗
+
+- **grammar.md 是文法內容的唯一正本**；`grammar/NN.html` 與 `grammar/index.html` 是 `tools/build_grammar_pages.py` 的建置產物，**絕對不要手改**（改了下次重建就沒了，驗證器也會報「過期」）。`_sidebar.md` 與 `notes/`（docsify）照舊渲染 grammar.md 當完整筆記檢視，兩者並存是刻意的，不要「修掉」。
+- grammar.md **只能用這個 markdown 子集**：`###`/`####` 小標、段落、行尾兩空格換行、`**粗體**`、`` `行內程式碼` ``、GFM 表格、`>` 引言、``` 圍欄、單層 `-`/`1.` 清單、`---`。產生器認不得的語法會直接建置失敗。
+- 改了 grammar.md（已上架章節的部分）→ 必跑 `python3 tools/build_grammar_pages.py` 重建，再跑 `python3 tools/validate_quiz_data.py`；precommit hook 會擋住過期頁面的 commit。
+- `grammar-quiz.html` 的題庫 `grammarCards` 一行一題：`id`（`cNN-qM`，NN=進度項編號）是 SRS key——**修錯字保留 id、改題意換新 id 並刪舊行**；`batch` 同天同批、越大越新（未做過的題 `nextReview = -(batch×5)` 優先出現）；cloze 題目必含 `___` 且 `accepted` 含 `answer`；mc `choices` ≥3 且含 `answer`；每題必有 `explain`。頁內 `chapters` 陣列必須與 `grammar/chapters.json` 一致（驗證器會比對）。
+
 ### 每日教學排程（17:30，文法＋單字兩軌）
 
-每天 17:30，vault 的 `com.didiowen.nihongo-grammar-daily` 排程（`~/LFCxBVB/X/scripts/nihongo-grammar-notify.sh`）會為**文法**與**單字**各起一個獨立的 headless session，依 `grammar-daily-progress.md`／`vocab-daily-progress.md` 的「給生成端的規則」各教一項並出 3–5 題，用 @ines_jpy_bot 發到「學日文」群（兩軌各一則訊息），同時把當天的教學＋題目寫進 `grammar-daily-latest.md`／`vocab-daily-latest.md`。每則訊息**開頭還會先出 2–3 題「上次複習」**——題目取自上一次的 `*-daily-latest.md`，並優先針對進度表備註欄記下的錯處，所以批改後把錯題狀況寫進備註欄會直接影響隔天的複習內容。單字軌會依規則第 4 條一併完成收錄（`vocabulary.md`／`kanji.md`／quiz HTML）並跑 `tools/validate_quiz_data.py`。
+每天 17:30，vault 的 `com.didiowen.nihongo-grammar-daily` 排程（`~/LFCxBVB/X/scripts/nihongo-grammar-notify.sh`）為文法與單字各起一個獨立的 headless session：
 
-**使用者回覆每日題目的答案時，先讀對應的 `*-daily-latest.md` 對題再批改**——題目是排程 session 出的，bot 這邊的對話歷史裡沒有那則訊息（Telegram Bot API 查不到歷史）。批改完在 `log.md` 記一筆、把錯題狀況補進進度表備註欄即可；狀態 ✅ 與完成日期排程已經填好，不要重複標。
+- **文法軌（2026-09-05 起改版）**：依 `grammar-daily-progress.md` 的規則推進一章——（新增類先寫進 grammar.md）→ 登錄 `grammar/chapters.json` 與 `grammar-quiz.html` 的 `chapters`、追加 3–5 題進 `grammarCards` → 跑產生器＋驗證器 → Telegram **只發短通知＋連結**（章節頁＋測驗頁），教學內容在網頁、複習交給測驗頁的 SRS。`grammar-daily-latest.md` 只是 10 行紀錄（日期／編號／連結／新題 id）。
+- **單字軌（不變）**：教一批單字＋出 3–5 題發到群裡，完成收錄（`vocabulary.md`／`kanji.md`／quiz HTML）並跑 `tools/validate_quiz_data.py`；訊息開頭仍有「上次複習」。
+
+**批改規則（2026-09-05 起）**：**文法不再在 Telegram 批改**——文法題目都在 `grammar-quiz.html`，答對答錯由測驗頁自己記 SRS，進度表備註欄改記概念性的觀察（哪類文法點反覆卡住），不再逐題記分。**單字照舊**：使用者回覆單字題答案時，先讀 `vocab-daily-latest.md` 對題再批改，批改完在 `log.md` 記一筆、錯處補進 `vocab-daily-progress.md` 備註欄；狀態 ✅ 排程已標好，不要重複標。
 
 ### commit／push 節奏
 
