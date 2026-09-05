@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>助詞比較：は vs を — 日文文法</title>
+<link href="https://fonts.googleapis.com/css2?family=Klee+One:wght@400;600&family=Noto+Sans+TC:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="chapter.css">
+</head>
+<body>
+<nav class="crumb"><a href="../index.html">← 首頁</a><a href="index.html">文法章節</a><a href="../grammar-quiz.html">文法測驗</a></nav>
+<article class="chapter">
+  <header class="chapter-head">
+    <p class="eyebrow">第 02 章 · 2026-09-01 學過</p>
+    <h1>助詞比較：は vs を</h1>
+  </header>
+  <div class="chapter-body">
+<h2>核心差別</h2>
+<div class="table-wrap"><table><thead><tr><th>助詞</th><th>功能</th><th>後面接什麼</th></tr></thead><tbody><tr><td><strong>は</strong>（wa）</td><td>主題標記——「說到這個…」</td><td>描述、形容、判斷</td></tr><tr><td><strong>を</strong>（wo/o）</td><td>受詞標記——動作的對象</td><td>動詞（必須）</td></tr></tbody></table></div>
+<h2>直覺口訣</h2>
+<ul><li><strong>は</strong> → 「<strong>話題是</strong>這個」→ 後面說它怎樣</li><li><strong>を</strong> → 「<strong>動作對象是</strong>這個」→ 後面一定有動詞</li></ul>
+<h2>餐廳實例</h2>
+<div class="table-wrap"><table><thead><tr><th>句子</th><th>助詞</th><th>意思</th><th>場合</th></tr></thead><tbody><tr><td>これ<strong>は</strong>なんですか？</td><td>は＝主題</td><td>這個是什麼？</td><td>看菜單不確定時</td></tr><tr><td>これ<strong>を</strong>ください</td><td>を＝受詞</td><td>這個給我</td><td>決定點餐時</td></tr><tr><td>これ<strong>は</strong>おいしい</td><td>は＝主題</td><td>這個很好吃</td><td>描述味道</td></tr><tr><td>これ<strong>を</strong>たべる</td><td>を＝受詞</td><td>吃這個</td><td>動作對象</td></tr></tbody></table></div>
+<h2>を 的常見動詞搭配</h2>
+<pre><code>〜をください    請給我〜
+〜をたべる      吃〜
+〜をのむ        喝〜
+〜をみる        看〜
+〜をかう        買〜</code></pre>
+<blockquote><p><strong>⚠️ 注意</strong>：を 不能省略主動詞。「これを」後面沒有動詞是不完整的句子。</p></blockquote>
+  </div>
+</article>
+<p class="chapter-cta"><a href="../grammar-quiz.html?ch=2">練這一章的題目 →</a></p>
+<nav class="chapter-nav"><a class="prev" href="01.html">← G1：X は Y です</a><a class="next" href="03.html">G2：い形容詞 →</a></nav>
+<footer class="chapter-foot"><a href="index.html">全部章節</a> · <a href="../notes/#/grammar.md">完整文法筆記</a> · <a href="https://ko-fi.com/ines8964">☕ Ko-fi</a></footer>
+<script>
+// 表格「日文／例句」欄自動附朗讀鍵（speakJa 與 quiz-common.js 同款、本地精簡版）
+let _gen = 0;
+function speakJa(text) {
+  try {
+    const t = text.replace(/[（(].*?[）)]/g, '').trim();
+    if (!t) return;
+    _gen += 1;
+    speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(t);
+    u.lang = 'ja-JP'; u.rate = 0.85;
+    const v = speechSynthesis.getVoices().filter(v => v.lang.startsWith('ja'))[0];
+    if (v) u.voice = v;
+    speechSynthesis.speak(u);
+  } catch (e) { /* 無語音支援就靜默 */ }
+}
+document.addEventListener('DOMContentLoaded', () => {
+  const SPEAK_COLS = ['日文', '例句', '例', '句型', '假名', '原形', '禮貌體'];
+  document.querySelectorAll('.chapter-body table').forEach(tbl => {
+    const ths = [...tbl.querySelectorAll('thead th')].map(th => th.textContent.trim());
+    ths.forEach((h, col) => {
+      if (!SPEAK_COLS.includes(h)) return;
+      tbl.querySelectorAll('tbody tr').forEach(tr => {
+        const td = tr.children[col];
+        if (!td) return;
+        const raw = td.textContent.trim();
+        if (!raw || raw === '—' || /^[A-Za-z0-9\s.…]+$/.test(raw)) return;
+        const btn = document.createElement('button');
+        btn.className = 'speak-btn'; btn.type = 'button';
+        btn.title = '朗讀'; btn.textContent = '🔊';
+        btn.addEventListener('click', () => speakJa(raw));
+        td.appendChild(btn);
+      });
+    });
+  });
+});
+</script>
+</body>
+</html>

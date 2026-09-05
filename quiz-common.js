@@ -1,7 +1,9 @@
 // ═══════════════════════════════
 // 共用測驗邏輯（quiz-common.js）
-// hiragana-quiz.html 與 katakana-quiz.html 共用；
+// hiragana-quiz.html、katakana-quiz.html、grammar-quiz.html 共用；
 // 本檔必須在頁面內嵌 script 之後載入（INIT 在檔尾執行）。
+// 頁面若要覆寫本檔的函式（如 grammar-quiz 覆寫 renderWrongList），要放在
+// <script src=quiz-common.js> 之後再定義——boot 之前的定義會被本檔蓋掉。
 // 頁面需先定義：
 //   設定：FIREBASE_DB_URL、QUIZ_TYPE、STORAGE_KANA、STORAGE_VOCAB
 //   頁面邏輯：getSessionLimit()、rebuildQueues()、nextCard()、restartCurrent()

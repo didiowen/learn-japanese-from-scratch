@@ -9,6 +9,10 @@
 3. recentBatch 的 key 是否都存在於 vocabCards
 4. alreadyKnown 與 recentBatch 是否有同一個字（優先度互相矛盾）
 5. already-known.md 中存在於 vocabCards 的字，是否都進了 alreadyKnown Set
+6. grammar-quiz.html 題庫完整性（id 格式/唯一、ch 對應 chapters.json、
+   mc 的 answer∈choices、cloze 含 ___ 且 answer∈accepted、每章 ≥3 題、
+   頁內 chapters 陣列與 grammar/chapters.json 一致）
+7. grammar/ 章節頁是否與 grammar.md 同步（import build_grammar_pages 跑 --check）
 
 用法：python3 tools/validate_quiz_data.py
 發現問題時輸出清單並以非零狀態碼結束。
@@ -147,6 +151,92 @@ def check_file(path, kana_array, vocab_key, known_md=None):
     return issues
 
 
+GRAMMAR_ID = re.compile(r"^c(\d{2})-q\d+$")
+
+
+def check_grammar_quiz():
+    """grammar-quiz.html 題庫完整性（一行一題的格式是本檢查的前提）。"""
+    import json
+    issues = []
+    src = (ROOT / 'grammar-quiz.html').read_text()
+    registry = {int(k): v for k, v in
+                json.loads((ROOT / 'grammar' / 'chapters.json').read_text()).items()}
+
+    # 頁內 chapters 陣列 == chapters.json
+    ch_body = extract_array(src, 'chapters')
+    page_ch = {int(m.group(1)): m.group(2) for m in
+               re.finditer(r"n:\s*(\d+),\s*title:\s*'([^']+)'", ch_body)}
+    if page_ch != registry:
+        issues.append(f"[chapters] 頁內 chapters 陣列與 grammar/chapters.json 不一致："
+                      f"頁內={sorted(page_ch)} json={sorted(registry)}"
+                      + ''.join(f"；第{n}章標題不同" for n in set(page_ch) & set(registry)
+                                if page_ch[n] != registry[n]))
+
+    body = extract_array(src, 'grammarCards')
+    seen_ids = set()
+    per_ch = {}
+    for line in body.split('\n'):
+        line = line.strip()
+        if not line.startswith('{'):
+            continue
+        gid = re.search(r"id:\s*'([^']+)'", line)
+        ch = re.search(r"ch:\s*(\d+)", line)
+        typ = re.search(r"type:\s*'([^']+)'", line)
+        q = re.search(r"q:\s*'([^']*)'", line)
+        ans = re.search(r"answer:\s*'([^']*)'", line)
+        expl = re.search(r"explain:\s*'([^']*)'", line)
+        batch = re.search(r"batch:\s*(\d+)", line)
+        label = gid.group(1) if gid else line[:30]
+        if not all([gid, ch, typ, q, ans, expl, batch]):
+            issues.append(f"[欄位] {label}：缺必填欄位（id/ch/type/q/answer/explain/batch）")
+            continue
+        gid, ch, typ, q, ans = gid.group(1), int(ch.group(1)), typ.group(1), q.group(1), ans.group(1)
+        m = GRAMMAR_ID.match(gid)
+        if not m:
+            issues.append(f"[id] {gid}：格式須為 cNN-qM")
+        elif int(m.group(1)) != ch:
+            issues.append(f"[id] {gid}：前綴 {m.group(1)} ≠ ch {ch}")
+        if gid in seen_ids:
+            issues.append(f"[重複] id {gid} 出現兩次")
+        seen_ids.add(gid)
+        if ch not in registry:
+            issues.append(f"[ch] {gid}：第 {ch} 章不在 chapters.json")
+        per_ch[ch] = per_ch.get(ch, 0) + 1
+        if typ == 'mc':
+            cm = re.search(r"choices:\s*\[([^\]]*)\]", line)
+            choices = re.findall(r"'([^']*)'", cm.group(1)) if cm else []
+            if len(choices) < 3:
+                issues.append(f"[mc] {gid}：choices 少於 3 個")
+            if ans not in choices:
+                issues.append(f"[mc] {gid}：answer 不在 choices 裡")
+        elif typ == 'cloze':
+            if '___' not in q:
+                issues.append(f"[cloze] {gid}：題目缺 ___ 空格")
+            am = re.search(r"accepted:\s*\[([^\]]*)\]", line)
+            accepted = re.findall(r"'([^']*)'", am.group(1)) if am else []
+            if not accepted:
+                issues.append(f"[cloze] {gid}：缺 accepted 陣列")
+            elif ans not in accepted:
+                issues.append(f"[cloze] {gid}：answer 不在 accepted 裡")
+        else:
+            issues.append(f"[type] {gid}：未知題型 {typ}")
+    for ch in registry:
+        if per_ch.get(ch, 0) < 3:
+            issues.append(f"[題數] 第 {ch} 章只有 {per_ch.get(ch, 0)} 題（至少 3）")
+    return issues
+
+
+def check_grammar_pages():
+    """grammar/*.html 必須與 grammar.md 同步（產生器 check_only 模式）。"""
+    sys.path.insert(0, str(ROOT / 'tools'))
+    try:
+        import build_grammar_pages
+        stale = build_grammar_pages.build(check_only=True)
+        return [f"[過期] {x}（跑 python3 tools/build_grammar_pages.py 重建）" for x in stale]
+    except SystemExit as e:
+        return [f"[建置] {e}"]
+
+
 def main():
     known_md = parse_known_md()
     ok = True
@@ -156,6 +246,15 @@ def main():
     ]:
         issues = check_file(path, kana_array, vocab_key, md)
         print(f'== {path.name} ==')
+        if issues:
+            ok = False
+            for i in issues:
+                print('  ' + i)
+        else:
+            print('  全部通過 ✓')
+    for name, issues in [('grammar-quiz.html', check_grammar_quiz()),
+                         ('grammar/ 章節頁', check_grammar_pages())]:
+        print(f'== {name} ==')
         if issues:
             ok = False
             for i in issues:

@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>N5 文法測驗</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Noto+Sans+TC:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="quiz-common.css">
+<style>
+
+/* ── 文法題頁面差異 ── */
+
+/* 題目句（cloze）：比假名小、比內文大，行高鬆一點 */
+.cloze-q {
+  font-size: 1.35rem;
+  line-height: 1.9;
+  margin: 18px 0 6px;
+  font-family: 'Noto Sans JP', 'Noto Sans TC', sans-serif;
+}
+.cloze-zh {
+  font-size: 0.95rem;
+  color: var(--neutral);
+  margin-bottom: 14px;
+}
+.blank {
+  color: var(--accent);
+  border-bottom: 2px dotted var(--accent);
+  padding: 0 6px;
+  letter-spacing: 0.1em;
+}
+
+/* mc 題幹 */
+.mc-q {
+  font-size: 1.15rem;
+  line-height: 1.8;
+  margin: 18px 0 14px;
+}
+
+/* 文法選項是完整句子：改單欄、左對齊 */
+.options { grid-template-columns: 1fr; }
+.option-btn { text-align: left; font-size: 1.02rem; line-height: 1.6; }
+
+/* 章節篩選列可能超過一行 */
+.round-filter { flex-wrap: wrap; }
+.round-btn { flex: none; padding: 8px 14px; }
+
+/* 答後解說 */
+.explain {
+  margin-top: 10px;
+  font-size: 0.92rem;
+  color: var(--soft);
+  line-height: 1.7;
+  text-align: left;
+}
+.explain a { color: var(--accent); }
+
+/* 空佇列訊息 */
+.all-done {
+  text-align: center;
+  padding: 40px 0;
+  color: var(--soft);
+}
+.all-done .big-emoji { font-size: 3rem; margin-bottom: 12px; }
+</style>
+</head>
+<body>
+
+<nav class="nav-links">
+  <a href="index.html">← 首頁</a>
+  <a href="grammar/">📖 文法章節</a>
+  <button class="user-badge" id="userBadge" onclick="openUserModal()" title="切換使用者">
+    <span class="sync-dot" id="syncDot"></span>
+    <span id="userLabel">…</span>
+  </button>
+</nav>
+
+<div class="user-modal-overlay" id="userModalOverlay">
+  <div class="user-modal">
+    <h3>設定使用者 ID</h3>
+    <p>輸入你的專屬 ID（3–20 個英文字母、數字、<code>-</code> 或 <code>_</code>）。不同裝置輸入相同 ID 即可同步進度。</p>
+    <input type="text" id="userIdInput" placeholder="例：didi-2026" maxlength="20"
+      onkeydown="if(event.key==='Enter')confirmUserId()" autocomplete="off" />
+    <div class="user-modal-err" id="userModalErr"></div>
+    <div class="user-modal-btns">
+      <button class="btn-cancel" id="userCancelBtn" onclick="closeUserModal()">取消</button>
+      <button class="btn-confirm" onclick="confirmUserId()">確認</button>
+    </div>
+  </div>
+</div>
+
+<!-- 章節篩選（由 chapters 陣列動態生成，每天新章自動出現） -->
+<div class="round-filter" id="chFilter"></div>
+
+<div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+
+<div class="card" id="mainCard">
+  <span class="sr-badge">SRS</span>
+  <div id="quizContent"></div>
+</div>
+
+<div class="score-display">
+  <div class="score-item"><span class="score-num" id="scoreCorrect">0</span>正確</div>
+  <div class="score-item"><span class="score-num" id="scoreTotal">0</span>已答</div>
+  <div class="score-item"><span class="score-num" id="scoreStreak">0</span>連勝</div>
+</div>
+
+<script>
+// ═══════════════════════════════
+// DATA — 章節清單（與 grammar/chapters.json 同步，validate_quiz_data.py 會比對）
+// 每日排程教到新章時在末尾加一行 { n, title }。
+// ═══════════════════════════════
+const chapters = [
+  { n: 1, title: 'G1：X は Y です' },
+  { n: 2, title: '助詞比較：は vs を' },
+  { n: 3, title: 'G2：い形容詞' },
+  { n: 4, title: 'G3：な形容詞' },
+  { n: 5, title: 'G4：あります／います' },
+  { n: 6, title: 'G5：ます形（動詞禮貌體）' },
+];
+
+// ═══════════════════════════════
+// DATA — 文法題庫（一行一題；每日排程在末尾追加 3–5 題）
+// 欄位：id（SRS key，cNN-qM，NN=進度項編號）、ch、type（cloze=輸入／mc=選擇）、
+//       q（cloze 必含 ___）、answer、accepted（cloze，含 answer）、
+//       choices（mc ≥3 且含 answer）、explain（必填）、batch（同天同批，越大越新）
+// 修錯字保留 id；改題意換新 id 並刪舊行（避免舊 SRS 等級掛在新題上）。
+// ═══════════════════════════════
+const grammarCards = [
+  // ── 第 1 章 G1：X は Y です ──
+  { id:'c01-q1', ch:1, type:'cloze', q:'これはすしです___。', zh:'「這是壽司嗎？」——把疑問語氣補完', answer:'か', accepted:['か'], explain:'疑問句句尾的 か 不能漏：〜ですか。少了 か 就變成直述句「這是壽司」。', batch:1 },
+  { id:'c01-q2', ch:1, type:'mc', q:'「那不是咖啡。」哪一句對？', choices:['あれはコーヒーじゃありません','あれはコーヒーです','あれはコーヒーですじゃない'], answer:'あれはコーヒーじゃありません', explain:'否定是把 です 換成 じゃありません；です 後面不能再接 じゃない。', batch:1 },
+  { id:'c01-q3', ch:1, type:'cloze', q:'きのうはにちようび___。', zh:'「昨天是星期日。」——過去肯定', answer:'でした', accepted:['でした'], explain:'名詞句過去肯定：です → でした。', batch:1 },
+  { id:'c01-q4', ch:1, type:'cloze', q:'私は日本人じゃ___、台湾人です。', zh:'「我不是日本人，是台灣人。」', answer:'なくて', accepted:['なくて'], explain:'じゃない → じゃなくて：否定變 て形來連接下一句，「不是 A，而是 B」。', batch:1 },
+  { id:'c01-q5', ch:1, type:'mc', q:'跟朋友講話（口語隨便），「我是學生」怎麼說？', choices:['わたしは学生だ','わたしは学生である','わたしは学生でした'], answer:'わたしは学生だ', explain:'語體階梯：です（禮貌）／だ（口語）／である（書面正式，小說論文才用）。でした 是過去式。', batch:1 },
+  { id:'c01-q6', ch:1, type:'mc', q:'「そうじゃない！」的意思是？', choices:['不是那樣！／不對！','就是那樣！','是這樣嗎？'], answer:'不是那樣！／不對！', explain:'そう（那樣）＋じゃない（不是）＝口語反駁「才不是」「不對啦」。', batch:1 },
+  { id:'c01-q7', ch:1, type:'cloze', q:'私は日本人___ありません。', zh:'正式書面的「我不是日本人」', answer:'では', accepted:['では'], explain:'じゃ 是 では 的口語縮略（de wa → ja）；正式書面用 ではありません。', batch:1 },
+
+  // ── 第 2 章 助詞比較：は vs を ──
+  { id:'c02-q1', ch:2, type:'cloze', q:'これ___ください。', zh:'「請給我這個。」——決定點餐時', answer:'を', accepted:['を'], explain:'を 標記動作的對象，後面接動詞（ください）。點餐是「把這個給我」的動作。', batch:1 },
+  { id:'c02-q2', ch:2, type:'cloze', q:'これ___なんですか。', zh:'「這是什麼？」——看菜單還不確定時', answer:'は', accepted:['は'], explain:'は 標記主題：「說到這個…它是什麼？」後面是描述判斷，不是動作。', batch:1 },
+  { id:'c02-q3', ch:2, type:'cloze', q:'ねこはさかな___たべます。', zh:'「貓吃魚。」', answer:'を', accepted:['を'], explain:'さかな 是「吃」這個動作打到的對象，用 を；ねこ 是主題用 は。', batch:1 },
+  { id:'c02-q4', ch:2, type:'mc', q:'たこやき 是什麼食物？', choices:['章魚燒','泛指燒烤類食物','炸雞塊'], answer:'章魚燒', explain:'たこ＝章魚。たこやき 專指章魚燒，不是泛指烤物——這題你錯過一次。', batch:1 },
+  { id:'c02-q5', ch:2, type:'mc', q:'「これを。」這句話——', choices:['不完整：を 後面必須有動詞','完整：意思是「這個」','完整：是疑問句'], answer:'不完整：を 後面必須有動詞', explain:'を 宣告「動作對象來了」，動詞卻沒出現，句子就沒講完（除非省略了大家都懂的 ください）。', batch:1 },
+  { id:'c02-q6', ch:2, type:'cloze', q:'わたしはコーヒー___のみます。', zh:'「我喝咖啡。」', answer:'を', accepted:['を'], explain:'のみます（喝）是動詞，咖啡是它的對象：〜をのむ。', batch:1 },
+  { id:'c02-q7', ch:2, type:'mc', q:'「我喜歡壽司」哪一句對？', choices:['すしがすきです','すしをすきです','すしはたべます'], answer:'すしがすきです', explain:'すき 是な形容詞不是動詞，沒有動作可以打出去，所以不用 を、用 が。', batch:1 },
+
+  // ── 第 3 章 G2：い形容詞 ──
+  { id:'c03-q1', ch:3, type:'cloze', q:'きのうはとてもたのしか___です。', zh:'「昨天非常開心。」——過去肯定', answer:'った', accepted:['った'], explain:'い形容詞過去肯定＝〜かった＋です：たのしい→たのしかったです。少了 た 是常見手誤——你錯過一次。', batch:1 },
+  { id:'c03-q2', ch:3, type:'mc', q:'「今天不冷。」哪一句對？', choices:['きょうはさむくないです','きょうわさむくないです','きょうはさむいないです'], answer:'きょうはさむくないです', explain:'主題助詞「寫 は 念 wa」，寫成 わ 是錯的（你錯過一次）；い形容詞否定是砍 い 換 くない，不是直接加 ない。', batch:1 },
+  { id:'c03-q3', ch:3, type:'cloze', q:'このほんはたか___です。', zh:'「這本書不貴。」——現在否定', answer:'くない', accepted:['くない'], explain:'い形容詞現在否定：砍掉 い、換上 くない。たかい→たかくないです。', batch:1 },
+  { id:'c03-q4', ch:3, type:'mc', q:'「那部電影（當時）不好看。」いい 的過去否定是？', choices:['よくなかったです','いくなかったです','いいじゃありません'], answer:'よくなかったです', explain:'いい 是唯一例外：否定／過去要換用 よい 的活用。沒有「いくない」這種講法。', batch:1 },
+  { id:'c03-q5', ch:3, type:'mc', q:'「好吃的壽司」怎麼說？', choices:['おいしいすし','おいしいなすし','おいしくすし'], answer:'おいしいすし', explain:'い形容詞修飾名詞時 い 完全不動，直接黏上去；加 な 的是な形容詞。', batch:1 },
+  { id:'c03-q6', ch:3, type:'cloze', q:'えいがはよか___です。', zh:'「電影（當時）很好看。」——いい 的過去肯定', answer:'った', accepted:['った'], explain:'いい 的過去肯定用 よい 活用：よかったです。よかった 單獨用也是日常高頻的「太好了」。', batch:1 },
+  { id:'c03-q7', ch:3, type:'mc', q:'「（那時）很好吃」說成「おいしいでした」——', choices:['錯：應為おいしかったです','對','錯：應為おいしいだった'], answer:'錯：應為おいしかったです', explain:'い形容詞自己活用、です 全程不動：動的是 おいしい→おいしかった，不是 です→でした。這是初學者最常見的錯句。', batch:1 },
+
+  // ── 第 4 章 G3：な形容詞 ──
+  { id:'c04-q1', ch:4, type:'cloze', q:'きれい___まち', zh:'「漂亮的城市」', answer:'な', accepted:['な'], explain:'な形容詞修飾名詞時字尾加 な：きれいな＋まち。', batch:1 },
+  { id:'c04-q2', ch:4, type:'mc', q:'下面哪一個是な形容詞？', choices:['きれい','たかい','おいしい'], answer:'きれい', explain:'きれい 的 い 是漢字「綺麗」的一部分，不是活用語尾——い 結尾不一定是い形容詞。', batch:1 },
+  { id:'c04-q3', ch:4, type:'cloze', q:'まちはきれい___。', zh:'「城市很漂亮。」——作述語時', answer:'です', accepted:['です'], explain:'な形容詞作述語時不加 な，直接接 です；加 な 只在修飾名詞時。', batch:1 },
+  { id:'c04-q4', ch:4, type:'cloze', q:'としょかんはしずか___。', zh:'「圖書館（當時）很安靜。」——過去肯定', answer:'でした', accepted:['でした'], explain:'な形容詞活用跟 G1 名詞句完全相同：過去肯定用 でした。', batch:1 },
+  { id:'c04-q5', ch:4, type:'mc', q:'「喜歡的食物」怎麼說？', choices:['すきなたべもの','すきいたべもの','すきたべもの'], answer:'すきなたべもの', explain:'すき 是な形容詞，修飾名詞要加 な。', batch:1 },
+  { id:'c04-q6', ch:4, type:'mc', q:'きらい（討厭）是什麼詞？', choices:['な形容詞','い形容詞','動詞'], answer:'な形容詞', explain:'跟 きれい 一樣，きらい 的 い 是漢字「嫌い」的一部分——要特別記的偽裝者。', batch:1 },
+  { id:'c04-q7', ch:4, type:'cloze', q:'このまちはきれい___ありません。', zh:'「這個城市不漂亮。」', answer:'じゃ', accepted:['じゃ','では'], explain:'な形容詞否定跟名詞句一樣：〜じゃありません（正式書面 ではありません）。', batch:1 },
+
+  // ── 第 5 章 G4：あります／います ──
+  { id:'c05-q1', ch:5, type:'mc', q:'「有貓。」哪一句對？', choices:['ねこがいます','ねこがあります','ねこにいます'], answer:'ねこがいます', explain:'有生命的（人、動物）用 います；存在的主語用 が 標記。', batch:1 },
+  { id:'c05-q2', ch:5, type:'mc', q:'「有便利商店。」哪一句對？', choices:['コンビニがあります','コンビニがいます','コンビニはいます'], answer:'コンビニがあります', explain:'無生命的物（店、物品、事件）用 あります。', batch:1 },
+  { id:'c05-q3', ch:5, type:'cloze', q:'ねこはテーブルのうえ___います。', zh:'「貓在桌子上。」', answer:'に', accepted:['に'], explain:'「X 在 Y」句型：場所後面用 に——X は 場所 に います／あります。', batch:1 },
+  { id:'c05-q4', ch:5, type:'cloze', q:'じかんが___。', zh:'「沒有時間。」', answer:'ありません', accepted:['ありません'], explain:'時間是無生命，用 あります 的否定 ありません。', batch:1 },
+  { id:'c05-q5', ch:5, type:'cloze', q:'テーブル___うえにあります。', zh:'「在桌子的上面。」——位置詞的接法', answer:'の', accepted:['の'], explain:'位置詞前面加 の：テーブルのうえ（桌子的上面）。', batch:1 },
+  { id:'c05-q6', ch:5, type:'mc', q:'「明天有考試。」哪一句對？', choices:['あしたテストがあります','あしたテストがいます','あしたテストにあります'], answer:'あしたテストがあります', explain:'事件（考試、派對）也用 あります——這是 あります 的特殊用法。', batch:1 },
+  { id:'c05-q7', ch:5, type:'cloze', q:'わたしはうちに___。', zh:'「我在家。」', answer:'います', accepted:['います'], explain:'人是有生命的，用 います：わたしはうちにいます。', batch:1 },
+
+  // ── 第 6 章 G5：ます形（動詞禮貌體）──
+  { id:'c06-q1', ch:6, type:'cloze', q:'のむ（喝）→ ___', zh:'寫出「喝」的禮貌體（現在肯定）', answer:'のみます', accepted:['のみます'], explain:'う動詞：語尾 u段 → i段＋ます。のむ（nomu）→ のみ（nomi）＋ます。', batch:1 },
+  { id:'c06-q2', ch:6, type:'cloze', q:'たべ___。', zh:'「吃了。」——たべる 的過去肯定', answer:'ました', accepted:['ました'], explain:'る動詞直接去る套ます系列：たべる→たべました。', batch:1 },
+  { id:'c06-q3', ch:6, type:'mc', q:'わかりませんでした 的意思是？', choices:['（當時）不懂','現在不懂','懂了'], answer:'（當時）不懂', explain:'ませんでした＝過去否定。現在不懂是 わかりません，懂了是 わかりました。', batch:1 },
+  { id:'c06-q4', ch:6, type:'mc', q:'吃完飯離開餐廳時道謝，哪個較合適？', choices:['ありがとうございました','ありがとうございます','どういたしまして'], answer:'ありがとうございました', explain:'ございました＝事情已結束（感謝整頓飯）；ございます＝當下正在發生的服務；どういたしまして 是「不客氣」，那是店員回你的話。', batch:1 },
+  { id:'c06-q5', ch:6, type:'cloze', q:'べんきょう___ます。', zh:'「學習。」——する動詞的禮貌體', answer:'し', accepted:['し'], explain:'名詞＋する 變動詞；する 的禮貌體是 します：べんきょうします。', batch:1 },
+  { id:'c06-q6', ch:6, type:'mc', q:'みる（看）屬於哪一類動詞？', choices:['る動詞（一段）','う動詞（五段）','する動詞'], answer:'る動詞（一段）', explain:'みる 去る直接套ます：みます。一段動詞的變化最單純。', batch:1 },
+  { id:'c06-q7', ch:6, type:'cloze', q:'たべ___。', zh:'「不吃。」——現在否定', answer:'ません', accepted:['ません'], explain:'ます系列固定變化：ます／ません／ました／ませんでした。現在否定是 ません。', batch:1 },
+];
+
+// ═══════════════════════════════
+// FIREBASE SYNC CONFIG
+// ═══════════════════════════════
+const FIREBASE_DB_URL = 'https://nihongo-2ad36-default-rtdb.asia-southeast1.firebasedatabase.app';
+const QUIZ_TYPE = 'grammar';   // → /progress/<user>/grammar.json，與 hiragana/katakana 分開
+
+// quiz-common.js 硬寫死兩個 bucket（kana/vocab）。文法只需要一個：
+// 把 vocab bucket 拿來裝文法卡（key=題目 id），kana bucket 空著但名字必須存在。
+const STORAGE_KANA  = 'grammar_unused_progress';
+const STORAGE_VOCAB = 'grammar_srs_progress';
+
+// ═══════════════════════════════
+// STATE（quiz-common.js 契約要求的外層變數）
+// ═══════════════════════════════
+// escapeHtml 在 quiz-common.js 也有定義（同款）；這裡先定義一份是因為
+// 章節篩選列在 quiz-common.js 載入前就要渲染（deep-link IIFE）。
+function escapeHtml(s) {
+  return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+let kanaProgress = {};
+let vocabProgress = {};
+let totalAnswered = 0, totalCorrect = 0, streak = 0, sessionCount = 0;
+let wrongAnswers = new Map();
+
+let grammarQueue = [];
+let currentQ = null;
+let currentChoices = [];
+let answered = false;
+let chFilter = 0;   // 0 = 全部
+
+// ═══════════════════════════════
+// QUEUE
+// ═══════════════════════════════
+function getFilteredCards() {
+  const pool = chFilter ? grammarCards.filter(c => c.ch === chFilter) : grammarCards;
+  return pool.map(c => {
+    const saved = vocabProgress[c.id];
+    return { ...c, display: c.id,                       // 讓 quiz-common 的 advanceSRS 直接可用
+             level: saved ?? 0,
+             nextReview: saved != null ? 0 : -(c.batch * 5) };  // 新批次優先，同 recentBatch 算法
+  });
+}
+
+// 全形／半形、空白、常見標點差異不算錯
+function normJa(s) {
+  return s.normalize('NFKC').trim().replace(/\s+/g, '').replace(/[。、．，]/g, '');
+}
+
+function chapterOf(n) { return chapters.find(x => x.n === n); }
+function chapterHref(n) { return `grammar/${String(n).padStart(2, '0')}.html`; }
+
+// ═══════════════════════════════
+// 章節篩選列（動態生成，新章自動出現）
+// ═══════════════════════════════
+function buildChFilter() {
+  const wrap = document.getElementById('chFilter');
+  const btns = [`<button class="round-btn${chFilter === 0 ? ' active' : ''}" data-ch="0">全部</button>`]
+    .concat(chapters.map(c =>
+      `<button class="round-btn${chFilter === c.n ? ' active' : ''}" data-ch="${c.n}" title="${escapeHtml(c.title)}">第${c.n}章</button>`));
+  wrap.innerHTML = btns.join('');
+  wrap.querySelectorAll('.round-btn').forEach(b =>
+    b.addEventListener('click', () => setChapter(parseInt(b.dataset.ch, 10))));
+}
+
+function setChapter(n) {
+  chFilter = n;
+  buildChFilter();
+  rebuildQueues();
+  resetScore();
+  nextCard();
+}
+
+// ═══════════════════════════════
+// RENDER
+// ═══════════════════════════════
+function renderCloze() {
+  const qHtml = escapeHtml(currentQ.q).replace('___', '<span class="blank">＿＿</span>');
+  document.getElementById('quizContent').innerHTML = `
+    <div class="question-type">第${currentQ.ch}章 · 填空（輸入假名）</div>
+    <div class="cloze-q">${qHtml}</div>
+    ${currentQ.zh ? `<div class="cloze-zh">${escapeHtml(currentQ.zh)}</div>` : ''}
+    <div class="input-wrap">
+      <input class="romaji-input" id="clozeInput" type="text" placeholder="輸入假名…"
+        autocomplete="off" autocorrect="off" autocapitalize="none" spellcheck="false">
+    </div>
+    <button class="submit-btn" id="submitBtn">確認</button>
+    <div class="feedback" id="feedback"></div>
+    <button class="next-btn" id="nextBtn">下一題 →</button>
+  `;
+  const inp = document.getElementById('clozeInput');
+  inp.addEventListener('keydown', e => { if (e.key === 'Enter') submitCloze(); });
+  document.getElementById('submitBtn').addEventListener('click', submitCloze);
+  document.getElementById('nextBtn').addEventListener('click', nextCard);
+  setTimeout(() => inp?.focus(), 80);
+}
+
+function submitCloze() {
+  if (answered) return;
+  const inp = document.getElementById('clozeInput');
+  if (!inp?.value.trim()) return;
+  answered = true;
+  const isCorrect = currentQ.accepted.map(normJa).includes(normJa(inp.value));
+  inp.disabled = true;
+  inp.classList.add(isCorrect ? 'correct' : 'wrong');
+  showFeedback(isCorrect);
+}
+
+function renderMC() {
+  currentChoices = shuffle([...currentQ.choices]);
+  document.getElementById('quizContent').innerHTML = `
+    <div class="question-type">第${currentQ.ch}章 · 選擇</div>
+    <div class="mc-q">${escapeHtml(currentQ.q)}</div>
+    <div class="options">
+      ${currentChoices.map((opt, i) => `<button class="option-btn" data-i="${i}">${escapeHtml(opt)}</button>`).join('')}
+    </div>
+    <div class="feedback" id="feedback"></div>
+    <button class="next-btn" id="nextBtn">下一題 →</button>
+  `;
+  document.querySelectorAll('.option-btn').forEach(b =>
+    b.addEventListener('click', () => checkMC(parseInt(b.dataset.i, 10), b)));
+  document.getElementById('nextBtn').addEventListener('click', nextCard);
+}
+
+function checkMC(i, btn) {
+  if (answered) return;
+  answered = true;
+  const chosen = currentChoices[i];
+  const isCorrect = chosen === currentQ.answer;
+  document.querySelectorAll('.option-btn').forEach(b => {
+    b.disabled = true;
+    if (currentChoices[parseInt(b.dataset.i, 10)] === currentQ.answer) b.classList.add('correct');
+  });
+  if (!isCorrect) btn.classList.add('wrong');
+  showFeedback(isCorrect);
+}
+
+function showFeedback(isCorrect) {
+  advanceSRS(currentQ, isCorrect);
+  const fb = document.getElementById('feedback');
+  fb.className = `feedback ${isCorrect ? 'show-correct' : 'show-wrong'}`;
+  const jaAnswer = /[ぁ-ゖァ-ヺ一-龯]/.test(currentQ.answer);
+  const speak = jaAnswer
+    ? ` <button class="speak-btn" id="speakAns" title="朗讀">🔊</button>` : '';
+  fb.innerHTML = (isCorrect ? '✓ 正確！' : `✗ 正確是「${escapeHtml(currentQ.answer)}」`) + speak +
+    `<div class="explain">${escapeHtml(currentQ.explain)}　<a href="${chapterHref(currentQ.ch)}">回第${currentQ.ch}章 →</a></div>`;
+  document.getElementById('speakAns')?.addEventListener('click', () => {
+    // cloze 唸完整句（把空格代入答案），mc 唸答案句
+    const text = currentQ.type === 'cloze' ? currentQ.q.replace('___', currentQ.answer) : currentQ.answer;
+    speakJa(text);
+  });
+  document.getElementById('nextBtn').classList.add('visible');
+}
+
+// ═══════════════════════════════
+// PAGE HOOK（quiz-common.js 呼叫）
+// ═══════════════════════════════
+function getSessionLimit() {
+  const pool = (chFilter ? grammarCards.filter(c => c.ch === chFilter) : grammarCards).length;
+  return Math.min(Math.max(Math.round(pool * 0.5), 10), 30);
+}
+
+function rebuildQueues() {
+  grammarQueue = getFilteredCards();
+}
+
+function nextCard() {
+  answered = false;
+  if (sessionCount >= getSessionLimit()) { showResult(); return; }
+  currentQ = pickFromQueue(grammarQueue);
+  if (!currentQ) {
+    if (sessionCount === 0) {
+      document.getElementById('quizContent').innerHTML = `
+        <div class="all-done"><div class="big-emoji">🌤️</div>
+        這一章的題目今天都複習過了。<br>換一章，或選「全部」再練。</div>`;
+      return;
+    }
+    showResult();
+    return;
+  }
+  if (currentQ.type === 'mc') renderMC(); else renderCloze();
+  updateProgress();
+}
+
+function restartCurrent() {
+  rebuildQueues();
+  resetScore();
+  nextCard();
+}
+
+// ?ch=N deep link（在 quiz-common.js boot 之前生效）
+(() => {
+  const p = parseInt(new URLSearchParams(location.search).get('ch') || '0', 10);
+  if (chapters.some(c => c.n === p)) chFilter = p;
+  buildChFilter();
+})();
+</script>
+<script src="quiz-common.js"></script>
+<script>
+// 覆寫 quiz-common.js 的 renderWrongList：它假設卡片是假名／單字（char/display＋reading＋meaning），
+// 文法卡沒有那些欄位。必須放在 quiz-common.js 之後（showResult 執行時才會呼叫，重綁安全）。
+function renderWrongList() {
+  if (wrongAnswers.size === 0) return '';
+  const items = [...wrongAnswers.values()].map(c => {
+    const ch = chapterOf(c.ch);
+    return `<div class="wrong-item">
+      <span class="wrong-front">${escapeHtml(c.q.replace('___', '＿＿'))}</span>
+      <span class="wrong-back">✓ ${escapeHtml(c.answer)}<br>${escapeHtml(c.explain)}<br>
+        <a href="${chapterHref(c.ch)}">${escapeHtml(ch ? ch.title : '第' + c.ch + '章')} →</a></span>
+    </div>`;
+  }).join('');
+  return `<div class="wrong-list"><div class="wrong-title">答錯回顧（${wrongAnswers.size}）</div>${items}</div>`;
+}
+</script>
+</body>
+</html>
