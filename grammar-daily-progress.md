@@ -21,14 +21,14 @@ alias: grammar-progress
 3. 上架章節頁與題目：
    a. 在 grammar/chapters.json 加一筆 "項目編號": "<grammar.md 裡該節 ## 後的完整標題>"（一字不差）。
    b. 在 grammar-quiz.html 的 const chapters 陣列末尾加 { n: 項目編號, title: '同上標題' },。
-   c. 在 grammar-quiz.html 的 const grammarCards 陣列末尾加 3–5 題（一行一個物件）：
+   c. 在 grammar-quiz.html 的 const grammarCards 陣列末尾加 5–10 題（依該章詞彙表大小，一行一個物件）。目標：把該章詞彙表／例句表的單字盡量分配進題目：
       - id 用 c<兩位數項目編號>-q<流水號>；batch 用「目前最大 batch + 1」（同一天同一批）
       - 助詞／活用這類「填得出唯一答案」的用 type:'cloze'（q 含 ___、accepted 列所有可接受寫法且含 answer；可加 zh 欄放中文提示句）
       - 語感判斷用 type:'mc'（choices 至少 3 個且 answer 在其中；干擾項要是真的會犯的錯，不要湊數）
       - 每題必有 explain（一到兩句講清楚為什麼）
       - 出題優先針對本表備註欄記下的過往錯處
       - **題目與解說只能用該章與更早章節教過的概念**；需要提到後面的概念就寫「第 N 章會正式介紹」往後指，不可預設
-      - **例句單字同樣受約束**：優先用該章自己的詞彙表出題（那些詞就是要練的），其次用 vocabulary.md／already-known.md 已學單字；不得已用生詞要在 zh 提示加「＝中文」註解
+      - **例句單字同樣受約束**：優先用該章自己的詞彙表出題（那些詞就是要練的），其次用 vocabulary.md／already-known.md 已學單字（**整詞比對假名欄**，勿子字串搜尋——ほん 會被 本当／一本 誤判成已學）；不得已用生詞要在 zh 提示加「＝中文」註解
    d. 跑 python3 tools/build_grammar_pages.py 產生章節頁，再跑 python3 tools/validate_quiz_data.py 驗證。**任一失敗就把這一輪所有檔案改動還原、狀態不要標 ✅。**
 4. Telegram 訊息：純文字、6–8 行，只做通知＋連結（章節總覽、測驗頁、當日章節頁），不在訊息裡教學、不出題、不放「上次複習」（複習交給測驗頁的 SRS）。
 5. 完成後把該列狀態改成 ✅，填上完成日期。備註欄留給概念性觀察（哪類文法點反覆卡住），不逐題記分。
