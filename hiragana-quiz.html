@@ -1059,6 +1059,14 @@ const vocabCards = [
   { meaning: '下個月', display: 'らいげつ', reading: 'raigetsu', kanji: '来月', topic: 'time', round: 4 },
   { meaning: '去年', display: 'きょねん', reading: 'kyonen', kanji: '去年', topic: 'time', round: 3 },
   { meaning: '明年', display: 'らいねん', reading: 'rainen', kanji: '来年', topic: 'time', round: 2 },
+  { meaning: '每天', display: 'まいにち', reading: 'mainichi', kanji: '毎日', topic: 'time', round: 4 },
+  { meaning: '每天早上', display: 'まいあさ', reading: 'maiasa', kanji: '毎朝', topic: 'time', round: 4 },
+  { meaning: '每晚', display: 'まいばん', reading: 'maiban', kanji: '毎晩', topic: 'time', round: 5 },
+  { meaning: '每週', display: 'まいしゅう', reading: 'maishuu', kanji: '毎週', topic: 'time', round: 4 },
+  { meaning: '每月', display: 'まいつき', reading: 'maitsuki', kanji: '毎月', topic: 'time', round: 4 },
+  { meaning: '每年', display: 'まいとし', reading: 'maitoshi', kanji: '毎年', topic: 'time', round: 4 },
+  { meaning: '週末', display: 'しゅうまつ', reading: 'shuumatsu', kanji: '週末', topic: 'time', round: 4 },
+  { meaning: '半（三點半的半）', display: 'はん', reading: 'han', kanji: '半', topic: 'time', round: 5 },
 ];
 
 // ═══════════════════════════════
@@ -1157,6 +1165,9 @@ const alreadyKnown = new Set([
 // 最近加入的單字批次（數字越大＝越近加入＝越優先出現）
 // 規則：同一天加入的算同一批；新增單字時若該日已有批次直接沿用，否則用最新批次號 + 1
 const recentBatch = {
+  // 批次 25（2026-09-05）
+  'まいにち': 25, 'まいあさ': 25, 'まいばん': 25, 'まいしゅう': 25,
+  'まいつき': 25, 'まいとし': 25, 'しゅうまつ': 25, 'はん': 25,
   // 批次 24（2026-09-04）
   'ゆうがた': 24, 'とき': 24, 'せんしゅう': 24, 'らいしゅう': 24,
   'せんげつ': 24, 'らいげつ': 24, 'きょねん': 24, 'らいねん': 24,
