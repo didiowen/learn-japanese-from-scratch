@@ -148,7 +148,7 @@ const recentBatch = {
 - **grammar.md 是文法內容的唯一正本**；`grammar/NN.html` 與 `grammar/index.html` 是 `tools/build_grammar_pages.py` 的建置產物，**絕對不要手改**（改了下次重建就沒了，驗證器也會報「過期」）。`_sidebar.md` 與 `notes/`（docsify）照舊渲染 grammar.md 當完整筆記檢視，兩者並存是刻意的，不要「修掉」。
 - grammar.md **只能用這個 markdown 子集**：`###`/`####` 小標、段落、行尾兩空格換行、`**粗體**`、`` `行內程式碼` ``、GFM 表格、`>` 引言、``` 圍欄、單層 `-`/`1.` 清單、`---`。產生器認不得的語法會直接建置失敗。
 - 改了 grammar.md（已上架章節的部分）→ 必跑 `python3 tools/build_grammar_pages.py` 重建，再跑 `python3 tools/validate_quiz_data.py`；precommit hook 會擋住過期頁面的 commit。
-- `grammar-quiz.html` 的題庫 `grammarCards` 一行一題：`id`（`cNN-qM`，NN=進度項編號）是 SRS key——**修錯字保留 id、改題意換新 id 並刪舊行**；`batch` 同天同批、越大越新（未做過的題 `nextReview = -(batch×5)` 優先出現）；cloze 題目必含 `___` 且 `accepted` 含 `answer`；mc `choices` ≥3 且含 `answer`；每題必有 `explain`。頁內 `chapters` 陣列必須與 `grammar/chapters.json` 一致（驗證器會比對）。
+- `grammar-quiz.html` 的題庫 `grammarCards` 一行一題：`id`（`cNN-qM`，NN=進度項編號）是 SRS key——**修錯字保留 id、改題意換新 id 並刪舊行**；`batch` 同天同批、越大越新（未做過的題 `nextReview = -(batch×5)` 優先出現）；cloze 題目必含 `___` 且 `accepted` 含 `answer`；mc `choices` ≥3 且含 `answer`；每題必有 `explain`。作答後頁面會自動把答案句轉羅馬字顯示（wapuro 慣例、句中 は→wa 啟發式）；**句子含漢字或非助詞的 は 開頭單字（はなし系以外）時，加選填的 `romaji` 欄位手動指定**，覆寫自動轉換。頁內 `chapters` 陣列必須與 `grammar/chapters.json` 一致（驗證器會比對）。
 
 ### 每日教學排程（17:30，文法＋單字兩軌）
 

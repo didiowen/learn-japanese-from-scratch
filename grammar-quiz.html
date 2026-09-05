@@ -44,6 +44,15 @@
 .round-filter { flex-wrap: wrap; }
 .round-btn { flex: none; padding: 8px 14px; }
 
+/* 作答後的羅馬字行 */
+.romaji-line {
+  margin-top: 8px;
+  font-size: 0.88rem;
+  color: var(--neutral);
+  letter-spacing: 0.03em;
+  text-align: left;
+}
+
 /* 答後解說 */
 .explain {
   margin-top: 10px;
@@ -280,6 +289,52 @@ function getFilteredCards() {
   });
 }
 
+// 假名→羅馬字（wapuro 慣例：おう→ou、ー複製前母音、ん→n）。
+// 助詞啟發式：句中 は→wa（はなし／はなす 開頭的詞例外）、を 一律當助詞 →" o "。
+// 句子含漢字或棘手讀音時，題卡可加 romaji 欄位手動覆寫（見 CLAUDE.md）。
+const _K = {
+'あ':'a','い':'i','う':'u','え':'e','お':'o','か':'ka','き':'ki','く':'ku','け':'ke','こ':'ko',
+'さ':'sa','し':'shi','す':'su','せ':'se','そ':'so','た':'ta','ち':'chi','つ':'tsu','て':'te','と':'to',
+'な':'na','に':'ni','ぬ':'nu','ね':'ne','の':'no','は':'ha','ひ':'hi','ふ':'fu','へ':'he','ほ':'ho',
+'ま':'ma','み':'mi','む':'mu','め':'me','も':'mo','や':'ya','ゆ':'yu','よ':'yo',
+'ら':'ra','り':'ri','る':'ru','れ':'re','ろ':'ro','わ':'wa','を':' o ','ん':'n',
+'が':'ga','ぎ':'gi','ぐ':'gu','げ':'ge','ご':'go','ざ':'za','じ':'ji','ず':'zu','ぜ':'ze','ぞ':'zo',
+'だ':'da','ぢ':'ji','づ':'zu','で':'de','ど':'do','ば':'ba','び':'bi','ぶ':'bu','べ':'be','ぼ':'bo',
+'ぱ':'pa','ぴ':'pi','ぷ':'pu','ぺ':'pe','ぽ':'po',
+};
+const _SMALL = { 'ゃ':'ya', 'ゅ':'yu', 'ょ':'yo' };
+function kanaToRomaji(text) {
+  let s = [...text].map(c => {
+    const code = c.codePointAt(0);
+    return (code >= 0x30A1 && code <= 0x30F6) ? String.fromCodePoint(code - 0x60) : c;
+  }).join('');
+  let out = '', i = 0;
+  while (i < s.length) {
+    const c = s[i], nx = s[i + 1];
+    if (c === 'っ') {
+      const peek = kanaToRomaji(s.slice(i + 1, i + 3)).trim();
+      out += peek ? peek[0] : 'tsu'; i++; continue;
+    }
+    if (c === 'は' && i > 0 && !/^(なして|なします|なす)/.test(s.slice(i + 1))) {
+      out += ' wa '; i++; continue;
+    }
+    if (_K[c]) {
+      let r = _K[c];
+      if (_SMALL[nx]) {
+        const y = _SMALL[nx];
+        r = (['shi','chi','ji'].includes(r)) ? r.slice(0, -1) + y.slice(1) : r.slice(0, -1) + y;
+        i++;
+      }
+      out += r; i++; continue;
+    }
+    if (c === 'ー') { const m = out.match(/[aiueo]$/); out += m ? m[0] : ''; i++; continue; }
+    if (c === '、' || c === '，') { out += ', '; i++; continue; }
+    if (c === '。') { out += '.'; i++; continue; }
+    out += c; i++;
+  }
+  return out.replace(/\s+/g, ' ').trim();
+}
+
 // 全形／半形、空白、常見標點差異不算錯
 function normJa(s) {
   return s.normalize('NFKC').trim().replace(/\s+/g, '').replace(/[。、．，]/g, '');
@@ -380,7 +435,12 @@ function showFeedback(isCorrect) {
   const jaAnswer = /[ぁ-ゖァ-ヺ一-龯]/.test(currentQ.answer);
   const speak = jaAnswer
     ? ` <button class="speak-btn" id="speakAns" title="朗讀">🔊</button>` : '';
+  // 作答後顯示羅馬字：cloze 是整句（代入答案）、mc 是答案句（含日文才顯示）。
+  // 題卡的 romaji 欄位可覆寫自動轉換。
+  const romajiSrc = currentQ.type === 'cloze' ? currentQ.q.replace('___', currentQ.answer) : currentQ.answer;
+  const romaji = currentQ.romaji || (/[ぁ-ゖァ-ヺ]/.test(romajiSrc) ? kanaToRomaji(romajiSrc) : '');
   fb.innerHTML = (isCorrect ? '✓ 正確！' : `✗ 正確是「${escapeHtml(currentQ.answer)}」`) + speak +
+    (romaji ? `<div class="romaji-line">${escapeHtml(romaji)}</div>` : '') +
     `<div class="explain">${escapeHtml(currentQ.explain)}　<a href="${chapterHref(currentQ.ch)}">回第${currentQ.ch}章 →</a></div>`;
   document.getElementById('speakAns')?.addEventListener('click', () => {
     // cloze 唸完整句（把空格代入答案），mc 唸答案句
