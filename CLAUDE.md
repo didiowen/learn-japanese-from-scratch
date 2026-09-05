@@ -49,6 +49,9 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 | `grammar/` | 文法章節 HTML（`NN.html`＋`index.html`，由 `tools/build_grammar_pages.py` 從 grammar.md 產生，**不要手改**；`chapters.json` 是「進度項編號→grammar.md 標題」登錄表、`chapter.css` 是手寫樣式） |
 | `grammar-quiz.html` | 文法 SRS 測驗（填空輸入＋語感選擇；題庫 `grammarCards` 內嵌，SRS 走 quiz-common.js） |
 | `tools/build_grammar_pages.py` | 章節頁產生器（`--check` 供驗證器比對是否過期） |
+| `vocab-lessons.md` | 每日單字教學的**唯一正本**（一批一節），課程頁由它生成 |
+| `vocab/` | 單字課程 HTML（`NN.html`＋`index.html`，由 `tools/build_vocab_pages.py` 產生，**不要手改**；`batches.json` 是登錄表；樣式沿用 `grammar/chapter.css`） |
+| `tools/build_vocab_pages.py` | 單字課程頁產生器（渲染器 import `build_grammar_pages`，同一份實作） |
 | `PRODUCT.md` | 設計策略文件（受眾、品牌個性、設計原則，impeccable skill 使用） |
 
 參考文件（`.claude/skills/japanese-learning/references/` 目錄）：
@@ -143,11 +146,12 @@ const recentBatch = {
 - **無障礙**：最小字體 18px，WCAG AA，互動目標 ≥ 44×44px，尊重 prefers-reduced-motion
 - **禁止**：gradient text、glassmorphism、等高卡片格、side-stripe border
 
-### 文法章節頁與文法測驗
+### 課程頁（文法章節／單字批次）與測驗
 
 - **grammar.md 是文法內容的唯一正本**；`grammar/NN.html` 與 `grammar/index.html` 是 `tools/build_grammar_pages.py` 的建置產物，**絕對不要手改**（改了下次重建就沒了，驗證器也會報「過期」）。`_sidebar.md` 與 `notes/`（docsify）照舊渲染 grammar.md 當完整筆記檢視，兩者並存是刻意的，不要「修掉」。
 - grammar.md **只能用這個 markdown 子集**：`###`/`####` 小標、段落、行尾兩空格換行、`**粗體**`、`` `行內程式碼` ``、GFM 表格、`>` 引言、``` 圍欄、單層 `-`/`1.` 清單、`---`。產生器認不得的語法會直接建置失敗。
 - 改了 grammar.md（已上架章節的部分）→ 必跑 `python3 tools/build_grammar_pages.py` 重建，再跑 `python3 tools/validate_quiz_data.py`；precommit hook 會擋住過期頁面的 commit。
+- **單字同一套**：`vocab-lessons.md` 是單字教學正本、`vocab/NN.html` 是產物（勿手改）、`vocab/batches.json` 是登錄表，產生器 `tools/build_vocab_pages.py` 直接 import `build_grammar_pages` 的渲染器——markdown 子集與版型兩邊完全相同，改一支兩邊同時生效。`vocabulary.md`（主題總表）與 `vocab-lessons.md`（課程順序）刻意並存，同 `grammar.md`／`grammar/` 的關係。單字的練習仍在 `hiragana-quiz.html`（vocabCards＋recentBatch），沒有獨立的單字課程測驗頁。
 - `grammar-quiz.html` 的題庫 `grammarCards` 一行一題：`id`（`cNN-qM`，NN=進度項編號）是 SRS key——**修錯字保留 id、改題意換新 id 並刪舊行**；`batch` 同天同批、越大越新（未做過的題 `nextReview = -(batch×5)` 優先出現）；cloze 題目必含 `___` 且 `accepted` 含 `answer`；mc `choices` ≥3 且含 `answer`；每題必有 `explain`。作答後頁面會自動把答案句轉羅馬字顯示（wapuro 慣例、句中 は→wa 啟發式）；**句子含漢字或非助詞的 は 開頭單字（はなし系以外）時，加選填的 `romaji` 欄位手動指定**，覆寫自動轉換。頁內 `chapters` 陣列必須與 `grammar/chapters.json` 一致（驗證器會比對）。
 
 ### 每日教學排程（17:30，文法＋單字兩軌）
@@ -155,9 +159,10 @@ const recentBatch = {
 每天 17:30，vault 的 `com.didiowen.nihongo-grammar-daily` 排程（`~/LFCxBVB/X/scripts/nihongo-grammar-notify.sh`）為文法與單字各起一個獨立的 headless session：
 
 - **文法軌（2026-09-05 起改版）**：依 `grammar-daily-progress.md` 的規則推進一章——（新增類先寫進 grammar.md）→ 登錄 `grammar/chapters.json` 與 `grammar-quiz.html` 的 `chapters`、追加 3–5 題進 `grammarCards` → 跑產生器＋驗證器 → Telegram **只發短通知＋連結**（章節頁＋測驗頁），教學內容在網頁、複習交給測驗頁的 SRS。`grammar-daily-latest.md` 只是 10 行紀錄（日期／編號／連結／新題 id）。
-- **單字軌（不變）**：教一批單字＋出 3–5 題發到群裡，完成收錄（`vocabulary.md`／`kanji.md`／quiz HTML）並跑 `tools/validate_quiz_data.py`；訊息開頭仍有「上次複習」。
+- **單字軌（2026-09-06 起同樣改版）**：教學內容寫進 `vocab-lessons.md` 正本 → 登錄 `vocab/batches.json` → 跑 `build_vocab_pages.py` 產出課程頁 → 照舊完成收錄（`vocabulary.md`／`kanji.md`／`hiragana-quiz.html` 的 vocabCards＋recentBatch）並跑 `validate_quiz_data.py`。練習仍走既有的單字測驗頁 SRS。
+- **Telegram 合併成一則**：兩軌各自把內容做完、各自 commit，最後由腳本組出**單一通知**（今日文法第 N 章＋單字批次 M、各自連結、測驗提醒）。單軌失敗時另一軌照常出現在訊息裡。
 
-**批改規則（2026-09-05 起）**：**文法不再在 Telegram 批改**——文法題目都在 `grammar-quiz.html`，答對答錯由測驗頁自己記 SRS，進度表備註欄改記概念性的觀察（哪類文法點反覆卡住），不再逐題記分。**單字照舊**：使用者回覆單字題答案時，先讀 `vocab-daily-latest.md` 對題再批改，批改完在 `log.md` 記一筆、錯處補進 `vocab-daily-progress.md` 備註欄；狀態 ✅ 排程已標好，不要重複標。
+**批改規則（2026-09-06 起）**：**Telegram 不再批改任何題目**——文法題在 `grammar-quiz.html`、單字題在 `hiragana-quiz.html`，答對答錯都由測驗頁自己記 SRS。兩張進度表的備註欄改記概念性觀察（哪類文法點／哪類字反覆卡住），不再逐題記分。狀態 ✅ 與完成日期排程已填好，不要重複標。
 
 ### commit／push 節奏
 

@@ -42,10 +42,15 @@ class BuildError(SystemExit):
 
 # ── 進度表 ──────────────────────────────────────────────
 
-def parse_progress():
-    """回傳 {項目編號: {'done': bool, 'date': str, 'title': str}} 與 ⬜ 數。"""
+def parse_progress(path=None):
+    """回傳 {項目編號: {'done': bool, 'date': str, 'title': str}} 與 ⬜ 數。
+
+    path 預設 grammar 的進度表；build_vocab_pages.py 傳入單字進度表重用
+    （兩張表的欄位順序相同：# ｜ 名稱 ｜ 來源/字數 ｜ 狀態 ｜ 完成日期 ｜ 備註）。
+    """
+    path = path or PROGRESS_MD
     rows, pending = {}, 0
-    for line in PROGRESS_MD.read_text(encoding='utf-8').split('\n'):
+    for line in path.read_text(encoding='utf-8').split('\n'):
         m = re.match(r'\|\s*(\d+)\s*\|([^|]+)\|[^|]*\|\s*([✅⬜🟡])\s*\|([^|]*)\|', line)
         if not m:
             continue
@@ -56,28 +61,29 @@ def parse_progress():
         if not done:
             pending += 1
     if not rows:
-        raise BuildError(f'{PROGRESS_MD.name} 裡找不到任何進度列')
+        raise BuildError(f'{path.name} 裡找不到任何進度列')
     return rows, pending
 
 
 # ── grammar.md 分節 ──────────────────────────────────────
 
-def split_sections():
-    """回傳 {## 標題: (起始行號, [body 行])}。"""
-    lines = GRAMMAR_MD.read_text(encoding='utf-8').split('\n')
+def split_sections(path=None):
+    """回傳 {## 標題: (起始行號, [body 行])}。path 預設 grammar.md。"""
+    path = path or GRAMMAR_MD
+    lines = path.read_text(encoding='utf-8').split('\n')
     sections, cur, buf, start = {}, None, [], 0
     for i, line in enumerate(lines, 1):
         if line.startswith('## '):
             if cur is not None:
                 if cur in sections:
-                    raise BuildError(f'grammar.md 有兩個「## {cur}」（第 {sections[cur][0]} 與 {start} 行）')
+                    raise BuildError(f'{path.name} 有兩個「## {cur}」（第 {sections[cur][0]} 與 {start} 行）')
                 sections[cur] = (start, buf)
             cur, buf, start = line[3:].strip(), [], i
         elif cur is not None:
             buf.append(line)
     if cur is not None:
         if cur in sections:
-            raise BuildError(f'grammar.md 有兩個「## {cur}」')
+            raise BuildError(f'{path.name} 有兩個「## {cur}」')
         sections[cur] = (start, buf)
     return sections
 
@@ -256,12 +262,21 @@ def assert_content_preserved(body_lines, rendered):
     plain = re.sub(r'\s', '', plain)
     for idx, line in enumerate(body_lines):
         s = line.strip()
-        if s.startswith('```') or TABLE_SEP.match(s):
+        # 圍欄標記、表格分隔列、--- 分隔線都是「渲染時會被吃掉」的純標記行
+        if s.startswith('```') or TABLE_SEP.match(s) or s == '---':
             continue
-        residue = re.sub(r'\s', '', s)
-        for ch in '*`|>#-':
+        # 行首標記（#、>、-、1.）可能疊加，如 "> - item"；逐層剝掉。
+        # **只在行首剝** —— 早期版本把 `-` 從整行剝掉，句中的連字號（台語羅馬字
+        # 的 h-／k-）就會讓殘文與輸出對不上而誤報掉字（2026-09-05 單字課程實踩）。
+        while True:
+            m = re.match(r'^(#{1,6}\s*|>\s*|-\s+|\d+\.\s+)', s)
+            if not m:
+                break
+            s = s[m.end():]
+        residue = s
+        for ch in '*`|':            # 行內標記：粗體、行內碼、表格分隔
             residue = residue.replace(ch, '')
-        residue = re.sub(r'^\d+\.', '', residue)
+        residue = re.sub(r'\s', '', residue)
         if residue and residue not in plain:
             raise BuildError(f'內容保全檢查失敗（第 {idx + 1} 行 of section）：「{s[:40]}」沒有完整出現在輸出裡')
 

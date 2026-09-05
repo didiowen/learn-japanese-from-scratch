@@ -13,6 +13,7 @@
    mc 的 answer∈choices、cloze 含 ___ 且 answer∈accepted、每章 ≥3 題、
    頁內 chapters 陣列與 grammar/chapters.json 一致）
 7. grammar/ 章節頁是否與 grammar.md 同步（import build_grammar_pages 跑 --check）
+8. vocab/ 課程頁是否與 vocab-lessons.md 同步（import build_vocab_pages 跑 --check）
 
 用法：python3 tools/validate_quiz_data.py
 發現問題時輸出清單並以非零狀態碼結束。
@@ -226,6 +227,17 @@ def check_grammar_quiz():
     return issues
 
 
+def check_vocab_pages():
+    """vocab/*.html 必須與 vocab-lessons.md 同步（產生器 check_only 模式）。"""
+    sys.path.insert(0, str(ROOT / 'tools'))
+    try:
+        import build_vocab_pages
+        stale = build_vocab_pages.build(check_only=True)
+        return [f"[過期] {x}（跑 python3 tools/build_vocab_pages.py 重建）" for x in stale]
+    except SystemExit as e:
+        return [f"[建置] {e}"]
+
+
 def check_grammar_pages():
     """grammar/*.html 必須與 grammar.md 同步（產生器 check_only 模式）。"""
     sys.path.insert(0, str(ROOT / 'tools'))
@@ -253,7 +265,8 @@ def main():
         else:
             print('  全部通過 ✓')
     for name, issues in [('grammar-quiz.html', check_grammar_quiz()),
-                         ('grammar/ 章節頁', check_grammar_pages())]:
+                         ('grammar/ 章節頁', check_grammar_pages()),
+                         ('vocab/ 課程頁', check_vocab_pages())]:
         print(f'== {name} ==')
         if issues:
             ok = False
