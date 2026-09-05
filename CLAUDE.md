@@ -88,7 +88,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 4. 更新測驗 vocabCards，格式：`{ meaning, display, reading, kanji?, topic, round }`
    - `meaning`：**純中文意思**，不能夾雜日文假名（填 `'哪裡'`，不是 `'どこ（哪裡）'`）
    - `kanji`：有常見漢字寫法就必須加（一杯、何処、服、耳等）；純口語／擬聲語／純假名詞可省略（ゆっくり、じゃあね）；片假名外來語不加
-5. 將單字加入 `recentBatch`（見下方說明）
+5. 將單字加入 `recentBatch`（見下方說明）；若這批字屬於某個課程批次，同時登錄進 `lessonBatch`（`'單字': 批次號`），否則單字測驗的批次篩選會漏掉它們
 6. 將單字加入對應筆記檔，並更新 frontmatter 的 `date > updated`：
    - 一般單字 → `vocabulary.md` 對應主題區塊
    - 會話句型／口語表達 → `conversation.md` 對應情境區塊
@@ -151,7 +151,7 @@ const recentBatch = {
 - **grammar.md 是文法內容的唯一正本**；`grammar/NN.html` 與 `grammar/index.html` 是 `tools/build_grammar_pages.py` 的建置產物，**絕對不要手改**（改了下次重建就沒了，驗證器也會報「過期」）。`_sidebar.md` 與 `notes/`（docsify）照舊渲染 grammar.md 當完整筆記檢視，兩者並存是刻意的，不要「修掉」。
 - grammar.md **只能用這個 markdown 子集**：`###`/`####` 小標、段落、行尾兩空格換行、`**粗體**`、`` `行內程式碼` ``、GFM 表格、`>` 引言、``` 圍欄、單層 `-`/`1.` 清單、`---`。產生器認不得的語法會直接建置失敗。
 - 改了 grammar.md（已上架章節的部分）→ 必跑 `python3 tools/build_grammar_pages.py` 重建，再跑 `python3 tools/validate_quiz_data.py`；precommit hook 會擋住過期頁面的 commit。
-- **單字同一套**：`vocab-lessons.md` 是單字教學正本、`vocab/NN.html` 是產物（勿手改）、`vocab/batches.json` 是登錄表，產生器 `tools/build_vocab_pages.py` 直接 import `build_grammar_pages` 的渲染器——markdown 子集與版型兩邊完全相同，改一支兩邊同時生效。`vocabulary.md`（主題總表）與 `vocab-lessons.md`（課程順序）刻意並存，同 `grammar.md`／`grammar/` 的關係。單字的練習仍在 `hiragana-quiz.html`（vocabCards＋recentBatch），沒有獨立的單字課程測驗頁。
+- **單字同一套**：`vocab-lessons.md` 是單字教學正本、`vocab/NN.html` 是產物（勿手改）、`vocab/batches.json` 是登錄表，產生器 `tools/build_vocab_pages.py` 直接 import `build_grammar_pages` 的渲染器——markdown 子集與版型兩邊完全相同，改一支兩邊同時生效。`vocabulary.md`（主題總表）與 `vocab-lessons.md`（課程順序）刻意並存，同 `grammar.md`／`grammar/` 的關係。單字的練習仍在 `hiragana-quiz.html`（vocabCards＋recentBatch），沒有獨立的單字課程測驗頁；該頁的**篩選列依分頁換軸**：五十音看假名輪次、單字看課程批次（`lessonBatch` 對照表＋`lessonTitles`，驗證器會比對 `vocab/batches.json`）。**`lessonBatch` 與 `recentBatch` 是兩回事**——recentBatch 控制新字的出現優先度（同一天加入算同一批，可能橫跨兩個課程批次），lessonBatch 是「這個字屬於哪一課」。
 - `grammar-quiz.html` 的題庫 `grammarCards` 一行一題：`id`（`cNN-qM`，NN=進度項編號）是 SRS key——**修錯字保留 id、改題意換新 id 並刪舊行**；`batch` 同天同批、越大越新（未做過的題 `nextReview = -(batch×5)` 優先出現）；cloze 題目必含 `___` 且 `accepted` 含 `answer`；mc `choices` ≥3 且含 `answer`；每題必有 `explain`。作答後頁面會自動把答案句轉羅馬字顯示（wapuro 慣例、句中 は→wa 啟發式）；**句子含漢字或非助詞的 は 開頭單字（はなし系以外）時，加選填的 `romaji` 欄位手動指定**，覆寫自動轉換。頁內 `chapters` 陣列必須與 `grammar/chapters.json` 一致（驗證器會比對）。
 
 ### 每日教學排程（17:30，文法＋單字兩軌）

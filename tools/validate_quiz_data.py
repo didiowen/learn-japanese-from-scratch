@@ -14,6 +14,8 @@
    頁內 chapters 陣列與 grammar/chapters.json 一致）
 7. grammar/ 章節頁是否與 grammar.md 同步（import build_grammar_pages 跑 --check）
 8. vocab/ 課程頁是否與 vocab-lessons.md 同步（import build_vocab_pages 跑 --check）
+9. hiragana-quiz.html 的 lessonBatch／lessonTitles 與 vocab/batches.json 一致
+   （每批至少登錄一個字、字都存在於 vocabCards）
 
 用法：python3 tools/validate_quiz_data.py
 發現問題時輸出清單並以非零狀態碼結束。
@@ -227,6 +229,38 @@ def check_grammar_quiz():
     return issues
 
 
+def check_lesson_batch():
+    """hiragana-quiz.html 的 lessonBatch／lessonTitles 與課程頁登錄表一致。"""
+    import json
+    issues = []
+    src = (ROOT / 'hiragana-quiz.html').read_text()
+    registry = {int(k): v.split('：', 1)[1] for k, v in
+                json.loads((ROOT / 'vocab' / 'batches.json').read_text()).items()}
+
+    m = re.search(r'const lessonBatch = \{(.*?)\n\};', src, re.S)
+    if not m:
+        return ['[lessonBatch] 找不到 lessonBatch 物件']
+    lesson = {w: int(n) for w, n in re.findall(r"'([^']+)':\s*(\d+)", m.group(1))}
+
+    t = re.search(r'const lessonTitles = \{(.*?)\n\};', src, re.S)
+    titles = ({int(n): v for n, v in re.findall(r"(\d+):\s*'([^']+)'", t.group(1))}
+              if t else {})
+    if titles != registry:
+        issues.append(f'[lessonTitles] 與 vocab/batches.json 不一致：'
+                      f'頁內={sorted(titles)} json={sorted(registry)}')
+
+    words = set(re.findall(r"display:\s*'([^']+)'", extract_array(src, 'vocabCards')))
+    for w, b in sorted(lesson.items()):
+        if w not in words:
+            issues.append(f'[lessonBatch] 有「{w}」但 vocabCards 沒有')
+        if b not in registry:
+            issues.append(f'[lessonBatch] 「{w}」的批次 {b} 不在 vocab/batches.json')
+    for b in registry:
+        if b not in set(lesson.values()):
+            issues.append(f'[lessonBatch] 批次 {b} 一個字都沒登錄（該批教的新字要加進來）')
+    return issues
+
+
 def check_vocab_pages():
     """vocab/*.html 必須與 vocab-lessons.md 同步（產生器 check_only 模式）。"""
     sys.path.insert(0, str(ROOT / 'tools'))
@@ -266,7 +300,8 @@ def main():
             print('  全部通過 ✓')
     for name, issues in [('grammar-quiz.html', check_grammar_quiz()),
                          ('grammar/ 章節頁', check_grammar_pages()),
-                         ('vocab/ 課程頁', check_vocab_pages())]:
+                         ('vocab/ 課程頁', check_vocab_pages()),
+                         ('單字課程批次（lessonBatch）', check_lesson_batch())]:
         print(f'== {name} ==')
         if issues:
             ok = False
