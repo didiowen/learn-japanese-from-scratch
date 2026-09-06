@@ -215,8 +215,15 @@
   <button class="section-tab" id="tabVocab" onclick="switchSection('vocab')">單字</button>
 </div>
 
-<!-- 篩選列：五十音＝輪次（假名難度）／單字＝課程批次，由 renderFilter() 依分頁渲染 -->
-<div class="round-filter" id="roundFilter"></div>
+<!-- 輪次選擇 -->
+<div class="round-filter" id="roundFilter">
+  <button class="round-btn active" data-round="1" onclick="setRound(1)">第1輪</button>
+  <button class="round-btn" data-round="2" onclick="setRound(2)">第2輪</button>
+  <button class="round-btn" data-round="3" onclick="setRound(3)">第3輪</button>
+  <button class="round-btn" data-round="4" onclick="setRound(4)">第4輪</button>
+  <button class="round-btn" data-round="5" onclick="setRound(5)">第5輪</button>
+  <button class="round-btn" data-round="0" onclick="setRound(0)">全部</button>
+</div>
 <!-- Mode tabs (五十音 only) -->
 <div class="mode-tabs" id="kanaModes">
   <button class="mode-tab active" id="tab1" onclick="switchMode('char-to-reading')">字→讀音<br>選擇</button>
@@ -404,11 +411,6 @@ const vocabCards = [
   { meaning: '早安（正式）', display: 'おはようございます', reading: 'ohayou gozaimasu', topic: 'greeting', round: 5 },
   { meaning: '早安（朋友）', display: 'おはよう', reading: 'ohayou', topic: 'greeting', round: 5 },
   { meaning: '開動了', display: 'いただきます', reading: 'itadakimasu', kanji: '頂きます', topic: 'greeting', round: 4 },
-  { meaning: '我出門了', display: 'いってきます', reading: 'ittekimasu', topic: 'greeting', round: 5 },
-  { meaning: '路上小心', display: 'いってらっしゃい', reading: 'itterasshai', topic: 'greeting', round: 5 },
-  { meaning: '你回來了', display: 'おかえりなさい', reading: 'okaeri nasai', topic: 'greeting', round: 3 },
-  { meaning: '謝謝招待', display: 'ごちそうさまでした', reading: 'gochisousama deshita', topic: 'greeting', round: 4 },
-  { meaning: '待會見', display: 'またね', reading: 'mata ne', topic: 'greeting', round: 4 },
   { meaning: '東京', display: 'とうきょう', reading: 'toukyou', kanji: '東京', topic: 'nature', round: 4 },
   { meaning: '大阪', display: 'おおさか', reading: 'oosaka', kanji: '大阪', topic: 'nature', round: 3 },
   { meaning: '京都', display: 'きょうと', reading: 'kyouto', kanji: '京都', topic: 'nature', round: 4 },
@@ -1021,45 +1023,6 @@ const vocabCards = [
   { meaning: '星期六', display: 'どようび', reading: 'doyoubi', kanji: '土曜日', topic: 'time', round: 5 },
   { meaning: '星期日', display: 'にちようび', reading: 'nichiyoubi', kanji: '日曜日', topic: 'time', round: 5 },
   { meaning: '星期幾', display: 'なんようび', reading: 'nan youbi', kanji: '何曜日', topic: 'question', round: 5 },
-  { meaning: '爸爸（對外謙稱）', display: 'ちち', reading: 'chichi', kanji: '父', topic: 'family', round: 4 },
-  { meaning: '媽媽（對外謙稱）', display: 'はは', reading: 'haha', kanji: '母', topic: 'family', round: 5 },
-  { meaning: '哥哥（對外謙稱）', display: 'あに', reading: 'ani', kanji: '兄', topic: 'family', round: 2 },
-  { meaning: '姊姊（對外謙稱）', display: 'あね', reading: 'ane', kanji: '姉', topic: 'family', round: 2 },
-  { meaning: '祖父、爺爺（謙稱）', display: 'そふ', reading: 'sofu', kanji: '祖父', topic: 'family', round: 5 },
-  { meaning: '丈夫', display: 'おっと', reading: 'otto', kanji: '夫', topic: 'family', round: 5 },
-  { meaning: '妻子', display: 'つま', reading: 'tsuma', kanji: '妻', topic: 'family', round: 4 },
-  { meaning: '小孩', display: 'こども', reading: 'kodomo', kanji: '子供', topic: 'family', round: 4 },
-  { meaning: '雙親、父母', display: 'りょうしん', reading: 'ryoushin', kanji: '両親', topic: 'family', round: 3 },
-  { meaning: '兄弟姊妹', display: 'きょうだい', reading: 'kyoudai', kanji: '兄弟', topic: 'family', round: 4 },
-  { meaning: '誰', display: 'だれ', reading: 'dare', kanji: '誰', topic: 'question', round: 4 },
-  { meaning: '怎麼樣', display: 'どう', reading: 'dou', topic: 'question', round: 4 },
-  { meaning: '多少、多久', display: 'どのくらい', reading: 'donokurai', topic: 'question', round: 4 },
-  { meaning: '幾歲', display: 'なんさい', reading: 'nansai', kanji: '何歳', topic: 'question', round: 3 },
-  { meaning: '幾月', display: 'なんがつ', reading: 'nangatsu', kanji: '何月', topic: 'question', round: 4 },
-  { meaning: '幾號', display: 'なんにち', reading: 'nannichi', kanji: '何日', topic: 'question', round: 4 },
-  { meaning: '三個人', display: 'さんにん', reading: 'sannin', kanji: '三人', topic: 'number', round: 3 },
-  { meaning: '一根（長條物）', display: 'いっぽん', reading: 'ippon', kanji: '一本', topic: 'number', round: 5 },
-  { meaning: '兩根（長條物）', display: 'にほん', reading: 'nihon', kanji: '二本', topic: 'number', round: 5 },
-  { meaning: '一隻（小動物）', display: 'いっぴき', reading: 'ippiki', kanji: '一匹', topic: 'number', round: 5 },
-  { meaning: '一張（平面物）', display: 'いちまい', reading: 'ichimai', kanji: '一枚', topic: 'number', round: 4 },
-  { meaning: '一個（小物）', display: 'いっこ', reading: 'ikko', kanji: '一個', topic: 'number', round: 5 },
-  { meaning: '一本（書）', display: 'いっさつ', reading: 'issatsu', kanji: '一冊', topic: 'number', round: 5 },
-  { meaning: '傍晚', display: 'ゆうがた', reading: 'yuugata', kanji: '夕方', topic: 'time', round: 4 },
-  { meaning: '時候', display: 'とき', reading: 'toki', kanji: '時', topic: 'time', round: 4 },
-  { meaning: '上週', display: 'せんしゅう', reading: 'senshuu', kanji: '先週', topic: 'time', round: 3 },
-  { meaning: '下週', display: 'らいしゅう', reading: 'raishuu', kanji: '来週', topic: 'time', round: 3 },
-  { meaning: '上個月', display: 'せんげつ', reading: 'sengetsu', kanji: '先月', topic: 'time', round: 4 },
-  { meaning: '下個月', display: 'らいげつ', reading: 'raigetsu', kanji: '来月', topic: 'time', round: 4 },
-  { meaning: '去年', display: 'きょねん', reading: 'kyonen', kanji: '去年', topic: 'time', round: 3 },
-  { meaning: '明年', display: 'らいねん', reading: 'rainen', kanji: '来年', topic: 'time', round: 2 },
-  { meaning: '每天', display: 'まいにち', reading: 'mainichi', kanji: '毎日', topic: 'time', round: 4 },
-  { meaning: '每天早上', display: 'まいあさ', reading: 'maiasa', kanji: '毎朝', topic: 'time', round: 4 },
-  { meaning: '每晚', display: 'まいばん', reading: 'maiban', kanji: '毎晩', topic: 'time', round: 5 },
-  { meaning: '每週', display: 'まいしゅう', reading: 'maishuu', kanji: '毎週', topic: 'time', round: 4 },
-  { meaning: '每月', display: 'まいつき', reading: 'maitsuki', kanji: '毎月', topic: 'time', round: 4 },
-  { meaning: '每年', display: 'まいとし', reading: 'maitoshi', kanji: '毎年', topic: 'time', round: 4 },
-  { meaning: '週末', display: 'しゅうまつ', reading: 'shuumatsu', kanji: '週末', topic: 'time', round: 4 },
-  { meaning: '半（三點半的半）', display: 'はん', reading: 'han', kanji: '半', topic: 'time', round: 5 },
 ];
 
 // ═══════════════════════════════
@@ -1076,41 +1039,18 @@ function buildHiraganaQueue(round) {
     return { ...c, level: kanaProgress[c.char] ?? Math.min(dist, intervals.length - 1), nextReview: 0 };
   });
 }
-function setRound(n) {          // 五十音分頁：依假名輪次
+function setRound(n) {
   currentRound = n;
-  renderFilter();
-  hiraganaQueue = buildHiraganaQueue(n);
-  resetScore();
-  nextCard();
-}
-
-function setLesson(n) {         // 單字分頁：依課程批次（0 ＝ 全部）
-  currentLesson = n;
-  renderFilter();
-  vocabQueue = getFilteredVocab();
-  resetScore();
-  nextCard();
-}
-
-// 篩選列依分頁換軸：五十音看假名難度（輪次），單字看教到哪一課（批次）。
-// 兩軸互不相干——同一批教的字會散在各輪，硬擺在一起只會讓人以為它們對應。
-function renderFilter() {
-  const wrap = document.getElementById('roundFilter');
+  document.querySelectorAll('.round-btn').forEach(b => {
+    b.classList.toggle('active', parseInt(b.dataset.round) === n);
+  });
   if (section === 'hiragana') {
-    wrap.innerHTML = [1, 2, 3, 4, 5].map(n =>
-      `<button class="round-btn${currentRound === n ? ' active' : ''}" data-round="${n}">第${n}輪</button>`
-    ).join('') + `<button class="round-btn${currentRound === 0 ? ' active' : ''}" data-round="0">全部</button>`;
-    wrap.querySelectorAll('.round-btn').forEach(b =>
-      b.addEventListener('click', () => setRound(parseInt(b.dataset.round, 10))));
+    hiraganaQueue = buildHiraganaQueue(n);
   } else {
-    const nums = [...new Set(Object.values(lessonBatch))].sort((a, b) => a - b);
-    wrap.innerHTML = `<button class="round-btn${currentLesson === 0 ? ' active' : ''}" data-lesson="0">全部</button>`
-      + nums.map(n =>
-        `<button class="round-btn${currentLesson === n ? ' active' : ''}" data-lesson="${n}" title="${escapeHtml(lessonTitles[n] || '')}">批次${n}</button>`
-      ).join('');
-    wrap.querySelectorAll('.round-btn').forEach(b =>
-      b.addEventListener('click', () => setLesson(parseInt(b.dataset.lesson, 10))));
+    vocabQueue = getFilteredVocab();
   }
+  resetScore();
+  nextCard();
 }
 
 let section = 'hiragana'; // 'hiragana' | 'vocab'
@@ -1129,19 +1069,13 @@ let currentCard = null;
 let currentVocab = null;
 
 let currentRound = 1;
-let currentLesson = 0;   // 單字分頁的課程批次篩選；0 ＝ 全部
 let showHint = false;
 let wrongAnswers = new Map();
 
 function getSessionLimit() {
-  if (section === 'vocab') {
-    // 單字不再依輪次篩選（五十音已學完，輪次對單字沒有意義），改看課程批次
-    const pool = currentLesson ? Object.values(lessonBatch).filter(b => b === currentLesson).length
-                               : vocabCards.length;
-    return Math.min(Math.max(Math.round(pool * 0.5), 10), 40);
-  }
   if (currentRound === 0) return 50;
-  const pool = cards.filter(c => c.round <= currentRound).length;
+  const src = section === 'hiragana' ? cards : vocabCards;
+  const pool = src.filter(c => c.round <= currentRound).length;
   return Math.min(Math.max(Math.round(pool * 0.35), 20), 60);
 }
 
@@ -1187,25 +1121,9 @@ const alreadyKnown = new Set([
 // 最近加入的單字批次（數字越大＝越近加入＝越優先出現）
 // 規則：同一天加入的算同一批；新增單字時若該日已有批次直接沿用，否則用最新批次號 + 1
 const recentBatch = {
-  // 批次 25（2026-09-05）
-  'まいにち': 25, 'まいあさ': 25, 'まいばん': 25, 'まいしゅう': 25,
-  'まいつき': 25, 'まいとし': 25, 'しゅうまつ': 25, 'はん': 25,
-  // 批次 24（2026-09-04）
-  'ゆうがた': 24, 'とき': 24, 'せんしゅう': 24, 'らいしゅう': 24,
-  'せんげつ': 24, 'らいげつ': 24, 'きょねん': 24, 'らいねん': 24,
-  // 批次 23（2026-09-03）
-  'さんにん': 23, 'いっぽん': 23, 'にほん': 23, 'いっぴき': 23,
-  'いちまい': 23, 'いっこ': 23, 'いっさつ': 23,
-  // 批次 22（2026-09-02）
-  'だれ': 22, 'どう': 22, 'どのくらい': 22,
-  'なんさい': 22, 'なんがつ': 22, 'なんにち': 22,
   // 批次 21（2026-09-01）
   'げつようび': 21, 'かようび': 21, 'すいようび': 21, 'もくようび': 21,
   'きんようび': 21, 'どようび': 21, 'にちようび': 21, 'なんようび': 21,
-  'ちち': 21, 'はは': 21, 'あに': 21, 'あね': 21, 'そふ': 21,
-  'おっと': 21, 'つま': 21, 'こども': 21, 'りょうしん': 21, 'きょうだい': 21,
-  'いってきます': 21, 'いってらっしゃい': 21, 'おかえりなさい': 21,
-  'ごちそうさまでした': 21, 'またね': 21,
   // 批次 20（2026-08-08）
   'きずな': 20,
   // 批次 19（2026-07-28）
@@ -1344,7 +1262,6 @@ function switchSection(s) {
   document.getElementById('hintToggleWrap').style.display = 'flex';
   document.getElementById('vocabToggle').style.display = s === 'vocab' ? 'flex' : 'none';
   document.getElementById('roundFilter').style.display = 'flex';
-  renderFilter();
 
   if (s === 'hiragana') {
     hiraganaQueue = buildHiraganaQueue(currentRound);
@@ -1356,9 +1273,7 @@ function switchSection(s) {
 }
 
 function getFilteredVocab() {
-  // 單字不依假名輪次篩選（五十音已學完）；只依課程批次，0 ＝ 全部
-  let filtered = currentLesson ? vocabCards.filter(c => lessonBatch[c.display] === currentLesson)
-                               : vocabCards;
+  let filtered = currentRound > 0 ? vocabCards.filter(c => c.round <= currentRound) : vocabCards;
   return filtered.map(c => {
     const saved = vocabProgress[c.display];
     const level = saved ?? (alreadyKnown.has(c.display) ? 2 : 0);
@@ -1661,37 +1576,6 @@ function restartCurrent() {
 }
 
 // ═══════════════════════════════
-// 課程批次（單字分頁的篩選軸）
-// 對應 vocab-lessons.md 的 ## 批次N 與 vocab/batches.json；每日排程教完一批就在
-// 這裡登錄該批新字。**與 recentBatch 是兩回事**：recentBatch 控制新字的出現優先度
-// （同一天加入算同一批，可能橫跨兩個課程批次），這裡是「這個字屬於哪一課」。
-// 沒登錄的字（每日排程之前就存在的 600 多個）只會出現在「全部」。
-// ═══════════════════════════════
-const lessonTitles = {
-  1: '家族謙稱',
-  2: '常用寒暄',
-  3: '疑問詞',
-  4: '數字與計數詞',
-  5: '時間詞 A（時間點）',
-  6: '時間詞 B（毎〜系列＋週末／半）',
-};
-
-const lessonBatch = {
-  // 批次1：家族謙稱
-  'あに': 1, 'あね': 1, 'おっと': 1, 'きょうだい': 1, 'こども': 1, 'そふ': 1, 'ちち': 1, 'つま': 1, 'はは': 1, 'りょうしん': 1,
-  // 批次2：常用寒暄
-  'いってきます': 2, 'いってらっしゃい': 2, 'おかえりなさい': 2, 'ごちそうさまでした': 2, 'またね': 2,
-  // 批次3：疑問詞
-  'だれ': 3, 'どう': 3, 'どのくらい': 3, 'なんがつ': 3, 'なんさい': 3, 'なんにち': 3,
-  // 批次4：數字與計數詞
-  'いちまい': 4, 'いっこ': 4, 'いっさつ': 4, 'いっぴき': 4, 'いっぽん': 4, 'さんにん': 4, 'にほん': 4,
-  // 批次5：時間詞 A（時間點）
-  'きょねん': 5, 'せんげつ': 5, 'せんしゅう': 5, 'とき': 5, 'ゆうがた': 5, 'らいげつ': 5, 'らいしゅう': 5, 'らいねん': 5,
-  // 批次6：時間詞 B（毎〜系列＋週末／半）
-  'しゅうまつ': 6, 'はん': 6, 'まいあさ': 6, 'まいしゅう': 6, 'まいつき': 6, 'まいとし': 6, 'まいにち': 6, 'まいばん': 6,
-};
-
-// ═══════════════════════════════
 // FIREBASE SYNC CONFIG
 // ═══════════════════════════════
 // 填入你的 Firebase Realtime Database URL（結尾不加 /）
@@ -1704,7 +1588,6 @@ const QUIZ_TYPE = 'hiragana';
 // PAGE HOOK（quiz-common.js 呼叫）
 // ═══════════════════════════════
 function rebuildQueues() {
-  renderFilter();     // quiz-common.js 已載入，escapeHtml 可用
   hiraganaQueue = buildHiraganaQueue(currentRound);
   vocabQueue = getFilteredVocab();
 }

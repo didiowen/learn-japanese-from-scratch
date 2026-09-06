@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>單字課程測驗</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Noto+Sans+TC:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="quiz-common.css">
+<style>
+
+/* ── Section tabs ── */
+.section-tabs {
+  display: flex;
+  gap: 0;
+  max-width: 360px;
+  width: 100%;
+  margin-bottom: 20px;
+  border: 1.5px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+.section-tab {
+  flex: 1;
+  padding: 12px 8px;
+  border: none;
+  background: white;
+  color: var(--neutral);
+  font-family: 'Noto Sans JP', 'Noto Sans TC', sans-serif;
+  font-size: 1rem;
+  cursor: pointer;
+  letter-spacing: 0.04em;
+  transition: all 0.2s;
+  border-right: 1px solid var(--border);
+}
+
+/* ── Mode tabs（四格，五十音用）── */
+.mode-tabs {
+  display: flex;
+  gap: 0;
+  max-width: 360px;
+  width: 100%;
+  margin-bottom: 18px;
+  border: 1.5px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+.mode-tab {
+  flex: 1;
+  padding: 10px 4px;
+  border: none;
+  background: white;
+  color: var(--neutral);
+  font-family: 'Noto Sans JP', 'Noto Sans TC', sans-serif;
+  font-size: 0.85rem;
+  cursor: pointer;
+  letter-spacing: 0.02em;
+  line-height: 1.3;
+  transition: all 0.2s;
+  border-right: 1px solid var(--border);
+  text-align: center;
+}
+
+/* ── Vocab mode toggle（單字方向，保留） ── */
+.mode-toggle {
+  display: flex;
+  gap: 8px;
+  max-width: 360px;
+  width: 100%;
+  margin-bottom: 18px;
+  background: rgba(0,0,0,0.06);
+  border-radius: 10px;
+  padding: 4px;
+}
+.mode-btn {
+  flex: 1;
+  padding: 8px;
+  border: none;
+  border-radius: 7px;
+  font-size: 0.95rem;
+  font-family: 'Noto Sans JP', 'Noto Sans TC', sans-serif;
+  cursor: pointer;
+  background: transparent;
+  color: var(--soft);
+  transition: all 0.2s;
+}
+.mode-btn.active {
+  background: white;
+  color: var(--ink);
+  font-weight: 400;
+}
+
+/* ── Progress ── */
+
+/* ── Card ── */
+
+.main-char {
+  font-family: 'Noto Sans JP', 'Noto Sans TC', sans-serif;
+  font-size: 4.5rem;
+  text-align: center;
+  line-height: 1;
+  margin: 8px 0 6px;
+  color: var(--ink);
+}
+.main-meaning {
+  font-size: 1.8rem;
+  text-align: center;
+  line-height: 1.3;
+  margin: 8px 0 6px;
+  color: var(--ink);
+  font-weight: 400;
+}
+.hint { font-size: 0.88rem; color: var(--neutral); text-align: center; margin-bottom: 20px; min-height: 16px; font-style: italic; }
+
+/* ── Options ── */
+
+.option-btn {
+  background: white;
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  padding: 13px 8px;
+  font-size: 1.05rem;
+  font-family: 'Noto Sans JP', 'Noto Sans TC', sans-serif;
+  cursor: pointer;
+  transition: all 0.15s;
+  color: var(--ink);
+  text-align: center;
+  line-height: 1.3;
+}
+
+.option-btn.vocab { font-family: 'Noto Sans JP', 'Noto Sans TC', sans-serif; font-size: 1rem; }
+
+/* ── Input ── */
+
+.input-hint { font-size: 0.85rem; color: var(--neutral); text-align: center; margin-bottom: 10px; font-style: italic; }
+
+/* ── Buttons ── */
+
+/* ── Feedback ── */
+.feedback {
+  min-height: 44px;
+  text-align: center;
+  padding: 10px;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  transition: all 0.2s;
+  margin-bottom: 10px;
+}
+
+/* ── Score ── */
+
+/* ── Result ── */
+
+/* ── Wrong-answer review ── */
+
+/* ── Topic filter ── */
+.topic-filter {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  max-width: 360px;
+  width: 100%;
+  margin-bottom: 14px;
+}
+.topic-btn {
+  padding: 5px 10px;
+  border: 1.5px solid var(--border);
+  border-radius: 20px;
+  font-size: 0.88rem;
+  font-family: 'Noto Sans JP', 'Noto Sans TC', sans-serif;
+  cursor: pointer;
+  background: white;
+  color: var(--soft);
+  transition: all 0.15s;
+}
+
+/* ── Hint toggle ── */
+
+/* ── Round filter ── */
+
+/* ── Nav links ── */
+
+/* ── User sync badge ── */
+
+</style></head>
+<body>
+
+<nav class="nav-links">
+  <a href="index.html">← 首頁</a>
+  <a href="vocab/">📘 單字課程</a>
+  <button class="user-badge" id="userBadge" onclick="openUserModal()" title="切換使用者">
+    <span class="sync-dot" id="syncDot"></span>
+    <span id="userLabel">…</span>
+  </button>
+</nav>
+
+<div class="user-modal-overlay" id="userModalOverlay">
+  <div class="user-modal">
+    <h3>設定使用者 ID</h3>
+    <p>輸入你的專屬 ID（3–20 個英文字母、數字、<code>-</code> 或 <code>_</code>）。不同裝置輸入相同 ID 即可同步進度。</p>
+    <input type="text" id="userIdInput" placeholder="例：didi-2026" maxlength="20"
+      onkeydown="if(event.key==='Enter')confirmUserId()" autocomplete="off" />
+    <div class="user-modal-err" id="userModalErr"></div>
+    <div class="user-modal-btns">
+      <button class="btn-cancel" id="userCancelBtn" onclick="closeUserModal()">取消</button>
+      <button class="btn-confirm" onclick="confirmUserId()">確認</button>
+    </div>
+  </div>
+</div>
+
+<!-- 篩選列＝課程批次。本頁只收每日課程教過的字，沒有假名輪次那一軸。 -->
+<div class="round-filter" id="roundFilter"></div>
+
+<!-- 提示開關 -->
+<div class="hint-toggle-wrap" id="hintToggleWrap">
+  <button class="hint-toggle-btn" id="hintToggleBtn" onclick="toggleHint()">提示：關</button>
+</div>
+
+<!-- 出題方向 -->
+<div class="mode-toggle" id="vocabToggle">
+  <button class="mode-btn active" id="btnJpToZh" onclick="setVocabDir('jp-to-zh')">日文→中文</button>
+  <button class="mode-btn" id="btnZhToJp" onclick="setVocabDir('zh-to-jp')">中文→日文</button>
+</div>
+
+<div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+
+<div class="card" id="mainCard">
+  <span class="sr-badge">SRS</span>
+  <div id="quizContent"></div>
+</div>
+
+<div class="score-display">
+  <div class="score-item"><span class="score-num" id="scoreCorrect">0</span>正確</div>
+  <div class="score-item"><span class="score-num" id="scoreTotal">0</span>已答</div>
+  <div class="score-item"><span class="score-num" id="scoreStreak">0</span>連勝</div>
+</div>
+
+<script>
+// ═══════════════════════════════
+// DATA — 每日單字課程教過的字
+// 對應 vocab-lessons.md 的 ## 批次N 與 vocab/batches.json。
+// 每天 17:30 教完一批就在這裡加卡，`batch` 就是課程批次編號：它同時是篩選軸，
+// 也是新字的出現優先度（編號越大＝越晚教＝越早排進來），不需要另一張對照表。
+// 平假名測驗頁（hiragana-quiz.html）不再收這些字，兩頁的單字池互斥。
+// ═══════════════════════════════
+const vocabCards = [
+  { meaning: '哥哥（對外謙稱）', display: 'あに', reading: 'ani', kanji: '兄', topic: 'family', batch: 1 },
+  { meaning: '姊姊（對外謙稱）', display: 'あね', reading: 'ane', kanji: '姉', topic: 'family', batch: 1 },
+  { meaning: '丈夫', display: 'おっと', reading: 'otto', kanji: '夫', topic: 'family', batch: 1 },
+  { meaning: '兄弟姊妹', display: 'きょうだい', reading: 'kyoudai', kanji: '兄弟', topic: 'family', batch: 1 },
+  { meaning: '小孩', display: 'こども', reading: 'kodomo', kanji: '子供', topic: 'family', batch: 1 },
+  { meaning: '祖父、爺爺（謙稱）', display: 'そふ', reading: 'sofu', kanji: '祖父', topic: 'family', batch: 1 },
+  { meaning: '爸爸（對外謙稱）', display: 'ちち', reading: 'chichi', kanji: '父', topic: 'family', batch: 1 },
+  { meaning: '妻子', display: 'つま', reading: 'tsuma', kanji: '妻', topic: 'family', batch: 1 },
+  { meaning: '媽媽（對外謙稱）', display: 'はは', reading: 'haha', kanji: '母', topic: 'family', batch: 1 },
+  { meaning: '雙親、父母', display: 'りょうしん', reading: 'ryoushin', kanji: '両親', topic: 'family', batch: 1 },
+  { meaning: '我出門了', display: 'いってきます', reading: 'ittekimasu', topic: 'greeting', batch: 2 },
+  { meaning: '路上小心', display: 'いってらっしゃい', reading: 'itterasshai', topic: 'greeting', batch: 2 },
+  { meaning: '你回來了', display: 'おかえりなさい', reading: 'okaeri nasai', topic: 'greeting', batch: 2 },
+  { meaning: '謝謝招待', display: 'ごちそうさまでした', reading: 'gochisousama deshita', topic: 'greeting', batch: 2 },
+  { meaning: '待會見', display: 'またね', reading: 'mata ne', topic: 'greeting', batch: 2 },
+  { meaning: '誰', display: 'だれ', reading: 'dare', kanji: '誰', topic: 'question', batch: 3 },
+  { meaning: '怎麼樣', display: 'どう', reading: 'dou', topic: 'question', batch: 3 },
+  { meaning: '多少、多久', display: 'どのくらい', reading: 'donokurai', topic: 'question', batch: 3 },
+  { meaning: '幾月', display: 'なんがつ', reading: 'nangatsu', kanji: '何月', topic: 'question', batch: 3 },
+  { meaning: '幾歲', display: 'なんさい', reading: 'nansai', kanji: '何歳', topic: 'question', batch: 3 },
+  { meaning: '幾號', display: 'なんにち', reading: 'nannichi', kanji: '何日', topic: 'question', batch: 3 },
+  { meaning: '一張（平面物）', display: 'いちまい', reading: 'ichimai', kanji: '一枚', topic: 'number', batch: 4 },
+  { meaning: '一個（小物）', display: 'いっこ', reading: 'ikko', kanji: '一個', topic: 'number', batch: 4 },
+  { meaning: '一本（書）', display: 'いっさつ', reading: 'issatsu', kanji: '一冊', topic: 'number', batch: 4 },
+  { meaning: '一隻（小動物）', display: 'いっぴき', reading: 'ippiki', kanji: '一匹', topic: 'number', batch: 4 },
+  { meaning: '一根（長條物）', display: 'いっぽん', reading: 'ippon', kanji: '一本', topic: 'number', batch: 4 },
+  { meaning: '三個人', display: 'さんにん', reading: 'sannin', kanji: '三人', topic: 'number', batch: 4 },
+  { meaning: '兩根（長條物）', display: 'にほん', reading: 'nihon', kanji: '二本', topic: 'number', batch: 4 },
+  { meaning: '去年', display: 'きょねん', reading: 'kyonen', kanji: '去年', topic: 'time', batch: 5 },
+  { meaning: '上個月', display: 'せんげつ', reading: 'sengetsu', kanji: '先月', topic: 'time', batch: 5 },
+  { meaning: '上週', display: 'せんしゅう', reading: 'senshuu', kanji: '先週', topic: 'time', batch: 5 },
+  { meaning: '時候', display: 'とき', reading: 'toki', kanji: '時', topic: 'time', batch: 5 },
+  { meaning: '傍晚', display: 'ゆうがた', reading: 'yuugata', kanji: '夕方', topic: 'time', batch: 5 },
+  { meaning: '下個月', display: 'らいげつ', reading: 'raigetsu', kanji: '来月', topic: 'time', batch: 5 },
+  { meaning: '下週', display: 'らいしゅう', reading: 'raishuu', kanji: '来週', topic: 'time', batch: 5 },
+  { meaning: '明年', display: 'らいねん', reading: 'rainen', kanji: '来年', topic: 'time', batch: 5 },
+  { meaning: '週末', display: 'しゅうまつ', reading: 'shuumatsu', kanji: '週末', topic: 'time', batch: 6 },
+  { meaning: '半（三點半的半）', display: 'はん', reading: 'han', kanji: '半', topic: 'time', batch: 6 },
+  { meaning: '每天早上', display: 'まいあさ', reading: 'maiasa', kanji: '毎朝', topic: 'time', batch: 6 },
+  { meaning: '每週', display: 'まいしゅう', reading: 'maishuu', kanji: '毎週', topic: 'time', batch: 6 },
+  { meaning: '每月', display: 'まいつき', reading: 'maitsuki', kanji: '毎月', topic: 'time', batch: 6 },
+  { meaning: '每年', display: 'まいとし', reading: 'maitoshi', kanji: '毎年', topic: 'time', batch: 6 },
+  { meaning: '每天', display: 'まいにち', reading: 'mainichi', kanji: '毎日', topic: 'time', batch: 6 },
+  { meaning: '每晚', display: 'まいばん', reading: 'maiban', kanji: '毎晩', topic: 'time', batch: 6 },
+];
+
+const lessonTitles = {
+  1: '家族謙稱',
+  2: '常用寒暄',
+  3: '疑問詞',
+  4: '數字與計數詞',
+  5: '時間詞 A（時間點）',
+  6: '時間詞 B（毎〜系列＋週末／半）',
+};
+
+// ═══════════════════════════════
+// FIREBASE SYNC CONFIG
+// ═══════════════════════════════
+const FIREBASE_DB_URL = 'https://nihongo-2ad36-default-rtdb.asia-southeast1.firebasedatabase.app';
+const QUIZ_TYPE = 'vocab-lesson';   // → /progress/<user>/vocab-lesson.json，與其他測驗頁分開
+
+// quiz-common.js 硬編兩個桶；本頁只用 vocab 桶，kana 桶留空不使用。
+const STORAGE_KANA  = 'vocab_lesson_unused_progress';
+const STORAGE_VOCAB = 'vocab_lesson_srs_progress';
+
+// ═══════════════════════════════
+// STATE
+// ═══════════════════════════════
+let kanaProgress = {};
+let vocabProgress = {};
+let totalAnswered = 0, totalCorrect = 0, streak = 0, sessionCount = 0;
+let wrongAnswers = new Map();
+
+let vocabQueue = [];
+let currentVocab = null;
+let answered = false;
+let vocabDir = 'jp-to-zh';   // 'jp-to-zh' | 'zh-to-jp'
+let currentBatch = 0;        // 0 ＝ 全部批次
+let showHint = false;
+
+// ═══════════════════════════════
+// 篩選與佇列
+// ═══════════════════════════════
+function renderFilter() {
+  const nums = [...new Set(vocabCards.map(c => c.batch))].sort((a, b) => a - b);
+  const wrap = document.getElementById('roundFilter');
+  wrap.innerHTML = `<button class="round-btn${currentBatch === 0 ? ' active' : ''}" data-batch="0">全部</button>`
+    + nums.map(n =>
+      `<button class="round-btn${currentBatch === n ? ' active' : ''}" data-batch="${n}" title="${escapeHtml(lessonTitles[n] || '')}">批次${n}</button>`
+    ).join('');
+  wrap.querySelectorAll('.round-btn').forEach(b =>
+    b.addEventListener('click', () => setBatch(parseInt(b.dataset.batch, 10))));
+}
+
+function setBatch(n) {
+  currentBatch = n;
+  renderFilter();
+  vocabQueue = getFilteredVocab();
+  resetScore();
+  nextCard();
+}
+
+function getFilteredVocab() {
+  const filtered = currentBatch ? vocabCards.filter(c => c.batch === currentBatch) : vocabCards;
+  return filtered.map(c => {
+    const saved = vocabProgress[c.display];
+    // 沒做過的字用 batch 當優先度：越晚教的越早排進來
+    return { ...c, level: saved ?? 0, nextReview: saved != null ? 0 : -(c.batch * 5) };
+  });
+}
+
+function getSessionLimit() {
+  const pool = currentBatch ? vocabCards.filter(c => c.batch === currentBatch).length
+                            : vocabCards.length;
+  return Math.min(Math.max(Math.round(pool * 0.5), 10), 40);
+}
+
+function setVocabDir(dir) {
+  vocabDir = dir;
+  document.getElementById('btnJpToZh').classList.toggle('active', dir === 'jp-to-zh');
+  document.getElementById('btnZhToJp').classList.toggle('active', dir === 'zh-to-jp');
+  vocabQueue = getFilteredVocab();
+  resetScore();
+  nextCard();
+}
+
+function toggleHint() {
+  showHint = !showHint;
+  const btn = document.getElementById('hintToggleBtn');
+  btn.textContent = showHint ? '提示：開' : '提示：關';
+  btn.classList.toggle('active', showHint);
+  const hintEl = document.getElementById('hintText');
+  if (hintEl && currentVocab && !answered && vocabDir === 'jp-to-zh') {
+    hintEl.textContent = showHint ? `💡 ${currentVocab.reading}` : '';
+  }
+}
+
+// ═══════════════════════════════
+// NEXT CARD
+// ═══════════════════════════════
+function nextCard() {
+  answered = false;
+  if (sessionCount >= getSessionLimit()) { showResult(); return; }
+  currentVocab = pickFromQueue(vocabQueue);
+  if (!currentVocab) { showResult(); return; }
+  renderVocabMultiple();
+  updateProgress();
+}
+
+// ═══════════════════════════════
+// VOCAB: MULTIPLE CHOICE (both directions)
+// ═══════════════════════════════
+function getVocabDistractors(vocab) {
+  const correct = vocabDir === 'jp-to-zh' ? vocab.meaning : vocab.display;
+  const getVal = v => vocabDir === 'jp-to-zh' ? v.meaning : v.display;
+  const distractors = shuffle(vocabCards.filter(v => getVal(v) !== correct).map(getVal)).slice(0, 3);
+  return shuffle([correct, ...distractors]);
+}
+
+function renderVocabMultiple() {
+  const options = getVocabDistractors(currentVocab);
+  const question = vocabDir === 'jp-to-zh' ? currentVocab.display : currentVocab.meaning;
+  const qtype = vocabDir === 'jp-to-zh' ? '這個日文是什麼意思？' : '這個日文怎麼說？';
+  const isJp = vocabDir === 'jp-to-zh';
+
+  document.getElementById('quizContent').innerHTML = `
+    <div class="question-type">${qtype}</div>
+    <div class="${isJp ? 'main-char' : 'main-meaning'}" style="${isJp ? 'font-size:2.8rem' : ''}">${question}</div>
+    <div class="hint" id="hintText">${showHint && vocabDir === 'jp-to-zh' ? `💡 ${currentVocab.reading}` : ''}</div>
+    <div class="options">
+      ${options.map(opt => `<button class="option-btn vocab" onclick="checkVocabMultiple('${opt.replace(/'/g, "\\'")}', this)">${opt}</button>`).join('')}
+    </div>
+    <div class="feedback" id="feedback"></div>
+    <button class="next-btn" id="nextBtn" onclick="nextCard()">下一題 →</button>
+  `;
+}
+
+function checkVocabMultiple(chosen, btn) {
+  if (answered) return;
+  answered = true;
+  // Accept all meanings sharing the same display (homonyms like さけ＝鮭魚／酒)
+  const correctAnswers = vocabDir === 'jp-to-zh'
+    ? vocabCards.filter(c => c.display === currentVocab.display).map(c => c.meaning)
+    : [currentVocab.display];
+  const isCorrect = correctAnswers.includes(chosen);
+  document.querySelectorAll('.option-btn').forEach(b => {
+    b.disabled = true;
+    if (correctAnswers.includes(b.textContent.trim())) b.classList.add('correct');
+  });
+  if (!isCorrect) btn.classList.add('wrong');
+  advanceSRS(currentVocab, isCorrect);
+  const fb = document.getElementById('feedback');
+  fb.className = `feedback ${isCorrect ? 'show-correct' : 'show-wrong'}`;
+  const kp = currentVocab.kanji ? `${currentVocab.kanji} ` : '';
+  const wrongHint = vocabDir === 'jp-to-zh' ? correctAnswers.join('／') : `${kp}${currentVocab.display}`;
+  fb.innerHTML = (isCorrect ? `✓ 正確！` : `✗ 正確是「${wrongHint}」`) + ` <button class="speak-btn" onclick="speakJa(currentVocab.display)" title="朗讀">🔊</button>`;
+  document.getElementById('hintText').textContent = `💡 ${kp}${currentVocab.display}（${currentVocab.reading}）`;
+  document.getElementById('nextBtn').classList.add('visible');
+}
+
+// ═══════════════════════════════
+// RESULT
+// ═══════════════════════════════
+function restartCurrent() {
+  vocabQueue = getFilteredVocab();
+  resetScore();
+  nextCard();
+}
+
+// ═══════════════════════════════
+// PAGE HOOK（quiz-common.js 呼叫）
+// ═══════════════════════════════
+function rebuildQueues() {
+  renderFilter();     // quiz-common.js 已載入，escapeHtml 可用
+  vocabQueue = getFilteredVocab();
+}
+
+// ?batch=N 深連結：課程頁的「練這批字」按鈕會帶進來
+(function () {
+  const n = parseInt(new URLSearchParams(location.search).get('batch'), 10);
+  if (Number.isInteger(n) && vocabCards.some(c => c.batch === n)) currentBatch = n;
+})();
+</script>
+<script src="quiz-common.js"></script>
+</body>
+</html>

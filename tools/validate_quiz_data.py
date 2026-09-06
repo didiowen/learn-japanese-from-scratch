@@ -229,35 +229,57 @@ def check_grammar_quiz():
     return issues
 
 
-def check_lesson_batch():
-    """hiragana-quiz.html 的 lessonBatch／lessonTitles 與課程頁登錄表一致。"""
+def check_vocab_quiz():
+    """vocab-quiz.html（課程單字測驗）：批次登錄正確，且與平假名測驗頁的單字池互斥。"""
     import json
     issues = []
-    src = (ROOT / 'hiragana-quiz.html').read_text()
+    src = (ROOT / 'vocab-quiz.html').read_text()
     registry = {int(k): v.split('：', 1)[1] for k, v in
                 json.loads((ROOT / 'vocab' / 'batches.json').read_text()).items()}
 
-    m = re.search(r'const lessonBatch = \{(.*?)\n\};', src, re.S)
-    if not m:
-        return ['[lessonBatch] 找不到 lessonBatch 物件']
-    lesson = {w: int(n) for w, n in re.findall(r"'([^']+)':\s*(\d+)", m.group(1))}
+    block = extract_array(src, 'vocabCards')
+    cards = re.findall(r"\{[^}]*\}", block)
+    if not cards:
+        return ['[vocabCards] 找不到任何卡片']
 
-    t = re.search(r'const lessonTitles = \{(.*?)\n\};', src, re.S)
-    titles = ({int(n): v for n, v in re.findall(r"(\d+):\s*'([^']+)'", t.group(1))}
-              if t else {})
+    batches, seen = set(), {}
+    for c in cards:
+        def field(name):
+            m = re.search(rf"{name}:\s*'([^']*)'", c)
+            return m.group(1) if m else None
+        disp, mean, read = field('display'), field('meaning'), field('reading')
+        bm = re.search(r"batch:\s*(\d+)", c)
+        if not (disp and mean and read and bm):
+            issues.append(f'[欄位] 卡片缺 meaning／display／reading／batch：{c[:60]}')
+            continue
+        b = int(bm.group(1))
+        batches.add(b)
+        if b not in registry:
+            issues.append(f'[batch] 「{disp}」的批次 {b} 不在 vocab/batches.json')
+        key = (disp, field('kanji'))
+        if key in seen:
+            issues.append(f'[重複] 「{disp}」（kanji={key[1]}）出現兩次')
+        seen[key] = c
+    for b in registry:
+        if b not in batches:
+            issues.append(f'[batch] 批次 {b} 一張卡都沒有（該批教的新字要加進來）')
+
+    tm = re.search(r'const lessonTitles = \{(.*?)\n\};', src, re.S)
+    titles = ({int(n): v for n, v in re.findall(r"(\d+):\s*'([^']+)'", tm.group(1))}
+              if tm else {})
     if titles != registry:
         issues.append(f'[lessonTitles] 與 vocab/batches.json 不一致：'
                       f'頁內={sorted(titles)} json={sorted(registry)}')
 
-    words = set(re.findall(r"display:\s*'([^']+)'", extract_array(src, 'vocabCards')))
-    for w, b in sorted(lesson.items()):
-        if w not in words:
-            issues.append(f'[lessonBatch] 有「{w}」但 vocabCards 沒有')
-        if b not in registry:
-            issues.append(f'[lessonBatch] 「{w}」的批次 {b} 不在 vocab/batches.json')
-    for b in registry:
-        if b not in set(lesson.values()):
-            issues.append(f'[lessonBatch] 批次 {b} 一個字都沒登錄（該批教的新字要加進來）')
+    # 互斥不變量：課程字搬到本頁後，舊測驗頁不得再持有同一個字，否則同一字兩頁各排一次
+    mine = {d for d, _ in seen}
+    for other, key in (('hiragana-quiz.html', 'display'), ('katakana-quiz.html', 'word')):
+        osrc = (ROOT / other).read_text()
+        oname = 'vocabCards' if other.startswith('hiragana') else 'katakanaCards'
+        others = set(re.findall(rf"{key}:\s*'([^']+)'", extract_array(osrc, oname)))
+        dup = sorted(mine & others)
+        if dup:
+            issues.append(f'[互斥] 這些字同時在 {other}：' + '、'.join(dup))
     return issues
 
 
@@ -301,7 +323,7 @@ def main():
     for name, issues in [('grammar-quiz.html', check_grammar_quiz()),
                          ('grammar/ 章節頁', check_grammar_pages()),
                          ('vocab/ 課程頁', check_vocab_pages()),
-                         ('單字課程批次（lessonBatch）', check_lesson_batch())]:
+                         ('vocab-quiz.html 課程單字', check_vocab_quiz())]:
         print(f'== {name} ==')
         if issues:
             ok = False
