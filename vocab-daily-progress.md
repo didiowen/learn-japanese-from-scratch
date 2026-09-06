@@ -21,7 +21,7 @@ alias: vocab-progress
 5. 教完後依既有流程正式收錄：
    - `vocabulary.md` 對應主題區塊（時間／場所／動詞等）
    - `kanji.md` 補新漢字（如有）
-   - `vocab-quiz.html` 新增 `vocabCards`，**每張卡帶 `batch: <本批編號>`**（同時是批次篩選軸與新字出現優先度），並在 `lessonTitles` 加一行。新字加在這裡，**不要加進 `hiragana-quiz.html`**——那頁只留每日課程之前就存在的舊單字，兩頁的單字池必須互斥（驗證器會擋）。**若本批某字本來就在 `hiragana-quiz.html`，要從那邊刪除、搬過來，不是兩邊都留**
+   - `vocab-quiz.html` 新增 `vocabCards`，**每張卡帶 `batch: <本批編號>`**（同時是批次篩選軸與新字出現優先度），並在 `lessonTitles` 加一行。新字加在這裡，**不要加進 `hiragana-quiz.html`**——那頁只留每日課程之前就存在的舊單字，兩頁的單字池必須互斥（驗證器會擋）。**比對重複要看「假名＋漢字」，不可只看假名**——同音異字是不同的字（批次28 橋／虫／鳥／一回 vs 舊頁 箸／蒸し／鶏／一階；批次29 鼻 vs 舊頁 花），照常新增；假名與漢字都相同才是同一個字，要從 `hiragana-quiz.html` 刪除、搬過來。另 `vocab-quiz.html` 已有三張 `batch: 0` 預習卡（もらう→批次12、こわれる→批次14、ちかい→批次18），教到時把 batch 改成本批編號即可，不要重複新增
    - 跑 `python3 tools/validate_quiz_data.py` 確認全部通過（含課程頁是否過期）
    - `log.md` 記一筆，更新 frontmatter `updated`
    任何一步失敗就把這一輪改動還原、狀態不要標 ✅。
