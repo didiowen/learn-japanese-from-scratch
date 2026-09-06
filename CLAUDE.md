@@ -52,6 +52,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 | `vocab-lessons.md` | 每日單字教學的**唯一正本**（一批一節），課程頁由它生成 |
 | `vocab/` | 單字課程 HTML（`NN.html`＋`index.html`，由 `tools/build_vocab_pages.py` 產生，**不要手改**；`batches.json` 是登錄表；樣式沿用 `grammar/chapter.css`） |
 | `tools/build_vocab_pages.py` | 單字課程頁產生器（渲染器 import `build_grammar_pages`，同一份實作） |
+| `vocab-quiz.html` | 課程單字 SRS 測驗（只收每日課程教過的字，依批次篩選；卡片內嵌 `vocabCards`，SRS 走 quiz-common.js） |
 | `PRODUCT.md` | 設計策略文件（受眾、品牌個性、設計原則，impeccable skill 使用） |
 
 參考文件（`.claude/skills/japanese-learning/references/` 目錄）：
@@ -151,7 +152,7 @@ const recentBatch = {
 - **grammar.md 是文法內容的唯一正本**；`grammar/NN.html` 與 `grammar/index.html` 是 `tools/build_grammar_pages.py` 的建置產物，**絕對不要手改**（改了下次重建就沒了，驗證器也會報「過期」）。`_sidebar.md` 與 `notes/`（docsify）照舊渲染 grammar.md 當完整筆記檢視，兩者並存是刻意的，不要「修掉」。
 - grammar.md **只能用這個 markdown 子集**：`###`/`####` 小標、段落、行尾兩空格換行、`**粗體**`、`` `行內程式碼` ``、GFM 表格、`>` 引言、``` 圍欄、單層 `-`/`1.` 清單、`---`。產生器認不得的語法會直接建置失敗。
 - 改了 grammar.md（已上架章節的部分）→ 必跑 `python3 tools/build_grammar_pages.py` 重建，再跑 `python3 tools/validate_quiz_data.py`；precommit hook 會擋住過期頁面的 commit。
-- **單字同一套**：`vocab-lessons.md` 是單字教學正本、`vocab/NN.html` 是產物（勿手改）、`vocab/batches.json` 是登錄表，產生器 `tools/build_vocab_pages.py` 直接 import `build_grammar_pages` 的渲染器——markdown 子集與版型兩邊完全相同，改一支兩邊同時生效。`vocabulary.md`（主題總表）與 `vocab-lessons.md`（課程順序）刻意並存，同 `grammar.md`／`grammar/` 的關係。單字的練習仍在 `hiragana-quiz.html`（vocabCards＋recentBatch），沒有獨立的單字課程測驗頁；該頁的**篩選列依分頁換軸**：五十音看假名輪次、單字看課程批次（`lessonBatch` 對照表＋`lessonTitles`，驗證器會比對 `vocab/batches.json`）。**`lessonBatch` 與 `recentBatch` 是兩回事**——recentBatch 控制新字的出現優先度（同一天加入算同一批，可能橫跨兩個課程批次），lessonBatch 是「這個字屬於哪一課」。
+- **單字同一套**：`vocab-lessons.md` 是單字教學正本、`vocab/NN.html` 是產物（勿手改）、`vocab/batches.json` 是登錄表，產生器 `tools/build_vocab_pages.py` 直接 import `build_grammar_pages` 的渲染器——markdown 子集與版型兩邊完全相同，改一支兩邊同時生效。`vocabulary.md`（主題總表）與 `vocab-lessons.md`（課程順序）刻意並存，同 `grammar.md`／`grammar/` 的關係。**課程單字的練習在獨立的 `vocab-quiz.html`**（2026-09-06 拆出）：它只收每日課程教過的字，篩選軸是課程批次；卡片上的 `batch` 欄位一物二用——既是篩選軸，也是新字的出現優先度（未做過的字 `nextReview = -(batch×5)`），所以不需要 `lessonBatch`／`recentBatch` 那兩張對照表。`lessonTitles` 只供按鈕 tooltip，驗證器會比對 `vocab/batches.json`。`hiragana-quiz.html` 則回到原本的樣子：五十音與舊單字都依假名輪次 R1–R5 篩選，`recentBatch` 凍結在批次 21 不再成長。**兩頁的單字池互斥**（驗證器有這條不變量）——同一個字若兩邊都在，會被各自排程、等於每天複習兩次。
 - `grammar-quiz.html` 的題庫 `grammarCards` 一行一題：`id`（`cNN-qM`，NN=進度項編號）是 SRS key——**修錯字保留 id、改題意換新 id 並刪舊行**；`batch` 同天同批、越大越新（未做過的題 `nextReview = -(batch×5)` 優先出現）；cloze 題目必含 `___` 且 `accepted` 含 `answer`；mc `choices` ≥3 且含 `answer`；每題必有 `explain`。作答後頁面會自動把答案句轉羅馬字顯示（wapuro 慣例、句中 は→wa 啟發式）；**句子含漢字或非助詞的 は 開頭單字（はなし系以外）時，加選填的 `romaji` 欄位手動指定**，覆寫自動轉換。頁內 `chapters` 陣列必須與 `grammar/chapters.json` 一致（驗證器會比對）。
 
 ### 每日教學排程（17:30，文法＋單字兩軌）
@@ -159,7 +160,7 @@ const recentBatch = {
 每天 17:30，vault 的 `com.didiowen.nihongo-grammar-daily` 排程（`~/LFCxBVB/X/scripts/nihongo-grammar-notify.sh`）為文法與單字各起一個獨立的 headless session：
 
 - **文法軌（2026-09-05 起改版）**：依 `grammar-daily-progress.md` 的規則推進一章——（新增類先寫進 grammar.md）→ 登錄 `grammar/chapters.json` 與 `grammar-quiz.html` 的 `chapters`、追加 3–5 題進 `grammarCards` → 跑產生器＋驗證器 → Telegram **只發短通知＋連結**（章節頁＋測驗頁），教學內容在網頁、複習交給測驗頁的 SRS。`grammar-daily-latest.md` 只是 10 行紀錄（日期／編號／連結／新題 id）。
-- **單字軌（2026-09-06 起同樣改版）**：教學內容寫進 `vocab-lessons.md` 正本 → 登錄 `vocab/batches.json` → 跑 `build_vocab_pages.py` 產出課程頁 → 照舊完成收錄（`vocabulary.md`／`kanji.md`／`hiragana-quiz.html` 的 vocabCards＋recentBatch）並跑 `validate_quiz_data.py`。練習仍走既有的單字測驗頁 SRS。
+- **單字軌（2026-09-06 起同樣改版）**：教學內容寫進 `vocab-lessons.md` 正本 → 登錄 `vocab/batches.json` → 跑 `build_vocab_pages.py` 產出課程頁 → 完成收錄（`vocabulary.md`／`kanji.md`／**`vocab-quiz.html` 的 `vocabCards`（每張卡帶 `batch`）＋ `lessonTitles`**）並跑 `validate_quiz_data.py`。新字一律加進 `vocab-quiz.html`，**不要再加進 `hiragana-quiz.html`**。
 - **Telegram 合併成一則**：兩軌各自把內容做完、各自 commit，最後由腳本組出**單一通知**（今日文法第 N 章＋單字批次 M、各自連結、測驗提醒）。單軌失敗時另一軌照常出現在訊息裡。
 
 **批改規則（2026-09-06 起）**：**Telegram 不再批改任何題目**——文法題在 `grammar-quiz.html`、單字題在 `hiragana-quiz.html`，答對答錯都由測驗頁自己記 SRS。兩張進度表的備註欄改記概念性觀察（哪類文法點／哪類字反覆卡住），不再逐題記分。狀態 ✅ 與完成日期排程已填好，不要重複標。

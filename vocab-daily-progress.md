@@ -21,7 +21,7 @@ alias: vocab-progress
 5. 教完後依既有流程正式收錄：
    - `vocabulary.md` 對應主題區塊（時間／場所／動詞等）
    - `kanji.md` 補新漢字（如有）
-   - `hiragana-quiz.html` 新增 `vocabCards`＋新的 `recentBatch` 批次號，**並在 `lessonBatch` 登錄這批的每個新字**（`'單字': <本批編號>`）、`lessonTitles` 加一行（沒登錄的話，測驗頁的批次篩選會選不到這批字）
+   - `vocab-quiz.html` 新增 `vocabCards`，**每張卡帶 `batch: <本批編號>`**（同時是批次篩選軸與新字出現優先度），並在 `lessonTitles` 加一行。新字加在這裡，**不要加進 `hiragana-quiz.html`**——那頁只留每日課程之前就存在的舊單字，兩頁的單字池必須互斥（驗證器會擋）。**若本批某字本來就在 `hiragana-quiz.html`，要從那邊刪除、搬過來，不是兩邊都留**
    - 跑 `python3 tools/validate_quiz_data.py` 確認全部通過（含課程頁是否過期）
    - `log.md` 記一筆，更新 frontmatter `updated`
    任何一步失敗就把這一輪改動還原、狀態不要標 ✅。
