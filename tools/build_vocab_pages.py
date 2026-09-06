@@ -55,7 +55,7 @@ def batch_page(n, title, date, body_html, prev_item, next_item):
 <link rel="stylesheet" href="{CSS_HREF}">
 </head>
 <body>
-<nav class="crumb"><a href="../index.html">← 首頁</a><a href="index.html">單字課程</a><a href="../vocab-quiz.html?batch={n}">課程測驗</a></nav>
+<nav class="crumb"><a href="../index.html">← 首頁</a><a href="index.html">單字課程</a><a href="../vocab-quiz.html?batch={n}">單字測驗</a></nav>
 <article class="chapter">
   <header class="chapter-head">
     <p class="eyebrow">{eyebrow}</p>
@@ -65,7 +65,7 @@ def batch_page(n, title, date, body_html, prev_item, next_item):
 {body_html}
   </div>
 </article>
-<p class="chapter-cta"><a href="../vocab-quiz.html?batch={n}">到課程測驗練這批字 →</a></p>
+<p class="chapter-cta"><a href="../vocab-quiz.html?batch={n}">到單字測驗練這批字 →</a></p>
 <nav class="chapter-nav">{prev_a}{next_a}</nav>
 <footer class="chapter-foot"><a href="index.html">全部批次</a> · <a href="../notes/#/vocabulary.md">完整單字表</a> · <a href="https://ko-fi.com/ines8964">☕ Ko-fi</a></footer>
 <script>
@@ -96,7 +96,7 @@ def index_page(entries, pending):
 <link rel="stylesheet" href="{CSS_HREF}">
 </head>
 <body>
-<nav class="crumb"><a href="../index.html">← 首頁</a><a href="../vocab-quiz.html">課程測驗</a></nav>
+<nav class="crumb"><a href="../index.html">← 首頁</a><a href="../vocab-quiz.html">單字測驗</a></nav>
 <main class="grammar-index">
   <header class="chapter-head">
     <p class="eyebrow">N5 單字</p>
@@ -106,7 +106,7 @@ def index_page(entries, pending):
   <ul class="entries">
 {chr(10).join(lis)}
   </ul>{pending_p}
-  <p class="chapter-cta"><a href="../vocab-quiz.html">開始課程測驗 →</a></p>
+  <p class="chapter-cta"><a href="../vocab-quiz.html">開始單字測驗 →</a></p>
 </main>
 </body>
 </html>
