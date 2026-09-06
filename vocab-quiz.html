@@ -244,6 +244,11 @@
 // 平假名測驗頁（hiragana-quiz.html）不再收這些字，兩頁的單字池互斥。
 // ═══════════════════════════════
 const vocabCards = [
+  // batch: 0 ＝ 預習（還沒上到的批次）。這三個字本來就在 hiragana-quiz.html，之後會正式教到；
+  // 教到那一批時把 batch 從 0 改成該批編號即可，不要另外新增一張卡。
+  { meaning: '收到', display: 'もらう', reading: 'morau', kanji: '貰う', topic: 'daily', batch: 0 },   // 批次12 會教
+  { meaning: '壞掉', display: 'こわれる', reading: 'kowareru', kanji: '壊れる', topic: 'daily', batch: 0 },   // 批次14 會教
+  { meaning: '近的', display: 'ちかい', reading: 'chikai', kanji: '近い', topic: 'daily', batch: 0 },   // 批次18 會教
   { meaning: '哥哥（對外謙稱）', display: 'あに', reading: 'ani', kanji: '兄', topic: 'family', batch: 1 },
   { meaning: '姊姊（對外謙稱）', display: 'あね', reading: 'ane', kanji: '姉', topic: 'family', batch: 1 },
   { meaning: '丈夫', display: 'おっと', reading: 'otto', kanji: '夫', topic: 'family', batch: 1 },
@@ -291,6 +296,7 @@ const vocabCards = [
 ];
 
 const lessonTitles = {
+  0: '預習（還沒教到）',
   1: '家族謙稱',
   2: '常用寒暄',
   3: '疑問詞',
@@ -321,7 +327,7 @@ let vocabQueue = [];
 let currentVocab = null;
 let answered = false;
 let vocabDir = 'jp-to-zh';   // 'jp-to-zh' | 'zh-to-jp'
-let currentBatch = 0;        // 0 ＝ 全部批次
+let currentBatch = -1;       // -1 ＝ 全部；0 ＝ 預習；其餘為課程批次編號
 let showHint = false;
 
 // ═══════════════════════════════
@@ -330,9 +336,9 @@ let showHint = false;
 function renderFilter() {
   const nums = [...new Set(vocabCards.map(c => c.batch))].sort((a, b) => a - b);
   const wrap = document.getElementById('roundFilter');
-  wrap.innerHTML = `<button class="round-btn${currentBatch === 0 ? ' active' : ''}" data-batch="0">全部</button>`
+  wrap.innerHTML = `<button class="round-btn${currentBatch === -1 ? ' active' : ''}" data-batch="-1">全部</button>`
     + nums.map(n =>
-      `<button class="round-btn${currentBatch === n ? ' active' : ''}" data-batch="${n}" title="${escapeHtml(lessonTitles[n] || '')}">批次${n}</button>`
+      `<button class="round-btn${currentBatch === n ? ' active' : ''}" data-batch="${n}" title="${escapeHtml(lessonTitles[n] || '')}">${n === 0 ? '預習' : '批次' + n}</button>`
     ).join('');
   wrap.querySelectorAll('.round-btn').forEach(b =>
     b.addEventListener('click', () => setBatch(parseInt(b.dataset.batch, 10))));
@@ -347,7 +353,8 @@ function setBatch(n) {
 }
 
 function getFilteredVocab() {
-  const filtered = currentBatch ? vocabCards.filter(c => c.batch === currentBatch) : vocabCards;
+  const filtered = currentBatch === -1 ? vocabCards
+                                      : vocabCards.filter(c => c.batch === currentBatch);
   return filtered.map(c => {
     const saved = vocabProgress[c.display];
     // 沒做過的字用 batch 當優先度：越晚教的越早排進來
@@ -356,8 +363,8 @@ function getFilteredVocab() {
 }
 
 function getSessionLimit() {
-  const pool = currentBatch ? vocabCards.filter(c => c.batch === currentBatch).length
-                            : vocabCards.length;
+  const pool = currentBatch === -1 ? vocabCards.length
+                                   : vocabCards.filter(c => c.batch === currentBatch).length;
   return Math.min(Math.max(Math.round(pool * 0.5), 10), 40);
 }
 
@@ -397,10 +404,25 @@ function nextCard() {
 // VOCAB: MULTIPLE CHOICE (both directions)
 // ═══════════════════════════════
 function getVocabDistractors(vocab) {
+  // 干擾項按「語意接近程度」分層取：同一課的字 → 同主題的字 → 其餘。
+  // 隨機抽整個字池的話，選項常常一眼就能刪掉（時間詞裡混一個家族稱謂），等於沒在考。
   const correct = vocabDir === 'jp-to-zh' ? vocab.meaning : vocab.display;
   const getVal = v => vocabDir === 'jp-to-zh' ? v.meaning : v.display;
-  const distractors = shuffle(vocabCards.filter(v => getVal(v) !== correct).map(getVal)).slice(0, 3);
-  return shuffle([correct, ...distractors]);
+  const others = vocabCards.filter(v => getVal(v) !== correct);
+  const tiers = [
+    others.filter(v => v.batch === vocab.batch),
+    others.filter(v => v.batch !== vocab.batch && v.topic && v.topic === vocab.topic),
+    others,
+  ];
+  const picked = [];
+  for (const tier of tiers) {
+    for (const val of shuffle(tier).map(getVal)) {
+      if (picked.length >= 3) break;
+      if (!picked.includes(val)) picked.push(val);
+    }
+    if (picked.length >= 3) break;
+  }
+  return shuffle([correct, ...picked]);
 }
 
 function renderVocabMultiple() {
@@ -464,7 +486,7 @@ function rebuildQueues() {
 // ?batch=N 深連結：課程頁的「練這批字」按鈕會帶進來
 (function () {
   const n = parseInt(new URLSearchParams(location.search).get('batch'), 10);
-  if (Number.isInteger(n) && vocabCards.some(c => c.batch === n)) currentBatch = n;
+  if (Number.isInteger(n) && vocabCards.some(c => c.batch === n)) currentBatch = n;   // 含 0＝預習
 })();
 </script>
 <script src="quiz-common.js"></script>

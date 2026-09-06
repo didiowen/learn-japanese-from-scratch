@@ -254,7 +254,8 @@ def check_vocab_quiz():
             continue
         b = int(bm.group(1))
         batches.add(b)
-        if b not in registry:
+        # batch 0 ＝ 預習（還沒教到的字），本來就不會在登錄表裡
+        if b != 0 and b not in registry:
             issues.append(f'[batch] 「{disp}」的批次 {b} 不在 vocab/batches.json')
         key = (disp, field('kanji'))
         if key in seen:
@@ -267,19 +268,28 @@ def check_vocab_quiz():
     tm = re.search(r'const lessonTitles = \{(.*?)\n\};', src, re.S)
     titles = ({int(n): v for n, v in re.findall(r"(\d+):\s*'([^']+)'", tm.group(1))}
               if tm else {})
+    titles.pop(0, None)   # 預習不是課程批次，不參與比對
     if titles != registry:
         issues.append(f'[lessonTitles] 與 vocab/batches.json 不一致：'
                       f'頁內={sorted(titles)} json={sorted(registry)}')
 
-    # 互斥不變量：課程字搬到本頁後，舊測驗頁不得再持有同一個字，否則同一字兩頁各排一次
-    mine = {d for d, _ in seen}
-    for other, key in (('hiragana-quiz.html', 'display'), ('katakana-quiz.html', 'word')):
+    # 互斥不變量：課程字搬到本頁後，舊測驗頁不得再持有同一個字，否則同一字兩頁各排一次。
+    # **必須用（假名, 漢字）成對比較**——同音異字是不同的字：批次28 的 橋/虫/鳥/一回 與舊頁的
+    # 箸/蒸し/鶏/一階 假名相同、漢字不同，只比假名會把它們誤判成重複而讓當天的 pipeline 整天失敗。
+    for other in ('hiragana-quiz.html', 'katakana-quiz.html'):
         osrc = (ROOT / other).read_text()
         oname = 'vocabCards' if other.startswith('hiragana') else 'katakanaCards'
-        others = set(re.findall(rf"{key}:\s*'([^']+)'", extract_array(osrc, oname)))
-        dup = sorted(mine & others)
+        key = 'display' if other.startswith('hiragana') else 'word'
+        others = set()
+        for c in re.findall(r"\{[^}]*\}", extract_array(osrc, oname)):
+            km = re.search(rf"{key}:\s*'([^']+)'", c)
+            if km:
+                kj = re.search(r"kanji:\s*'([^']*)'", c)
+                others.add((km.group(1), kj.group(1) if kj else None))
+        dup = sorted(set(seen) & others)
         if dup:
-            issues.append(f'[互斥] 這些字同時在 {other}：' + '、'.join(dup))
+            issues.append(f'[互斥] 這些字（假名＋漢字都相同）同時在 {other}：'
+                          + '、'.join(f'{d}（{k or "無漢字"}）' for d, k in dup))
     return issues
 
 
