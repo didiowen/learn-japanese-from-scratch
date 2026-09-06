@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>G8：〜たい — 日文文法</title>
+<link href="https://fonts.googleapis.com/css2?family=Klee+One:wght@400;600&family=Noto+Sans+TC:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="chapter.css">
+</head>
+<body>
+<nav class="crumb"><a href="../index.html">← 首頁</a><a href="index.html">文法章節</a><a href="../grammar-quiz.html">文法測驗</a></nav>
+<article class="chapter">
+  <header class="chapter-head">
+    <p class="eyebrow">第 09 章 · 2026-09-06 學過</p>
+    <h1>G8：〜たい</h1>
+  </header>
+  <div class="chapter-body">
+<h2>句型</h2>
+<pre><code>動詞ます形（去掉 ます） ＋ たい</code></pre>
+<p>想做什麼，就把 G5 學過的ます形尾巴拔掉，換上 <strong>たい</strong>：</p>
+<div class="table-wrap"><table><thead><tr><th>ます形</th><th>〜たい</th><th>意思</th></tr></thead><tbody><tr><td>たべます</td><td>たべたい</td><td>想吃</td></tr><tr><td>いきます</td><td>いきたい</td><td>想去</td></tr><tr><td>のみます</td><td>のみたい</td><td>想喝</td></tr><tr><td>みます</td><td>みたい</td><td>想看</td></tr><tr><td>はなします</td><td>はなしたい</td><td>想說</td></tr><tr><td>およぎます</td><td>およぎたい</td><td>想游泳</td></tr></tbody></table></div>
+<blockquote><p>禮貌場合後面加 です：<strong>たべたいです</strong>（想吃）。跟 G2 一樣，です 只是禮貌外衣，不改變意思。</p></blockquote>
+<h2>たい 不是動詞，是い形容詞</h2>
+<p>這是整章最重要的一件事：接上 たい 之後，整串詞就變成<strong>い形容詞</strong>，四個變化完全照 G2 走。</p>
+<div class="table-wrap"><table><thead><tr><th>形</th><th>例（たべます）</th><th>意思</th></tr></thead><tbody><tr><td>現在肯定</td><td>たべたいです</td><td>想吃</td></tr><tr><td>現在否定</td><td>たべたくないです</td><td>不想吃</td></tr><tr><td>過去肯定</td><td>たべたかったです</td><td>（那時）想吃</td></tr><tr><td>過去否定</td><td>たべたくなかったです</td><td>（那時）不想吃</td></tr></tbody></table></div>
+<blockquote><p>⚠️ 最常見的錯是 <strong>たべたいません</strong>。たい 不是動詞，沒有 ません 這條路；否定要走 G2 的 くない 階梯：たい → たくない。</p></blockquote>
+<h2>想要的對象：を 和 が 都可以</h2>
+<div class="table-wrap"><table><thead><tr><th>句子</th><th>語感</th></tr></thead><tbody><tr><td>すし<strong>を</strong> たべたいです</td><td>中性陳述：想吃壽司</td></tr><tr><td>すし<strong>が</strong> たべたいです</td><td>焦點在壽司：想吃的就是壽司</td></tr></tbody></table></div>
+<p>這跟「助詞比較：は vs を」那章的 <strong>〜が すきです</strong> 是同一個道理——句子講的是「喜歡／想要」這類心情時，對象可以改用 が 標記，把它推成焦點。</p>
+<blockquote><p>⚠️ 但<strong>移動的目的地不能換成 が</strong>。目的地一律用 へ（念 e）或 に：<br>にほん<strong>へ</strong> いきたいです（○）／にほん<strong>が</strong> いきたいです（✗）</p></blockquote>
+<h2>たい 只能講自己</h2>
+<p>たい 說的是說話者心裡的願望，所以<strong>主語只能是自己</strong>，或用疑問句問對方：</p>
+<div class="table-wrap"><table><thead><tr><th>句子</th><th>意思</th></tr></thead><tbody><tr><td>わたしは みずが のみたいです</td><td>我想喝水</td></tr><tr><td>なにが たべたいですか</td><td>（你）想吃什麼？</td></tr><tr><td>なつは うみへ いきたいです</td><td>夏天想去海邊</td></tr></tbody></table></div>
+<p>中文說「他想吃壽司」很自然，日文卻不能直接講成 かれは すしが たべたいです——別人的願望有另一套說法，之後再學。</p>
+  </div>
+</article>
+<p class="chapter-cta"><a href="../grammar-quiz.html?ch=9">練這一章的題目 →</a></p>
+<nav class="chapter-nav"><a class="prev" href="08.html">← G9：〜てください</a></nav>
+<footer class="chapter-foot"><a href="index.html">全部章節</a> · <a href="../notes/#/grammar.md">完整文法筆記</a> · <a href="https://ko-fi.com/ines8964">☕ Ko-fi</a></footer>
+<script>
+// 表格「日文／例句」欄自動附朗讀鍵（speakJa 與 quiz-common.js 同款、本地精簡版）
+let _gen = 0;
+function speakJa(text) {
+  try {
+    const t = text.replace(/[（(].*?[）)]/g, '').trim();
+    if (!t) return;
+    _gen += 1;
+    speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(t);
+    u.lang = 'ja-JP'; u.rate = 0.85;
+    const v = speechSynthesis.getVoices().filter(v => v.lang.startsWith('ja'))[0];
+    if (v) u.voice = v;
+    speechSynthesis.speak(u);
+  } catch (e) { /* 無語音支援就靜默 */ }
+}
+document.addEventListener('DOMContentLoaded', () => {
+  const SPEAK_COLS = ['日文', '例句', '例', '句型', '假名', '原形', '禮貌體'];
+  document.querySelectorAll('.chapter-body table').forEach(tbl => {
+    const ths = [...tbl.querySelectorAll('thead th')].map(th => th.textContent.trim());
+    ths.forEach((h, col) => {
+      if (!SPEAK_COLS.includes(h)) return;
+      tbl.querySelectorAll('tbody tr').forEach(tr => {
+        const td = tr.children[col];
+        if (!td) return;
+        const raw = td.textContent.trim();
+        if (!raw || raw === '—' || /^[A-Za-z0-9\s.…]+$/.test(raw)) return;
+        const btn = document.createElement('button');
+        btn.className = 'speak-btn'; btn.type = 'button';
+        btn.title = '朗讀'; btn.textContent = '🔊';
+        btn.addEventListener('click', () => speakJa(raw));
+        td.appendChild(btn);
+      });
+    });
+  });
+});
+</script>
+</body>
+</html>
