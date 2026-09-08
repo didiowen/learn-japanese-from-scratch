@@ -28,6 +28,10 @@ GRAMMAR_MD = ROOT / 'grammar.md'
 PROGRESS_MD = ROOT / 'grammar-daily-progress.md'
 CHAPTERS_JSON = ROOT / 'grammar' / 'chapters.json'
 OUT_DIR = ROOT / 'grammar'
+# 一課＝一個文法項＋配對的單字批次；配對表在 pairings.json（文法項編號 → 單字批次編號）
+PAIRINGS_JSON = ROOT / 'grammar' / 'pairings.json'
+VOCAB_LESSONS_MD = ROOT / 'vocab-lessons.md'
+VOCAB_BATCHES_JSON = ROOT / 'vocab' / 'batches.json'
 
 SITE = 'https://didiowen.github.io/nihongo'
 
@@ -129,14 +133,20 @@ LIST_UL = re.compile(r'^- (.*)$')
 LIST_OL = re.compile(r'^\d+\. (.*)$')
 
 
-def render_section(body_lines, base_lineno):
-    """把一章的 body 轉成 HTML 片段。回傳 (html, 純文字殘料檢查清單)。"""
+def render_section(body_lines, base_lineno, demote=0, srcname='grammar.md'):
+    """把一章的 body 轉成 HTML 片段。
+
+    demote：標題再降幾級。嵌進文法頁的單字批次用 demote=1，讓它的 ### 條目
+    落在注入的「這一課的單字」h2 底下，而不是與它平起平坐。
+    srcname：錯誤訊息裡的來源檔名（單字正本傳 vocab-lessons.md）。
+    """
     out = []
     i = 0
     n = len(body_lines)
+    h_major, h_minor = 2 + demote, 3 + demote
 
     def err(msg, off):
-        raise BuildError(f'grammar.md 第 {base_lineno + off + 1} 行：{msg}')
+        raise BuildError(f'{srcname} 第 {base_lineno + off + 1} 行：{msg}')
 
     while i < n:
         line = body_lines[i]
@@ -163,11 +173,11 @@ def render_section(body_lines, base_lineno):
             continue
         # 小標
         if stripped.startswith('#### '):
-            out.append(f'<h3>{render_inline(stripped[5:])}</h3>')
+            out.append(f'<h{h_minor}>{render_inline(stripped[5:])}</h{h_minor}>')
             i += 1
             continue
         if stripped.startswith('### '):
-            out.append(f'<h2>{render_inline(stripped[4:])}</h2>')
+            out.append(f'<h{h_major}>{render_inline(stripped[4:])}</h{h_major}>')
             i += 1
             continue
         if stripped.startswith('#'):
@@ -324,7 +334,42 @@ document.addEventListener('DOMContentLoaded', () => {
 });"""
 
 
-def chapter_page(n, title, date, body_html, prev_item, next_item):
+def load_pairings():
+    """回傳 {文法項編號: 單字批次編號}。檔案不存在＝還沒配對，回空 dict。"""
+    if not PAIRINGS_JSON.exists():
+        return {}
+    return {int(k): int(v) for k, v in
+            json.loads(PAIRINGS_JSON.read_text(encoding='utf-8')).items()}
+
+
+def vocab_section_html(batch_n):
+    """把配對的單字批次渲染成「這一課的單字」一節。
+
+    該批還沒上架（batches.json 沒登錄）就回 None——當天先出純文法頁，
+    等單字軌寫完正本、重跑產生器時才補上。這是刻意的：兩軌同一天執行，
+    文法先跑，那時單字正本還沒有這一節。
+    """
+    if not VOCAB_BATCHES_JSON.exists():
+        return None
+    registry = {int(k): v for k, v in
+                json.loads(VOCAB_BATCHES_JSON.read_text(encoding='utf-8')).items()}
+    heading = registry.get(batch_n)
+    if heading is None:
+        return None
+    sections = split_sections(VOCAB_LESSONS_MD)
+    if heading not in sections:
+        raise BuildError(f'配對的單字批次「{heading}」在 vocab-lessons.md 找不到'
+                         f'（batches.json 與正本標題必須一字不差）')
+    start, body = sections[heading]
+    inner = render_section(body, start, demote=1, srcname='vocab-lessons.md')
+    assert_content_preserved(body, inner)
+    topic = heading.split('：', 1)[1] if '：' in heading else heading
+    return ('<section class="lesson-vocab">\n'
+            f'<h2>這一課的單字：{html.escape(topic, quote=False)}</h2>\n'
+            f'{inner}\n</section>')
+
+
+def chapter_page(n, title, date, body_html, prev_item, next_item, vocab_batch=None):
     nn = f'{n:02d}'
     eyebrow = f'第 {nn} 章' + (f' · {date} 學過' if date else '')
     prev_a = (f'<a class="prev" href="{prev_item[0]:02d}.html">← {html.escape(prev_item[1], quote=False)}</a>'
@@ -332,6 +377,8 @@ def chapter_page(n, title, date, body_html, prev_item, next_item):
     next_a = (f'<a class="next" href="{next_item[0]:02d}.html">{html.escape(next_item[1], quote=False)} →</a>'
               if next_item else '')
     t = html.escape(title, quote=False)
+    vocab_cta = (f'<a href="../vocab-quiz.html?batch={vocab_batch}">練這一課的單字 →</a>'
+                 if vocab_batch else '')
     return f'''<!DOCTYPE html>
 <html lang="zh-TW">
 <head>
@@ -352,7 +399,7 @@ def chapter_page(n, title, date, body_html, prev_item, next_item):
 {body_html}
   </div>
 </article>
-<p class="chapter-cta"><a href="../grammar-quiz.html?ch={n}">練這一章的題目 →</a></p>
+<p class="chapter-cta"><a href="../grammar-quiz.html?ch={n}">練這一章的題目 →</a>{vocab_cta}</p>
 <nav class="chapter-nav">{prev_a}{next_a}</nav>
 <footer class="chapter-foot"><a href="index.html">全部章節</a> · <a href="../notes/#/grammar.md">完整文法筆記</a> · <a href="https://ko-fi.com/ines8964">☕ Ko-fi</a></footer>
 <script>
@@ -408,6 +455,7 @@ def build(check_only=False):
     registry = {int(k): v for k, v in registry.items()}
     progress, pending = parse_progress()
     sections = split_sections()
+    pairings = load_pairings()
 
     # 交叉檢查：✅ ↔ registry 一一對應
     done_nums = {n for n, r in progress.items() if r['done']}
@@ -429,10 +477,18 @@ def build(check_only=False):
         start, body = sections[heading]
         body_html = render_section(body, start)
         assert_content_preserved(body, body_html)
+        vocab_batch = pairings.get(n)
+        if vocab_batch is not None:
+            vs = vocab_section_html(vocab_batch)
+            if vs is None:
+                vocab_batch = None      # 該批還沒上架，CTA 也先不要出現
+            else:
+                body_html += '\n' + vs
         date = progress[n]['date']
         prev_item = (ordered[idx - 1], registry[ordered[idx - 1]]) if idx > 0 else None
         next_item = (ordered[idx + 1], registry[ordered[idx + 1]]) if idx + 1 < len(ordered) else None
-        pages[f'{n:02d}.html'] = chapter_page(n, heading, date, body_html, prev_item, next_item)
+        pages[f'{n:02d}.html'] = chapter_page(n, heading, date, body_html, prev_item,
+                                              next_item, vocab_batch)
         entries.append((n, heading, date))
 
     pages['index.html'] = index_page(entries, pending)

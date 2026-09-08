@@ -293,6 +293,36 @@ def check_vocab_quiz():
     return issues
 
 
+def check_pairings():
+    """grammar/pairings.json：一課＝一個文法項＋一個單字批次。"""
+    import json
+    issues = []
+    pf = ROOT / 'grammar' / 'pairings.json'
+    if not pf.exists():
+        return ['[配對] 找不到 grammar/pairings.json']
+    pair = {int(k): int(v) for k, v in json.loads(pf.read_text()).items()}
+
+    def rows(name):
+        src = (ROOT / name).read_text()
+        return {int(m.group(1)) for m in
+                re.finditer(r'^\| (\d+) \|[^|]+\|[^|]*\|\s*[✅⬜🟡]\s*\|', src, re.M)}
+    gitems, vbatches = rows('grammar-daily-progress.md'), rows('vocab-daily-progress.md')
+
+    for g, v in sorted(pair.items()):
+        if g not in gitems:
+            issues.append(f'[配對] 文法項 {g} 不在 grammar-daily-progress.md')
+        if v not in vbatches:
+            issues.append(f'[配對] 單字批次 {v} 不在 vocab-daily-progress.md')
+    used = list(pair.values())
+    dup = sorted({v for v in used if used.count(v) > 1})
+    if dup:
+        issues.append(f'[配對] 這些單字批次被配給兩個以上的文法項：{dup}')
+    unpaired = sorted(vbatches - set(used))
+    if unpaired:
+        issues.append(f'[配對] 這些單字批次沒有配對，永遠不會被教到：{unpaired}')
+    return issues
+
+
 def check_vocab_pages():
     """vocab/*.html 必須與 vocab-lessons.md 同步（產生器 check_only 模式）。"""
     sys.path.insert(0, str(ROOT / 'tools'))
@@ -333,7 +363,8 @@ def main():
     for name, issues in [('grammar-quiz.html', check_grammar_quiz()),
                          ('grammar/ 章節頁', check_grammar_pages()),
                          ('vocab/ 課程頁', check_vocab_pages()),
-                         ('vocab-quiz.html 課程單字', check_vocab_quiz())]:
+                         ('vocab-quiz.html 課程單字', check_vocab_quiz()),
+                         ('文法↔單字配對', check_pairings())]:
         print(f'== {name} ==')
         if issues:
             ok = False
