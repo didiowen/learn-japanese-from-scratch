@@ -7,6 +7,14 @@
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Noto+Sans+TC:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="quiz-common.css">
 <style>
+/* 回饋列末端的「回〈某批〉→」連結——尺寸壓小，不跟正解搶注意力 */
+.feedback .lesson-link {
+  font-size: 0.82em;
+  white-space: nowrap;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+.wrong-back a { font-size: 0.9em; }
 
 /* ── Section tabs ── */
 .section-tabs {
@@ -526,6 +534,10 @@ let showHint = false;
 // ═══════════════════════════════
 // 篩選與佇列
 // ═══════════════════════════════
+function lessonHref(b) {
+  // batch 0 ＝ 預習（還沒教到），沒有課程頁可回
+  return b ? `vocab/${String(b).padStart(2, '0')}.html` : '';
+}
 function renderFilter() {
   const nums = [...new Set(vocabCards.map(c => c.batch))].sort((a, b) => a - b);
   const wrap = document.getElementById('roundFilter');
@@ -654,7 +666,10 @@ function checkVocabMultiple(chosen, btn) {
   fb.className = `feedback ${isCorrect ? 'show-correct' : 'show-wrong'}`;
   const kp = currentVocab.kanji ? `${currentVocab.kanji} ` : '';
   const wrongHint = vocabDir === 'jp-to-zh' ? correctAnswers.join('／') : `${kp}${currentVocab.display}`;
-  fb.innerHTML = (isCorrect ? `✓ 正確！` : `✗ 正確是「${wrongHint}」`) + ` <button class="speak-btn" onclick="speakJa(currentVocab.display)" title="朗讀">🔊</button>`;
+  const lh = lessonHref(currentVocab.batch);
+  fb.innerHTML = (isCorrect ? `✓ 正確！` : `✗ 正確是「${wrongHint}」`)
+    + ` <button class="speak-btn" onclick="speakJa(currentVocab.display)" title="朗讀">🔊</button>`
+    + (lh ? `　<a class="lesson-link" href="${lh}">回「${escapeHtml(lessonTitles[currentVocab.batch] || '')}」→</a>` : '');
   document.getElementById('hintText').textContent = `💡 ${kp}${currentVocab.display}（${currentVocab.reading}）`;
   document.getElementById('nextBtn').classList.add('visible');
 }
@@ -683,5 +698,22 @@ function rebuildQueues() {
 })();
 </script>
 <script src="quiz-common.js"></script>
+<script>
+// 覆寫 quiz-common.js 的 renderWrongList：多一條回課程頁的連結。答錯當下回饋列
+// 已經有連結，但一輪結束後回顧時最想做的就是跳回那一批的講解，這裡才是入口。
+// 必須放在 quiz-common.js 之後（showResult 執行時才呼叫，重綁安全）。
+function renderWrongList() {
+  if (wrongAnswers.size === 0) return '';
+  const items = [...wrongAnswers.values()].map(c => {
+    const kp = c.kanji ? `${escapeHtml(c.kanji)} ` : '';
+    const lh = lessonHref(c.batch);
+    const back = `${escapeHtml(c.reading)}　${escapeHtml(c.meaning)}`
+      + (lh ? `<br><a href="${lh}">回「${escapeHtml(lessonTitles[c.batch] || '')}」→</a>` : '');
+    return `<div class="wrong-item"><span class="wrong-front">${kp}${escapeHtml(c.display)}</span>`
+      + `<span class="wrong-back">${back}</span></div>`;
+  }).join('');
+  return `<div class="wrong-list"><div class="wrong-title">答錯回顧（${wrongAnswers.size}）</div>${items}</div>`;
+}
+</script>
 </body>
 </html>
