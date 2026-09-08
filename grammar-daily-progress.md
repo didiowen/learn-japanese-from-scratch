@@ -25,7 +25,7 @@ alias: grammar-progress
 3. 上架章節頁與題目：
    a. 在 grammar/chapters.json 加一筆 "項目編號": "<grammar.md 裡該節 ## 後的完整標題>"（一字不差）。
    b. 在 grammar-quiz.html 的 const chapters 陣列末尾加 { n: 項目編號, title: '同上標題' },。
-   c. 在 grammar-quiz.html 的 const grammarCards 陣列末尾加 5–10 題（依該章詞彙表大小，一行一個物件）。目標：把該章詞彙表／例句表的單字盡量分配進題目：
+   c. 在 grammar-quiz.html 的 const grammarCards 陣列末尾加 12–16 題。**下限 12 題是硬的**——單輪出題上限是 min(max(題數×0.5,10),30)，所以題庫只要不超過 10 題，每次練習都會把整章掃過一遍、同一題天天出現（使用者 2026-09-08 就是這樣回報「第2章一直考章魚燒」，那題其實只有一題）。（依該章詞彙表大小，一行一個物件）。目標：把該章詞彙表／例句表的單字盡量分配進題目：
       - id 用 c<兩位數項目編號>-q<流水號>；batch 用「目前最大 batch + 1」（同一天同一批）
       - 助詞／活用這類「填得出唯一答案」的用 type:'cloze'（q 含 ___、accepted 列所有可接受寫法且含 answer；可加 zh 欄放中文提示句）
       - 語感判斷用 type:'mc'（choices 至少 3 個且 answer 在其中；干擾項要是真的會犯的錯，不要湊數）
