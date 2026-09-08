@@ -300,7 +300,10 @@ def check_pairings():
     pf = ROOT / 'grammar' / 'pairings.json'
     if not pf.exists():
         return ['[配對] 找不到 grammar/pairings.json']
-    pair = {int(k): int(v) for k, v in json.loads(pf.read_text()).items()}
+    raw = json.loads(pf.read_text())
+    # 值可以是單一整數或整數陣列（一個文法項配多批單字），一律正規化成 list
+    pair = {int(k): ([int(x) for x in v] if isinstance(v, list) else [int(v)])
+            for k, v in raw.items()}
 
     def rows(name):
         src = (ROOT / name).read_text()
@@ -308,12 +311,15 @@ def check_pairings():
                 re.finditer(r'^\| (\d+) \|[^|]+\|[^|]*\|\s*[✅⬜🟡]\s*\|', src, re.M)}
     gitems, vbatches = rows('grammar-daily-progress.md'), rows('vocab-daily-progress.md')
 
-    for g, v in sorted(pair.items()):
+    for g, bs in sorted(pair.items()):
         if g not in gitems:
             issues.append(f'[配對] 文法項 {g} 不在 grammar-daily-progress.md')
-        if v not in vbatches:
-            issues.append(f'[配對] 單字批次 {v} 不在 vocab-daily-progress.md')
-    used = list(pair.values())
+        if not bs:
+            issues.append(f'[配對] 文法項 {g} 的配對是空的——沒有要配就整筆刪掉')
+        for v in bs:
+            if v not in vbatches:
+                issues.append(f'[配對] 單字批次 {v} 不在 vocab-daily-progress.md')
+    used = [v for bs in pair.values() for v in bs]
     dup = sorted({v for v in used if used.count(v) > 1})
     if dup:
         issues.append(f'[配對] 這些單字批次被配給兩個以上的文法項：{dup}')

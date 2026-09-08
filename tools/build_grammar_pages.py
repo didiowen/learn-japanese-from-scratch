@@ -335,11 +335,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 def load_pairings():
-    """回傳 {文法項編號: 單字批次編號}。檔案不存在＝還沒配對，回空 dict。"""
+    """回傳 {文法項編號: [單字批次編號, …]}。檔案不存在＝還沒配對，回空 dict。
+
+    值可以是單一整數或整數陣列——一個文法項配多批單字（例：あります／います
+    同時帶兩批場所設施），一律正規化成 list。
+    """
     if not PAIRINGS_JSON.exists():
         return {}
-    return {int(k): int(v) for k, v in
-            json.loads(PAIRINGS_JSON.read_text(encoding='utf-8')).items()}
+    raw = json.loads(PAIRINGS_JSON.read_text(encoding='utf-8'))
+    return {int(k): ([int(x) for x in v] if isinstance(v, list) else [int(v)])
+            for k, v in raw.items()}
 
 
 def vocab_section_html(batch_n):
@@ -369,7 +374,7 @@ def vocab_section_html(batch_n):
             f'{inner}\n</section>')
 
 
-def chapter_page(n, title, date, body_html, prev_item, next_item, vocab_batch=None):
+def chapter_page(n, title, date, body_html, prev_item, next_item, vocab_batches=()):
     nn = f'{n:02d}'
     eyebrow = f'第 {nn} 章' + (f' · {date} 學過' if date else '')
     prev_a = (f'<a class="prev" href="{prev_item[0]:02d}.html">← {html.escape(prev_item[1], quote=False)}</a>'
@@ -377,8 +382,10 @@ def chapter_page(n, title, date, body_html, prev_item, next_item, vocab_batch=No
     next_a = (f'<a class="next" href="{next_item[0]:02d}.html">{html.escape(next_item[1], quote=False)} →</a>'
               if next_item else '')
     t = html.escape(title, quote=False)
-    vocab_cta = (f'<a href="../vocab-quiz.html?batch={vocab_batch}">練這一課的單字 →</a>'
-                 if vocab_batch else '')
+    vocab_cta = ''.join(
+        f'<a href="../vocab-quiz.html?batch={b}">練這一課的單字 →</a>' if len(vocab_batches) == 1
+        else f'<a href="../vocab-quiz.html?batch={b}">練批次{b}的單字 →</a>'
+        for b in vocab_batches)
     return f'''<!DOCTYPE html>
 <html lang="zh-TW">
 <head>
@@ -477,18 +484,18 @@ def build(check_only=False):
         start, body = sections[heading]
         body_html = render_section(body, start)
         assert_content_preserved(body, body_html)
-        vocab_batch = pairings.get(n)
-        if vocab_batch is not None:
-            vs = vocab_section_html(vocab_batch)
+        vocab_batches = []
+        for b in pairings.get(n, []):
+            vs = vocab_section_html(b)
             if vs is None:
-                vocab_batch = None      # 該批還沒上架，CTA 也先不要出現
-            else:
-                body_html += '\n' + vs
+                continue                # 該批還沒上架，連 CTA 也先不要出現
+            body_html += '\n' + vs
+            vocab_batches.append(b)
         date = progress[n]['date']
         prev_item = (ordered[idx - 1], registry[ordered[idx - 1]]) if idx > 0 else None
         next_item = (ordered[idx + 1], registry[ordered[idx + 1]]) if idx + 1 < len(ordered) else None
         pages[f'{n:02d}.html'] = chapter_page(n, heading, date, body_html, prev_item,
-                                              next_item, vocab_batch)
+                                              next_item, vocab_batches)
         entries.append((n, heading, date))
 
     pages['index.html'] = index_page(entries, pending)
