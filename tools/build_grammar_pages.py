@@ -347,17 +347,41 @@ def load_pairings():
             for k, v in raw.items()}
 
 
-def vocab_section_html(batch_n):
+def vocab_registry():
+    """{批次編號: '批次N：主題'}。檔案不存在（還沒教過任何一批）就回空 dict。"""
+    if not VOCAB_BATCHES_JSON.exists():
+        return {}
+    return {int(k): v for k, v in
+            json.loads(VOCAB_BATCHES_JSON.read_text(encoding='utf-8')).items()}
+
+
+def _split_at_full_table(body):
+    """回傳 (逐字講解, 完整表起) 兩段行陣列；找不到完整表就回 (None, body)。
+
+    切點是第一個含「完整」的 ### 小標；沒有 ### 層級的就退而找 ####（批次1、4
+    的完整表掛在 #### 上）。用「第一個」而不是「最後一個」很重要——批次6 的
+    「#### 半 はん 的完整用法」巢狀在「### 五、完整表」底下，取最後一個會從
+    中間切開。
+    """
+    for prefix in ('### ', '#### '):
+        for i, line in enumerate(body):
+            s = line.strip()
+            if s.startswith(prefix) and not s.startswith(prefix + '#') and '完整' in s:
+                return body[:i], body[i:]
+    return None, body
+
+
+def vocab_section_html(batch_n, collapse=False):
     """把配對的單字批次渲染成「這一課的單字」一節。
 
     該批還沒上架（batches.json 沒登錄）就回 None——當天先出純文法頁，
     等單字軌寫完正本、重跑產生器時才補上。這是刻意的：兩軌同一天執行，
     文法先跑，那時單字正本還沒有這一節。
+
+    collapse=True（一課配到兩批以上時）把逐字講解收進 <details>，只讓完整表
+    保持展開——兩批各自「先逐字教、最後給完整表」的節奏疊在同一頁會很難讀。
     """
-    if not VOCAB_BATCHES_JSON.exists():
-        return None
-    registry = {int(k): v for k, v in
-                json.loads(VOCAB_BATCHES_JSON.read_text(encoding='utf-8')).items()}
+    registry = vocab_registry()
     heading = registry.get(batch_n)
     if heading is None:
         return None
@@ -366,9 +390,24 @@ def vocab_section_html(batch_n):
         raise BuildError(f'配對的單字批次「{heading}」在 vocab-lessons.md 找不到'
                          f'（batches.json 與正本標題必須一字不差）')
     start, body = sections[heading]
-    inner = render_section(body, start, demote=1, srcname='vocab-lessons.md')
-    assert_content_preserved(body, inner)
     topic = heading.split('：', 1)[1] if '：' in heading else heading
+
+    head, tail = _split_at_full_table(body) if collapse else (None, body)
+    if head:
+        head_html = render_section(head, start, demote=1, srcname='vocab-lessons.md')
+        tail_html = render_section(tail, start + len(head), demote=1,
+                                   srcname='vocab-lessons.md')
+        assert_content_preserved(body, head_html + tail_html)
+        # summary 標出藏了幾節，否則收起時直接看到「四、完整表」會摸不著頭緒
+        n_sec = sum(1 for l in head
+                    if l.strip().startswith('### ') and not l.strip().startswith('#### '))
+        label = f'逐字講解（前 {n_sec} 節：漢字來源、台語連結、例句）' if n_sec else \
+                '逐字講解（漢字來源、台語連結、例句）'
+        inner = (f'<details class="vocab-detail"><summary>{label}</summary>\n'
+                 f'{head_html}\n</details>\n{tail_html}')
+    else:
+        inner = render_section(tail, start, demote=1, srcname='vocab-lessons.md')
+        assert_content_preserved(body, inner)
     return ('<section class="lesson-vocab">\n'
             f'<h2>這一課的單字：{html.escape(topic, quote=False)}</h2>\n'
             f'{inner}\n</section>')
@@ -484,13 +523,11 @@ def build(check_only=False):
         start, body = sections[heading]
         body_html = render_section(body, start)
         assert_content_preserved(body, body_html)
-        vocab_batches = []
-        for b in pairings.get(n, []):
-            vs = vocab_section_html(b)
-            if vs is None:
-                continue                # 該批還沒上架，連 CTA 也先不要出現
-            body_html += '\n' + vs
-            vocab_batches.append(b)
+        # 先算出真的會渲染的批次，才知道要不要收合逐字講解
+        reg_v = vocab_registry()
+        vocab_batches = [b for b in pairings.get(n, []) if b in reg_v]
+        for b in vocab_batches:
+            body_html += '\n' + vocab_section_html(b, collapse=len(vocab_batches) > 1)
         date = progress[n]['date']
         prev_item = (ordered[idx - 1], registry[ordered[idx - 1]]) if idx > 0 else None
         next_item = (ordered[idx + 1], registry[ordered[idx + 1]]) if idx + 1 < len(ordered) else None

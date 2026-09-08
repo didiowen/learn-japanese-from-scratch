@@ -148,6 +148,28 @@ h1 {
   gap: clamp(16px, 4vw, 32px);
 }
 
+/* 一課配到兩批以上單字時，逐字講解收進 details，只讓完整表保持展開——
+   兩批各自「先逐字教、最後給完整表」的節奏疊在同一頁會很難讀 */
+.vocab-detail {
+  margin: clamp(20px, 3vw, 28px) 0;
+}
+.vocab-detail > summary {
+  cursor: pointer;
+  font-family: 'Klee One', 'Noto Sans TC', sans-serif;
+  font-size: 1rem;
+  color: var(--accent);
+  padding: 12px 0;
+  border-bottom: 1px dashed var(--rule);
+  list-style: none;
+}
+.vocab-detail > summary::-webkit-details-marker { display: none; }
+.vocab-detail > summary::before { content: '▸ '; }
+.vocab-detail[open] > summary::before { content: '▾ '; }
+.vocab-detail[open] > summary {
+  border-bottom-style: solid;
+  margin-bottom: clamp(16px, 2.5vw, 24px);
+}
+
 /* 嵌在文法頁裡的「這一課的單字」一節——上方一條細線分隔，不另做卡片 */
 .lesson-vocab {
   margin-top: clamp(40px, 7vw, 64px);
