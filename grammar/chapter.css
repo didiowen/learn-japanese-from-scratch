@@ -143,6 +143,22 @@ h1 {
   width: 100%;
   max-width: 40rem;
   margin-top: clamp(40px, 7vw, 64px);
+  display: flex;
+  flex-wrap: wrap;
+  gap: clamp(16px, 4vw, 32px);
+}
+
+/* 嵌在文法頁裡的「這一課的單字」一節——上方一條細線分隔，不另做卡片 */
+.lesson-vocab {
+  margin-top: clamp(40px, 7vw, 64px);
+  padding-top: clamp(24px, 4vw, 36px);
+  border-top: 1px solid var(--rule);
+}
+.lesson-vocab > h2:first-child {
+  color: var(--muted);
+  font-size: 1rem;
+  letter-spacing: 0.06em;
+  margin-top: 0;
 }
 .chapter-cta a {
   font-family: 'Klee One', 'Noto Sans TC', sans-serif;

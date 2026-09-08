@@ -48,7 +48,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 | `grammar.md` | N5 語法筆記（G1–G12，句型、活用、例句）——**文法內容的唯一正本**，章節頁由它生成 |
 | `grammar/` | 文法章節 HTML（`NN.html`＋`index.html`，由 `tools/build_grammar_pages.py` 從 grammar.md 產生，**不要手改**；`chapters.json` 是「進度項編號→grammar.md 標題」登錄表、`chapter.css` 是手寫樣式） |
 | `grammar-quiz.html` | 文法 SRS 測驗（填空輸入＋語感選擇；題庫 `grammarCards` 內嵌，SRS 走 quiz-common.js） |
-| `tools/build_grammar_pages.py` | 章節頁產生器（`--check` 供驗證器比對是否過期） |
+| `tools/build_grammar_pages.py` | 章節頁產生器（`--check` 供驗證器比對是否過期）；會把配對的單字批次嵌進章節頁 |
+| `grammar/pairings.json` | **文法項 → 單字批次**的配對表，一課＝一個文法項＋一批單字 |
 | `vocab-lessons.md` | 每日單字教學的**唯一正本**（一批一節），課程頁由它生成 |
 | `vocab/` | 單字課程 HTML（`NN.html`＋`index.html`，由 `tools/build_vocab_pages.py` 產生，**不要手改**；`batches.json` 是登錄表；樣式沿用 `grammar/chapter.css`） |
 | `tools/build_vocab_pages.py` | 單字課程頁產生器（渲染器 import `build_grammar_pages`，同一份實作） |
@@ -148,6 +149,16 @@ const recentBatch = {
 - **禁止**：gradient text、glassmorphism、等高卡片格、side-stripe border
 
 ### 課程頁（文法章節／單字批次）與測驗
+
+- **一課＝文法＋單字（2026-09-08 起）**：`grammar/pairings.json` 把每個文法項配一個單字批次，
+  `build_grammar_pages.py` 會把該批單字用 `render_section(demote=1)` 嵌成章節頁底部的
+  「這一課的單字」一節，CTA 多一顆 `vocab-quiz.html?batch=N`。動機是量出來的——未教的 22 批
+  共 135 字裡，有 45 字已經出現在已上架的文法章節（動詞批次 11–16 的 48 字中就佔 34 字），
+  文法為了示範活用會提前把動詞拉進來，單字軌兩個月後再教一次，等於重背。
+  `vocab/NN.html` 仍照常產生，當依主題查詢的存檔（同 `grammar.md`／`grammar/` 的關係）。
+  **兩軌同一天跑、文法先跑**，那時該批還沒上架，所以 `vocab_section_html()` 找不到就回 None
+  出純文法頁；`build_vocab_pages.py` 收尾時會重建文法頁補上——少了這一步，驗證器會在單字軌
+  收尾時判文法頁過期，讓整輪還原。批次編號因重排而跳號是正常的。
 
 - **grammar.md 是文法內容的唯一正本**；`grammar/NN.html` 與 `grammar/index.html` 是 `tools/build_grammar_pages.py` 的建置產物，**絕對不要手改**（改了下次重建就沒了，驗證器也會報「過期」）。`_sidebar.md` 與 `notes/`（docsify）照舊渲染 grammar.md 當完整筆記檢視，兩者並存是刻意的，不要「修掉」。
 - grammar.md **只能用這個 markdown 子集**：`###`/`####` 小標、段落、行尾兩空格換行、`**粗體**`、`` `行內程式碼` ``、GFM 表格、`>` 引言、``` 圍欄、單層 `-`/`1.` 清單、`---`。產生器認不得的語法會直接建置失敗。

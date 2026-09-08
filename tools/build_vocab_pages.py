@@ -180,6 +180,12 @@ def main():
     else:
         for name in result:
             print(f'寫出 vocab/{name}')
+        # 文法頁會把配對到的單字批次嵌成「這一課的單字」一節，所以單字正本一變，
+        # 那一課的文法頁就過期了。兩軌同一天跑、文法先跑，那時本批還沒上架；
+        # 這裡順手重建，驗證器才不會在單字軌收尾時判文法頁過期而讓整輪還原。
+        import build_grammar_pages as _g
+        for name in _g.build():
+            print(f'寫出 grammar/{name}')
 
 
 if __name__ == '__main__':
