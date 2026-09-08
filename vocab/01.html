@@ -66,7 +66,13 @@
 let _gen = 0;
 function speakJa(text) {
   try {
-    const t = text.replace(/[（(].*?[）)]/g, '').trim();
+    let t = text.replace(/[（(].*?[）)]/g, '').trim();
+    // 「食べる たべる」「かえる 帰る」這種漢字與假名並列的儲存格，整串唸出來會
+    // 把同一個字唸兩次。有純假名的那一段就只唸它——假名對 TTS 沒有讀音歧義。
+    if (/\s/.test(t)) {
+      const kana = t.split(/\s+/).find(s => /^[ぁ-んァ-ヶーヽヾ゛゜]+$/.test(s));
+      if (kana) t = kana;
+    }
     if (!t) return;
     _gen += 1;
     speechSynthesis.cancel();
@@ -78,7 +84,11 @@ function speakJa(text) {
   } catch (e) { /* 無語音支援就靜默 */ }
 }
 document.addEventListener('DOMContentLoaded', () => {
-  const SPEAK_COLS = ['日文', '例句', '例', '句型', '假名', '原形', '禮貌體'];
+  // 欄名白名單——只有「這一欄裝的是日文」才掛朗讀鍵。漏了活用形那幾欄的話，
+  // 第6章的ます形與四個時態、第7章的て形全部沒有聲音，那正是最需要聽的地方。
+  const SPEAK_COLS = ['日文', '例句', '例', '例子', '例字', '句型', '假名', '讀法',
+                      '原形', '辭書形', '動詞', '禮貌體', 'ます形', 'て形', '＋する',
+                      '現在肯定', '現在否定', '過去肯定', '過去否定'];
   document.querySelectorAll('.chapter-body table').forEach(tbl => {
     const ths = [...tbl.querySelectorAll('thead th')].map(th => th.textContent.trim());
     ths.forEach((h, col) => {
