@@ -277,3 +277,11 @@ h1 {
 @media (prefers-reduced-motion: reduce) {
   * { transition: none !important; }
 }
+
+/* 章節總覽的補充說明——比 lead 小一級、用次要色，不跟主文案搶 */
+.lead.note {
+  font-size: 0.95rem;
+  color: var(--muted);
+  margin-top: -0.5rem;
+}
+.lead.note a { color: var(--accent); }
