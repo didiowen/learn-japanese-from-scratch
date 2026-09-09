@@ -45,7 +45,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 | `language-notes.md` | 台語／粵語／注音記憶鉤對照表 |
 | `already-known.md` | 已知單字片語，在測驗中減少出現頻率 |
 | `kanji.md` | 漢字筆記（字表、發音規則、單字分類） |
-| `grammar.md` | N5 語法筆記（G1–G12，句型、活用、例句）——**文法內容的唯一正本**，章節頁由它生成 |
+| `grammar.md` | N5 語法筆記（句型、活用、例句）——**文法內容的唯一正本**，章節頁由它生成 |
 | `grammar/` | 文法章節 HTML（`NN.html`＋`index.html`，由 `tools/build_grammar_pages.py` 從 grammar.md 產生，**不要手改**；`chapters.json` 是「進度項編號→grammar.md 標題」登錄表、`chapter.css` 是手寫樣式） |
 | `grammar-quiz.html` | 文法 SRS 測驗（填空輸入＋語感選擇；題庫 `grammarCards` 內嵌，SRS 走 quiz-common.js） |
 | `tools/build_grammar_pages.py` | 章節頁產生器（`--check` 供驗證器比對是否過期）；會把配對的單字批次嵌進章節頁 |
